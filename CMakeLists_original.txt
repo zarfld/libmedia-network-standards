@@ -1,0 +1,504 @@
+# CMakeLists.txt for IEEE 1722.1-2021 Standard Implementation
+cmake_minimum_required(VERSION 3.16)
+
+project(IEEE_1722_1_2021
+    VERSION 1.0.0
+    DESCRIPTION "IEEE 1722.1-2021 ATDECC Standard Implementation"
+    LANGUAGES CXX
+)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Compiler-specific options
+if(MSVC)
+    add_compile_options(/W4)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Create the IEEE 1722.1-2021 Core library (foundational types and PDUs)
+add_library(ieee_1722_1_2021_core STATIC
+    ieee_1722_1_2021_core.cpp
+    ieee_1722_1_2021_core.h
+    1722_1-2021.cpp
+    1722_1-2021.h
+)
+
+# Create the IEEE 1722.1-2021 Library (high-level API for applications)
+add_library(ieee_1722_1_2021_library STATIC
+    ieee_1722_1_2021_library.cpp
+    ieee_1722_1_2021_library.h
+    ieee_1722_1_2021_state_machines_internal.cpp
+    ieee_1722_1_2021_state_machines_internal.h
+)
+
+# Create the IEEE 1722.1-2021 Intel Hardware Integration Library
+add_library(ieee_1722_1_2021_intel_hal STATIC
+    ieee_1722_1_2021_intel_hal_bridge.cpp
+    ieee_1722_1_2021_intel_hal_bridge.h
+)
+
+# Create the IEEE 1722.1-2021 Complete Standards Implementation Library
+add_library(ieee_1722_1_2021_complete STATIC
+    1722_1-2021_clean.cpp
+    1722_1-2021_clean.h
+    ieee_1722_1_2021_complete_entity.cpp
+    ieee_1722_1_2021_complete_entity.h
+)
+
+target_include_directories(ieee_1722_1_2021_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(ieee_1722_1_2021_library PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(ieee_1722_1_2021_intel_hal PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib  # Intel HAL headers
+)
+
+target_include_directories(ieee_1722_1_2021_complete PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Add compiler definitions for complete implementation
+target_compile_definitions(ieee_1722_1_2021_complete PUBLIC
+    IEEE_1722_1_2021_COMPLETE_AEM_SUPPORT=1
+    IEEE_1722_1_2021_ALL_75_COMMANDS=1
+)
+
+# Platform-specific libraries
+if(WIN32)
+    target_link_libraries(ieee_1722_1_2021_core PRIVATE ws2_32)
+    target_link_libraries(ieee_1722_1_2021_library PRIVATE ws2_32)
+    target_link_libraries(ieee_1722_1_2021_intel_hal PRIVATE ws2_32)
+    target_link_libraries(ieee_1722_1_2021_complete PRIVATE ws2_32)
+endif()
+
+# Add dependency for complete implementation library
+target_link_libraries(ieee_1722_1_2021_complete PUBLIC
+    ieee_1722_1_2021_core
+)
+
+# Add examples subdirectory if enabled
+option(IEEE_1722_1_2021_BUILD_EXAMPLES "Build IEEE 1722.1-2021 examples" ON)
+if(IEEE_1722_1_2021_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
+# Library dependencies (library depends on core, intel_hal depends on library)
+target_link_libraries(ieee_1722_1_2021_library PUBLIC ieee_1722_1_2021_core)
+target_link_libraries(ieee_1722_1_2021_intel_hal PUBLIC ieee_1722_1_2021_library)
+
+# Create test executable
+add_executable(test_ieee_1722_1_2021
+    ieee_1722_1_2021_test.cpp
+)
+
+target_link_libraries(test_ieee_1722_1_2021 PRIVATE
+    ieee_1722_1_2021_library
+)
+
+# Create test executable for core descriptors
+add_executable(test_core_descriptors
+    test_core_descriptors.cpp
+)
+
+target_link_libraries(test_core_descriptors PRIVATE
+    ieee_1722_1_2021_core
+)
+
+# Add integration example executable
+add_executable(example_integration example_integration.cpp)
+target_link_libraries(example_integration PRIVATE ieee_1722_1_2021_library)
+
+# Add controller example executable 
+add_executable(ieee_1722_1_2021_controller_example
+    ieee_1722_1_2021_controller_example.cpp
+)
+target_link_libraries(ieee_1722_1_2021_controller_example PRIVATE ieee_1722_1_2021_library)
+
+# Add AVDECC controller example executable (refactored state machines)
+add_executable(example_avdecc_controller
+    example_avdecc_controller.cpp
+    1722_1_state_machines_refactored.cpp
+)
+target_link_libraries(example_avdecc_controller PRIVATE ieee_1722_1_2021_core)
+
+# Add Hive hardware test executable
+add_executable(hive_hardware_test
+    hive_hardware_test.cpp
+)
+target_link_libraries(hive_hardware_test PRIVATE ieee_1722_1_2021_intel_hal)
+
+# Add Real AVDECC Entity for Hive discovery (legacy UDP implementation)
+add_executable(hive_avdecc_entity_real
+    hive_avdecc_entity_real.cpp
+)
+target_link_libraries(hive_avdecc_entity_real PRIVATE ws2_32)
+
+# Add Intel AVB AVDECC Entity (native Intel HAL implementation)
+add_executable(intel_avb_avdecc_entity
+    intel_avb_avdecc_entity.cpp
+)
+
+# Link with Intel Ethernet HAL library (the actual low-level interface)
+target_include_directories(intel_avb_avdecc_entity PRIVATE
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+# Link with the Intel Ethernet HAL static library that's already built
+target_link_libraries(intel_avb_avdecc_entity PRIVATE 
+    intel-ethernet-hal-static
+    ws2_32
+)
+
+# Set proper output directory
+set_target_properties(intel_avb_avdecc_entity PROPERTIES
+    OUTPUT_NAME "intel_avb_avdecc_entity"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Add Intel HAL AVDECC Entity (hardware timestamping with simplified network)
+add_executable(intel_hal_avdecc_entity
+    intel_hal_avdecc_entity.cpp
+)
+
+# Link with Intel Ethernet HAL library
+target_include_directories(intel_hal_avdecc_entity PRIVATE
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+target_link_libraries(intel_hal_avdecc_entity PRIVATE 
+    intel-ethernet-hal-static
+    ws2_32
+    iphlpapi
+)
+
+set_target_properties(intel_hal_avdecc_entity PROPERTIES
+    OUTPUT_NAME "intel_hal_avdecc_entity"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Add Intel Raw AVDECC Entity (proper Layer 2 protocol implementation)
+add_executable(intel_raw_avdecc_entity
+    intel_raw_avdecc_entity.cpp
+)
+
+# Link with Intel Ethernet HAL library for hardware timestamping
+target_include_directories(intel_raw_avdecc_entity PRIVATE
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+target_link_libraries(intel_raw_avdecc_entity PRIVATE 
+    intel-ethernet-hal-static
+    ws2_32
+    iphlpapi
+)
+
+set_target_properties(intel_raw_avdecc_entity PROPERTIES
+    OUTPUT_NAME "intel_raw_avdecc_entity"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Add Intel PCAP AVDECC Entity (proper Layer 2 AVDECC protocol with PCAP)
+add_executable(intel_pcap_avdecc_entity
+    intel_pcap_avdecc_entity.cpp
+)
+
+# Add Responsive Intel PCAP AVDECC Entity (responds to AEM commands)
+add_executable(intel_pcap_avdecc_entity_responsive
+    intel_pcap_avdecc_entity_responsive.cpp
+)
+
+# Add Intel AVB Hardware AVDECC Entity (direct Intel AVB hardware layer)
+add_executable(intel_avb_avdecc_entity_responsive
+    intel_avb_avdecc_entity_responsive.cpp
+)
+
+# Link with Intel Ethernet HAL and PCAP for Layer 2 injection
+target_include_directories(intel_pcap_avdecc_entity PRIVATE
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+target_include_directories(intel_pcap_avdecc_entity_responsive PRIVATE
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+# Use the main project's PCAP detection
+if(WIN32)
+    # Include PCAP directories
+    target_include_directories(intel_pcap_avdecc_entity PRIVATE
+        ${PCAP_INCLUDE_DIRS}
+    )
+    
+    target_include_directories(intel_pcap_avdecc_entity_responsive PRIVATE
+        ${PCAP_INCLUDE_DIRS}
+    )
+    
+    # Link with PCAP libraries
+    target_link_libraries(intel_pcap_avdecc_entity PRIVATE 
+        intel-ethernet-hal-static
+        ws2_32
+        iphlpapi
+        ${PCAP_LIBRARIES}
+    )
+    
+    target_link_libraries(intel_pcap_avdecc_entity_responsive PRIVATE 
+        intel-ethernet-hal-static
+        ws2_32
+        iphlpapi
+        ${PCAP_LIBRARIES}
+    )
+    
+    # Set library directories
+    target_link_directories(intel_pcap_avdecc_entity PRIVATE
+        ${PCAP_LIBRARY_DIRS}
+    )
+    
+    target_link_directories(intel_pcap_avdecc_entity_responsive PRIVATE
+        ${PCAP_LIBRARY_DIRS}
+    )
+else()
+    # Linux PCAP
+    target_link_libraries(intel_pcap_avdecc_entity PRIVATE 
+        intel-ethernet-hal-static
+        pcap
+    )
+    
+    target_link_libraries(intel_pcap_avdecc_entity_responsive PRIVATE 
+        intel-ethernet-hal-static
+        pcap
+    )
+endif()
+
+set_target_properties(intel_pcap_avdecc_entity PROPERTIES
+    OUTPUT_NAME "intel_pcap_avdecc_entity"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+set_target_properties(intel_pcap_avdecc_entity_responsive PROPERTIES
+    OUTPUT_NAME "intel_pcap_avdecc_entity_responsive"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Add Intel AVB entity linking and configuration
+# Create Intel AVB static library (Windows-compatible subset)
+add_library(intel_avb_lib STATIC
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel.c
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel_common.c
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel_i210.c
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel_i219.c
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel_i225.c
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib/intel_windows.c
+)
+
+target_include_directories(intel_avb_lib PUBLIC
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib
+)
+
+target_compile_definitions(intel_avb_lib PRIVATE
+    WIN32_LEAN_AND_MEAN
+    _WIN32_WINNT=0x0601
+)
+
+target_link_libraries(intel_avb_lib PRIVATE
+    ws2_32
+    advapi32
+    shell32
+)
+
+target_include_directories(intel_avb_avdecc_entity_responsive PRIVATE
+    ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib
+)
+
+target_link_libraries(intel_avb_avdecc_entity_responsive PRIVATE 
+    intel_avb_lib
+    ws2_32
+)
+
+set_target_properties(intel_avb_avdecc_entity_responsive PROPERTIES
+    OUTPUT_NAME "intel_avb_avdecc_entity_responsive"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Platform-specific linking for integration example
+if(WIN32)
+    target_link_libraries(example_integration PRIVATE ws2_32)
+    target_link_libraries(ieee_1722_1_2021_controller_example PRIVATE ws2_32)
+    target_link_libraries(example_avdecc_controller PRIVATE ws2_32)
+    target_link_libraries(hive_hardware_test PRIVATE ws2_32)
+endif()
+
+# Set target properties
+set_target_properties(ieee_1722_1_2021_core PROPERTIES
+    OUTPUT_NAME "ieee_1722_1_2021_core"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+
+set_target_properties(ieee_1722_1_2021_library PROPERTIES
+    OUTPUT_NAME "ieee_1722_1_2021_library"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+
+set_target_properties(test_ieee_1722_1_2021 PROPERTIES
+    OUTPUT_NAME "test_ieee_1722_1_2021"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+set_target_properties(ieee_1722_1_2021_controller_example PROPERTIES
+    OUTPUT_NAME "ieee_1722_1_2021_controller_example"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+set_target_properties(example_avdecc_controller PROPERTIES
+    OUTPUT_NAME "example_avdecc_controller"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+set_target_properties(hive_hardware_test PROPERTIES
+    OUTPUT_NAME "hive_hardware_test"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Add custom target to run tests
+add_custom_target(run_ieee_tests
+    COMMAND test_ieee_1722_1_2021
+    DEPENDS test_ieee_1722_1_2021
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    COMMENT "Running IEEE 1722.1-2021 standard tests"
+)
+
+# Add custom target to run integration example
+add_custom_target(run_integration_example
+    COMMAND example_integration
+    DEPENDS example_integration
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    COMMENT "Running ATDECC integration example"
+)
+
+# Installation rules
+install(TARGETS ieee_1722_1_2021_core ieee_1722_1_2021_library
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(FILES 
+    ieee_1722_1_2021_core.h
+    ieee_1722_1_2021_library.h
+    DESTINATION include/ieee
+)
+
+# Create the IEEE 1722-2016 Streaming library
+add_library(ieee_1722_2016_streaming STATIC
+    ieee_1722_2016_streaming.cpp
+    ieee_1722_2016_streaming.h
+)
+
+target_include_directories(ieee_1722_2016_streaming PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Platform-specific libraries for 2016
+if(WIN32)
+    target_link_libraries(ieee_1722_2016_streaming PRIVATE ws2_32)
+endif()
+
+# Create test executable for 2016
+add_executable(test_ieee_1722_2016
+    ieee_1722_2016_test.cpp
+)
+
+target_link_libraries(test_ieee_1722_2016 PRIVATE ieee_1722_2016_streaming)
+
+# Platform-specific linking for 2016 test
+if(WIN32)
+    target_link_libraries(test_ieee_1722_2016 PRIVATE ws2_32)
+endif()
+
+set_target_properties(test_ieee_1722_2016 PROPERTIES
+    OUTPUT_NAME "test_ieee_1722_2016"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Create the IEEE 1722.1-2013 library
+add_library(ieee_1722_1_2013 STATIC
+    ieee_1722_1_2013.cpp
+    ieee_1722_1_2013.h
+)
+
+target_include_directories(ieee_1722_1_2013 PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Platform-specific libraries for 2013
+if(WIN32)
+    target_link_libraries(ieee_1722_1_2013 PRIVATE ws2_32)
+endif()
+
+# Create test executable for 2013
+add_executable(test_ieee_1722_1_2013
+    ieee_1722_1_2013_test.cpp
+)
+
+target_link_libraries(test_ieee_1722_1_2013 PRIVATE ieee_1722_1_2013)
+
+# Platform-specific linking for 2013 test
+if(WIN32)
+    target_link_libraries(test_ieee_1722_1_2013 PRIVATE ws2_32)
+endif()
+
+set_target_properties(test_ieee_1722_1_2013 PROPERTIES
+    OUTPUT_NAME "test_ieee_1722_1_2013"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Print configuration
+message(STATUS "Building IEEE 1722.1-2021 Standard Implementation")
+message(STATUS "  Version: ${PROJECT_VERSION}")
+message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "  Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "  Platform: ${CMAKE_SYSTEM_NAME}")
+
+# Create test executable for AECP implementation
+add_executable(test_aecp_implementation
+    test_aecp_implementation.cpp
+)
+
+target_link_libraries(test_aecp_implementation PRIVATE ieee_1722_1_2021_core)
+
+# Platform-specific linking for AECP test
+if(WIN32)
+    target_link_libraries(test_aecp_implementation PRIVATE ws2_32)
+endif()
+
+set_target_properties(test_aecp_implementation PROPERTIES
+    OUTPUT_NAME "test_aecp_implementation"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# ============================================================================
+# FILE ORGANIZATION NOTE
+# ============================================================================
+# This CMakeLists.txt has been updated to use the new organized file names:
+#
+# ACTIVE FILES:
+# - ieee_1722_1_2013.*          (IEEE 1722.1-2013 legacy implementation)
+# - ieee_1722_1_2021_core.*     (IEEE 1722.1-2021 core types and PDUs)
+# - ieee_1722_1_2021_library.*  (IEEE 1722.1-2021 high-level library API)
+# - ieee_1722_2016_streaming.*  (IEEE 1722-2016 streaming protocol)
+#
+# OBSOLETE FILES (DO NOT USE):
+# - OBSOLETE_1722_1-2021.*      (Early 2021 implementation - superseded)
+# - OBSOLETE_1722_1_state_machines.* (Complex state machines - superseded)
+#
+# For application development, use: ieee_1722_1_2021_library.h
+# For core type access only, use: ieee_1722_1_2021_core.h
+# ============================================================================

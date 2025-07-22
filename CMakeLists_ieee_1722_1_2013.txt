@@ -1,0 +1,98 @@
+# IEEE 1722.1-2013 VOLLSTÄNDIGE EIGENSTÄNDIGE IMPLEMENTATION
+# CMakeLists.txt für IEEE Standard für Device Discovery, Connection Management,
+# und Control Protocol für IEEE 1722™ Based Devices (2013 version)
+#
+# Diese Implementation ist vollständig eigenständig und funktioniert ohne IEEE 1722.1-2021 Dateien.
+
+cmake_minimum_required(VERSION 3.16)
+
+# IEEE 1722.1-2013 Library
+add_library(ieee_1722_1_2013_complete STATIC
+    ieee_1722_1_2013_complete.h
+    ieee_1722_1_2013_complete.cpp
+)
+
+target_include_directories(ieee_1722_1_2013_complete PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Platform-specific networking libraries
+if(WIN32)
+    target_link_libraries(ieee_1722_1_2013_complete PUBLIC ws2_32 wsock32)
+endif()
+
+# Set C++ standard for modern features while maintaining compatibility
+target_compile_features(ieee_1722_1_2013_complete PUBLIC cxx_std_14)
+
+# Compiler warnings and optimizations
+target_compile_options(ieee_1722_1_2013_complete PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Werror>
+)
+
+# IEEE 1722.1-2013 Test Suite
+add_executable(ieee_1722_1_2013_complete_test
+    ieee_1722_1_2013_complete_test.cpp
+)
+
+target_link_libraries(ieee_1722_1_2013_complete_test PRIVATE
+    ieee_1722_1_2013_complete
+)
+
+# Enable testing
+enable_testing()
+
+# Add the test to CTest
+add_test(
+    NAME IEEE_1722_1_2013_Complete_Test
+    COMMAND ieee_1722_1_2013_complete_test
+)
+
+# Set test properties
+set_tests_properties(IEEE_1722_1_2013_Complete_Test PROPERTIES
+    TIMEOUT 30
+    LABELS "IEEE1722.1;AVDECC;Standards;2013"
+)
+
+# Installation rules
+install(TARGETS ieee_1722_1_2013_complete
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(FILES ieee_1722_1_2013_complete.h
+    DESTINATION include/openavnu/standards
+)
+
+# Optionally install test executable for development
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    install(TARGETS ieee_1722_1_2013_complete_test
+        RUNTIME DESTINATION bin/tests
+    )
+endif()
+
+# Documentation generation (if Doxygen is available)
+find_package(Doxygen QUIET)
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_PROJECT_NAME "IEEE 1722.1-2013 OpenAvnu Implementation")
+    set(DOXYGEN_PROJECT_BRIEF "VOLLSTÄNDIGE EIGENSTÄNDIGE IMPLEMENTATION")
+    set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/docs")
+    set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_GENERATE_HTML YES)
+    set(DOXYGEN_GENERATE_LATEX NO)
+    
+    doxygen_add_docs(ieee_1722_1_2013_docs
+        ieee_1722_1_2013_complete.h
+        ieee_1722_1_2013_complete.cpp
+        ieee_1722_1_2013_complete_test.cpp
+        COMMENT "Generating IEEE 1722.1-2013 documentation"
+    )
+endif()
+
+# Summary message
+message(STATUS "IEEE 1722.1-2013 VOLLSTÄNDIGE EIGENSTÄNDIGE IMPLEMENTATION configured")
+message(STATUS "  - Library: ieee_1722_1_2013_complete")
+message(STATUS "  - Test: ieee_1722_1_2013_complete_test")
+message(STATUS "  - Eigenständig: JA (keine Abhängigkeiten zu IEEE 1722.1-2021)")
+message(STATUS "  - Standards: ADP, AEM, AECP, ACMP für IEEE 1722.1-2013")
