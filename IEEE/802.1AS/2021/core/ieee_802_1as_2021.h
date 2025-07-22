@@ -246,6 +246,32 @@ struct PDelayRespFollowUpMessage {
 };
 
 // ============================================================================
+// IEEE 802.1AS-2021 Extended Data Structures
+// ============================================================================
+
+/**
+ * @brief Milan profile extensions per IEEE 802.1AS-2021
+ */
+struct MilanProfileData {
+    bool multiplePDelayRespDetected = false;     ///< Multiple PDelay responses detected
+    uint32_t multiplePDelayRespCount = 0;        ///< Count of multiple responses
+    std::chrono::steady_clock::time_point lastMultipleDetection;
+    bool pDelayTxCessation = false;             ///< PDelay transmission cessation
+    uint32_t consecutivePDelayTimeouts = 0;     ///< Consecutive PDelay timeouts
+};
+
+/**
+ * @brief Statistics collection structure
+ */
+struct StatisticsData {
+    uint64_t messagesTransmitted = 0;
+    uint64_t messagesReceived = 0;
+    uint64_t errorsDetected = 0;
+    uint64_t timeoutsOccurred = 0;
+    std::chrono::steady_clock::time_point lastActivity;
+};
+
+// ============================================================================
 // IEEE 802.1AS-2021 TLV Support (Enhanced in 2021)
 // ============================================================================
 
