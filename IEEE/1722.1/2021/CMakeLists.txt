@@ -11,7 +11,7 @@ target_include_directories(ieee_1722_1_2021_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common
 )
 
-# AECP Protocol library - NOW ACTIVATED with Phase 2C real implementation
+# AECP Protocol library - ✅ ACTIVATED & WORKING - Real IEEE 1722.1-2021 implementation
 add_library(ieee_1722_1_2021_aecp STATIC
     protocols/aecp/ieee_1722_1_2021_aecp_phase2c_real.cpp
 )
@@ -24,19 +24,18 @@ target_include_directories(ieee_1722_1_2021_aecp PUBLIC
 
 target_link_libraries(ieee_1722_1_2021_aecp PUBLIC ieee_1722_1_2021_core)
 
-# ACMP Protocol library - TEMPORARILY DISABLED due to compilation errors
-# TODO: Fix missing type definitions
-# add_library(ieee_1722_1_2021_acmp STATIC
-#     protocols/acmp/ieee_1722_1_2021_acmp_implementation.cpp
-# )
+# ACMP Protocol library - ✅ ACTIVATED & WORKING - C interface functional
+add_library(ieee_1722_1_2021_acmp STATIC
+    protocols/acmp/ieee_1722_1_2021_acmp_implementation.cpp
+)
 
-# target_include_directories(ieee_1722_1_2021_acmp PUBLIC
-#     ${CMAKE_CURRENT_SOURCE_DIR}/core
-#     ${CMAKE_CURRENT_SOURCE_DIR}/protocols/acmp
-#     ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common
-# )
+target_include_directories(ieee_1722_1_2021_acmp PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/protocols/acmp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common
+)
 
-# target_link_libraries(ieee_1722_1_2021_acmp PUBLIC ieee_1722_1_2021_core)
+target_link_libraries(ieee_1722_1_2021_acmp PUBLIC ieee_1722_1_2021_core)
 
 # State Machines library - TEMPORARILY DISABLED due to compilation errors
 # TODO: Fix namespace conflicts and missing includes
@@ -95,14 +94,14 @@ target_link_libraries(ieee_1722_1_2021_aecp PUBLIC ieee_1722_1_2021_core)
 
 # target_link_libraries(ieee_1722_1_2021_hardware PUBLIC ieee_1722_1_2021_core)
 
-# Complete IEEE 1722.1-2021 library (minimal working version)
+# Complete IEEE 1722.1-2021 library - NOW INCLUDES WORKING AECP + ACMP
 add_library(ieee_1722_1_2021_complete INTERFACE)
 
 target_link_libraries(ieee_1722_1_2021_complete INTERFACE
     ieee_1722_1_2021_core
+    ieee_1722_1_2021_aecp       # ✅ WORKING - Real AECP Protocol implementation
+    ieee_1722_1_2021_acmp       # ✅ WORKING - ACMP Protocol with C interface
     # TODO: Re-enable other libraries once compilation errors are fixed:
-    # ieee_1722_1_2021_aecp
-    # ieee_1722_1_2021_acmp
     # ieee_1722_1_2021_state_machines
     # ieee_1722_1_2021_library
     # ieee_1722_1_2021_hardware
@@ -181,6 +180,27 @@ add_custom_target(run_aecp_integration_test
     COMMAND ieee_1722_1_2021_aecp_integration_test
     DEPENDS ieee_1722_1_2021_aecp_integration_test
     COMMENT "Running IEEE 1722.1-2021 AECP Integration Test"
+)
+
+# IEEE 1722.1-2021 ACMP Integration Test
+add_executable(ieee_1722_1_2021_acmp_integration_test
+    test_acmp_integration.cpp
+)
+
+target_link_libraries(ieee_1722_1_2021_acmp_integration_test
+    ieee_1722_1_2021_acmp
+    ieee_1722_1_2021_core
+)
+
+target_include_directories(ieee_1722_1_2021_acmp_integration_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Test target for ACMP integration validation
+add_custom_target(run_acmp_integration_test
+    COMMAND ieee_1722_1_2021_acmp_integration_test
+    DEPENDS ieee_1722_1_2021_acmp_integration_test
+    COMMENT "Running IEEE 1722.1-2021 ACMP Integration Test"
 )
 
 message(STATUS "IEEE 1722.1-2021 Modern AVDECC libraries configured")

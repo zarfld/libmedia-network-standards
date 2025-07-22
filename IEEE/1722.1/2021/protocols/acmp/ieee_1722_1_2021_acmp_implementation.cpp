@@ -2,7 +2,7 @@
  * @file ieee_1722_1_2021_acmp_implementation.cpp
  * @brief IEEE 1722.1-2021 ACMP (AVDECC Connection Management Protocol) Implementation
  * 
- * PRIORITÄT: IEEE 1722.1-2021 - ACMP nach AECP Implementation
+ * Windows MSVC Compatible Implementation
  * Connection Management Protocol für Stream-Verbindungen
  */
 
@@ -11,6 +11,35 @@
 #include <mutex>
 #include <atomic>
 #include <cstring>
+
+// Windows compatibility for byte order functions
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+    
+    // Define be64toh and htobe64 for Windows
+    #if defined(_MSC_VER)
+        #include <stdlib.h>
+        #define be64toh(x) _byteswap_uint64(x)
+        #define htobe64(x) _byteswap_uint64(x)
+        #define be32toh(x) _byteswap_ulong(x)
+        #define htobe32(x) _byteswap_ulong(x)
+        #define be16toh(x) _byteswap_ushort(x)
+        #define htobe16(x) _byteswap_ushort(x)
+        
+        // Windows structure packing
+        #define PACKED_STRUCT_BEGIN __pragma(pack(push, 1))
+        #define PACKED_STRUCT_END __pragma(pack(pop))
+        #define PACKED_ATTRIBUTE
+    #endif
+#else
+    #include <endian.h>
+    #include <arpa/inet.h>
+    #define PACKED_STRUCT_BEGIN
+    #define PACKED_STRUCT_END  
+    #define PACKED_ATTRIBUTE __attribute__((packed))
+#endif
 
 namespace IEEE {
 namespace _1722_1 {
@@ -69,6 +98,7 @@ enum class ACMPStatusCode : uint8_t {
 /**
  * @brief ACMP PDU Format (IEEE 1722.1-2021 Figure 8.1)
  */
+PACKED_STRUCT_BEGIN
 struct ACMPPDUFormat {
     // AVTPDU Common header (12 bytes)
     uint8_t subtype;                    // 0xFC for ACMP
@@ -133,7 +163,8 @@ struct ACMPPDUFormat {
     void setMessageType(ACMPMessageType msgType) {
         sv_version_msg_type = (sv_version_msg_type & 0xF0) | (static_cast<uint8_t>(msgType) & 0x0F);
     }
-} __attribute__((packed));
+} PACKED_ATTRIBUTE;
+PACKED_STRUCT_END
 
 // ============================================================================
 // ACMP Connection State Management
