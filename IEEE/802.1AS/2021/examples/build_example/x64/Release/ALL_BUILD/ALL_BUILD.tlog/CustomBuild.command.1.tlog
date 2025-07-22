@@ -1,0 +1,10 @@
+^D:\REPOS\OPENAVNU\LIB\STANDARDS\IEEE\802.1AS\2021\EXAMPLES\BUILD_EXAMPLE\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example -BD:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example --check-stamp-file D:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

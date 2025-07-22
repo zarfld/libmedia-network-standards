@@ -29,4 +29,17 @@ if(WIN32)
     )
 endif()
 
+# Test executable for Milan implementation
+add_executable(milan_1_2_2023_test
+    milan_1_2_2023_test.cpp
+)
+
+target_link_libraries(milan_1_2_2023_test 
+    PRIVATE avnu_milan_1_2_2023
+)
+
+target_include_directories(milan_1_2_2023_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 message(STATUS "AVnu Milan 1.2-2023 library configured")

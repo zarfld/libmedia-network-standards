@@ -1,0 +1,4 @@
+D:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example/CMakeFiles/ieee_802_1as_2021_integration_example.dir
+D:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example/CMakeFiles/INSTALL.dir
+D:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example/CMakeFiles/ALL_BUILD.dir
+D:/Repos/OpenAvnu/lib/Standards/IEEE/802.1AS/2021/examples/build_example/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,87 @@
+# ieee_802_1as_2021-config.cmake.in
+# CMake configuration file for IEEE 802.1AS-2021 library
+# Generated from cmake/ieee_802_1as_2021-config.cmake.in
+
+@PACKAGE_INIT@
+
+# Define library information
+set(IEEE_802_1AS_2021_VERSION "@ieee_802_1as_2021_VERSION@")
+set(IEEE_802_1AS_2021_VERSION_MAJOR "@ieee_802_1as_2021_VERSION_MAJOR@")
+set(IEEE_802_1AS_2021_VERSION_MINOR "@ieee_802_1as_2021_VERSION_MINOR@")
+set(IEEE_802_1AS_2021_VERSION_PATCH "@ieee_802_1as_2021_VERSION_PATCH@")
+
+# Define installation paths
+set_and_check(IEEE_802_1AS_2021_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@/IEEE/802.1AS/2021")
+set_and_check(IEEE_802_1AS_2021_LIB_DIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
+
+# Include the targets file
+include("${CMAKE_CURRENT_LIST_DIR}/ieee_802_1as_2021-targets.cmake")
+
+# Define the main target
+set(IEEE_802_1AS_2021_LIBRARIES ieee_802_1as_2021::ieee_802_1as_2021_core)
+set(IEEE_802_1AS_2021_INCLUDE_DIRS ${IEEE_802_1AS_2021_INCLUDE_DIR})
+
+# Check required components
+set(ieee_802_1as_2021_FOUND True)
+
+# Core library is always available
+set(ieee_802_1as_2021_core_FOUND True)
+
+# Test library availability
+if(TARGET ieee_802_1as_2021::ieee_802_1as_2021_test)
+    set(ieee_802_1as_2021_test_FOUND True)
+else()
+    set(ieee_802_1as_2021_test_FOUND False)
+endif()
+
+# Check if all requested components are available
+if(ieee_802_1as_2021_FIND_COMPONENTS)
+    foreach(component ${ieee_802_1as_2021_FIND_COMPONENTS})
+        if(NOT ieee_802_1as_2021_${component}_FOUND)
+            if(ieee_802_1as_2021_FIND_REQUIRED_${component})
+                set(ieee_802_1as_2021_FOUND False)
+                message(FATAL_ERROR "Required component ${component} not found")
+            else()
+                message(WARNING "Optional component ${component} not found")
+            endif()
+        endif()
+    endforeach()
+endif()
+
+# Feature flags
+set(IEEE_802_1AS_2021_HAS_MULTI_DOMAIN_SUPPORT True)
+set(IEEE_802_1AS_2021_HAS_ENHANCED_PATH_DELAY True)
+set(IEEE_802_1AS_2021_HAS_TLV_SUPPORT True)
+set(IEEE_802_1AS_2021_HAS_BMCA_V2 True)
+
+# Compiler requirements
+set(IEEE_802_1AS_2021_CXX_STANDARD 17)
+
+# Platform-specific settings
+if(WIN32)
+    set(IEEE_802_1AS_2021_PLATFORM_LIBS ws2_32)
+elseif(UNIX)
+    set(IEEE_802_1AS_2021_PLATFORM_LIBS pthread)
+endif()
+
+# Provide a convenience function for linking
+function(target_link_ieee_802_1as_2021 target_name)
+    target_link_libraries(${target_name} ${IEEE_802_1AS_2021_LIBRARIES})
+    target_include_directories(${target_name} PRIVATE ${IEEE_802_1AS_2021_INCLUDE_DIRS})
+    target_compile_features(${target_name} PRIVATE cxx_std_${IEEE_802_1AS_2021_CXX_STANDARD})
+    
+    if(IEEE_802_1AS_2021_PLATFORM_LIBS)
+        target_link_libraries(${target_name} ${IEEE_802_1AS_2021_PLATFORM_LIBS})
+    endif()
+endfunction()
+
+# Display configuration information if requested
+if(NOT ieee_802_1as_2021_FIND_QUIETLY)
+    message(STATUS "Found IEEE 802.1AS-2021: ${IEEE_802_1AS_2021_VERSION}")
+    message(STATUS "  Include dir: ${IEEE_802_1AS_2021_INCLUDE_DIR}")
+    message(STATUS "  Libraries: ${IEEE_802_1AS_2021_LIBRARIES}")
+    message(STATUS "  Multi-domain support: ${IEEE_802_1AS_2021_HAS_MULTI_DOMAIN_SUPPORT}")
+    message(STATUS "  Enhanced path delay: ${IEEE_802_1AS_2021_HAS_ENHANCED_PATH_DELAY}")
+endif()
+
+check_required_components(ieee_802_1as_2021)

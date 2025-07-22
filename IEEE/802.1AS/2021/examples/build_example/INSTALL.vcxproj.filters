@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\lib\Standards\IEEE\802.1AS\2021\examples\build_example\CMakeFiles\3a6ae6bfcf0845ab1ac733ccd507623f\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{F2669D41-1161-36E6-B4E3-6C1B3BA81116}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

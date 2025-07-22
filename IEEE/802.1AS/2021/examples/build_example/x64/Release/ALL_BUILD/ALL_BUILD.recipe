@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\Repos\OpenAvnu\lib\Standards\IEEE\802.1AS\2021\examples\build_example\x64\Release\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Repos\OpenAvnu\lib\Standards\IEEE\802.1AS\2021\examples\build_example\examples\Release\ieee_802_1as_2021_integration_example.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Repos\OpenAvnu\lib\Standards\IEEE\802.1AS\2021\examples\build_example\x64\Release\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
