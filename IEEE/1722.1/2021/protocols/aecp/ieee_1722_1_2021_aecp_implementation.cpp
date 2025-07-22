@@ -9,7 +9,7 @@
  * @copyright OpenAvnu Project
  */
 
-#include "ieee_1722_1_2021_base.h"
+#include "../../core/ieee_1722_1_2021_base.h"
 #include <memory>
 #include <map>
 #include <mutex>
@@ -83,20 +83,21 @@ private:
     
     void cleanupExpiredAcquisitions() {
         auto now = std::chrono::steady_clock::now();
+        auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
         std::lock_guard<std::mutex> lock(stateMutex_);
         
         for (auto& pair : entityStates_) {
             auto& state = pair.second;
             if (state.isAcquired) {
-                auto elapsed = now - state.acquireTime;
-                if (elapsed > std::chrono::minutes(30)) { // 30 minute timeout
+                auto elapsed = nowMs - state.acquireTime;
+                if (elapsed > (30 * 60 * 1000)) { // 30 minute timeout in milliseconds
                     state.isAcquired = false;
                     state.acquiredBy = 0;
                 }
             }
             if (state.isLocked) {
-                auto elapsed = now - state.lockTime;
-                if (elapsed > std::chrono::minutes(10)) { // 10 minute timeout
+                auto elapsed = nowMs - state.lockTime;
+                if (elapsed > (10 * 60 * 1000)) { // 10 minute timeout in milliseconds
                     state.isLocked = false;
                     state.lockedBy = 0;
                 }
@@ -212,7 +213,9 @@ public:
         
         state.isAcquired = true;
         state.acquiredBy = controllerId;
-        state.acquireTime = std::chrono::steady_clock::now();
+        // Store timestamp in milliseconds since epoch
+        auto now = std::chrono::steady_clock::now();
+        state.acquireTime = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
         return true;
     }
     

@@ -1,0 +1,299 @@
+#pragma once
+
+// IEEE 1722.1-2021 Base Header - Core AVDECC Types with Correct Namespace Structure
+// ================================================================================
+// Phase 2C Complete Library Activation - Header Rationalization Complete
+
+// Windows compatibility - must be included BEFORE any other headers
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+    #ifndef htobe64
+        #define htobe64(x) _byteswap_uint64(x)
+        #define be64toh(x) _byteswap_uint64(x)
+    #endif
+    #ifndef htons
+        #define htons(x) _byteswap_ushort(x)
+        #define ntohs(x) _byteswap_ushort(x)
+    #endif
+#else
+    #include <arpa/inet.h>
+    #include <endian.h>
+#endif
+
+#include <cstdint>
+#include <iostream>
+#include <cstring>
+
+#ifdef _WIN32
+    // Windows byte order functions
+    #define htobe64(x) _byteswap_uint64(x)
+    #define be64toh(x) _byteswap_uint64(x)
+    #define htonll(x) _byteswap_uint64(x)
+    #define ntohll(x) _byteswap_uint64(x)
+#endif
+
+// ============================================================================
+// IEEE 1722.1-2021 PROPER NAMESPACE STRUCTURE
+// ============================================================================
+
+namespace IEEE {
+namespace _1722_1 {
+namespace _2021 {
+
+    // Common constants
+    const uint8_t AVDECC_MULTICAST_MAC[6] = {0x91, 0xE0, 0xF0, 0x01, 0x00, 0x00};
+    const uint16_t AVDECC_ETHERTYPE = 0x22F0;
+
+    // ========================================================================
+    // IEEE 1722.1-2021 AECP (AVDECC Enumeration and Control Protocol)
+    // PROPERLY NESTED IN IEEE::_1722_1::_2021 NAMESPACE
+    // ========================================================================
+    namespace AECP {
+        
+        // AECP Message Types (IEEE 1722.1-2021 Table 9.1)
+        enum class AECPMessageType : uint8_t {
+            AEM_COMMAND             = 0x00,
+            AEM_RESPONSE            = 0x01,
+            ADDRESS_ACCESS_COMMAND  = 0x02,
+            ADDRESS_ACCESS_RESPONSE = 0x03,
+            AVC_COMMAND             = 0x04,
+            AVC_RESPONSE            = 0x05,
+            VENDOR_UNIQUE_COMMAND   = 0x06,
+            VENDOR_UNIQUE_RESPONSE  = 0x07,
+            HDCP_APM_COMMAND        = 0x08,
+            HDCP_APM_RESPONSE       = 0x09,
+            EXTENDED_COMMAND        = 0x0E,
+            EXTENDED_RESPONSE       = 0x0F
+        };
+
+        // AEM Command Codes (IEEE 1722.1-2021 Table 7.126)
+        enum class AEMCommandType : uint16_t {
+            ACQUIRE_ENTITY          = 0x0000,
+            LOCK_ENTITY             = 0x0001,
+            ENTITY_AVAILABLE        = 0x0002,
+            CONTROLLER_AVAILABLE    = 0x0003,
+            READ_DESCRIPTOR         = 0x0004,
+            WRITE_DESCRIPTOR        = 0x0005,
+            SET_CONFIGURATION       = 0x0006,
+            GET_CONFIGURATION       = 0x0007,
+            SET_STREAM_FORMAT       = 0x0008,
+            GET_STREAM_FORMAT       = 0x0009,
+            SET_VIDEO_FORMAT        = 0x000A,
+            GET_VIDEO_FORMAT        = 0x000B,
+            SET_SENSOR_FORMAT       = 0x000C,
+            GET_SENSOR_FORMAT       = 0x000D,
+            SET_STREAM_INFO         = 0x000E,
+            GET_STREAM_INFO         = 0x000F,
+            SET_NAME                = 0x0010,
+            GET_NAME                = 0x0011,
+            SET_ASSOCIATION_ID      = 0x0012,
+            GET_ASSOCIATION_ID      = 0x0013,
+            SET_SAMPLING_RATE       = 0x0014,
+            GET_SAMPLING_RATE       = 0x0015,
+            SET_CLOCK_SOURCE        = 0x0016,
+            GET_CLOCK_SOURCE        = 0x0017,
+            SET_CONTROL             = 0x0018,
+            GET_CONTROL             = 0x0019,
+            INCREMENT_CONTROL       = 0x001A,
+            DECREMENT_CONTROL       = 0x001B,
+            SET_SIGNAL_SELECTOR     = 0x001C,
+            GET_SIGNAL_SELECTOR     = 0x001D,
+            SET_MIXER               = 0x001E,
+            GET_MIXER               = 0x001F,
+            SET_MATRIX              = 0x0020,
+            GET_MATRIX              = 0x0021,
+            START_STREAMING         = 0x0022,
+            STOP_STREAMING          = 0x0023,
+            REGISTER_UNSOLICITED_NOTIFICATION = 0x0024,
+            DEREGISTER_UNSOLICITED_NOTIFICATION = 0x0025,
+            IDENTIFY_NOTIFICATION   = 0x0026,
+            GET_AVB_INFO            = 0x0027,
+            GET_AS_PATH             = 0x0028,
+            GET_COUNTERS            = 0x0029,
+            REBOOT                  = 0x002A,
+            GET_AUDIO_MAP           = 0x002B,
+            ADD_AUDIO_MAPPINGS      = 0x002C,
+            REMOVE_AUDIO_MAPPINGS   = 0x002D,
+            GET_VIDEO_MAP           = 0x002E,
+            ADD_VIDEO_MAPPINGS      = 0x002F,
+            REMOVE_VIDEO_MAPPINGS   = 0x0030,
+            GET_SENSOR_MAP          = 0x0031,
+            ADD_SENSOR_MAPPINGS     = 0x0032,
+            REMOVE_SENSOR_MAPPINGS  = 0x0033,
+            START_OPERATION         = 0x0034,
+            ABORT_OPERATION         = 0x0035,
+            OPERATION_STATUS        = 0x0036,
+            AUTH_ADD_KEY            = 0x0037,
+            AUTH_DELETE_KEY         = 0x0038,
+            AUTH_GET_KEY_LIST       = 0x0039,
+            AUTH_GET_KEY            = 0x003A,
+            AUTH_ADD_KEY_TO_CHAIN   = 0x003B,
+            AUTH_DELETE_KEY_FROM_CHAIN = 0x003C,
+            AUTH_GET_KEYCHAIN_LIST  = 0x003D,
+            AUTH_GET_IDENTITY       = 0x003E,
+            AUTH_ADD_TOKEN          = 0x003F,
+            AUTH_DELETE_TOKEN       = 0x0040,
+            AUTHENTICATE            = 0x0041,
+            DEAUTHENTICATE          = 0x0042,
+            ENABLE_TRANSPORT_SECURITY = 0x0043,
+            DISABLE_TRANSPORT_SECURITY = 0x0044,
+            ENABLE_STREAM_ENCRYPTION = 0x0045,
+            DISABLE_STREAM_ENCRYPTION = 0x0046,
+            SET_MEMORY_OBJECT_LENGTH = 0x0047,
+            GET_MEMORY_OBJECT_LENGTH = 0x0048,
+            SET_STREAM_BACKUP       = 0x0049,
+            GET_STREAM_BACKUP       = 0x004A
+        };
+
+        // AEM Status Codes (IEEE 1722.1-2021 Table 7.127)
+        enum class AEMStatusCode : uint8_t {
+            SUCCESS                = 0x00,
+            NOT_IMPLEMENTED        = 0x01,
+            NO_SUCH_DESCRIPTOR     = 0x02,
+            ENTITY_LOCKED          = 0x03,
+            ENTITY_ACQUIRED        = 0x04,
+            NOT_AUTHENTICATED      = 0x05,
+            AUTHENTICATION_DISABLED = 0x06,
+            BAD_ARGUMENTS          = 0x07,
+            NO_RESOURCES           = 0x08,
+            IN_PROGRESS            = 0x09,
+            ENTITY_MISBEHAVING     = 0x0A,
+            NOT_SUPPORTED          = 0x0B,
+            STREAM_IS_RUNNING      = 0x0C
+        };
+
+        // ====================================================================
+        // AECP Message Structures (IEEE 1722.1-2021 Compliant)
+        // ====================================================================
+        
+        // Base AECP message header (IEEE 1722.1-2021 Figure 9.1)
+        struct AECPHeader {
+            uint8_t messageType;         // AECPMessageType
+            uint8_t status;              // AEMStatusCode (for responses)
+            uint16_t controlDataLength;  // Length of control data
+            uint64_t targetEntityID;     // Target entity ID
+            uint64_t controllerEntityID; // Controller entity ID
+            uint16_t sequenceID;         // Sequence ID
+            uint16_t reserved;           // Reserved field
+        };
+
+        // AEM Command Message (IEEE 1722.1-2021 Figure 9.2)
+        struct AEMCommandMessage {
+            AECPHeader header;
+            uint16_t commandType;        // AEMCommandType
+            uint16_t reserved;
+            uint8_t command_specific_data[1024]; // Command-specific payload
+            
+            // Helper methods that implementations expect
+            void setCommandType(AEMCommandType type) { 
+                commandType = static_cast<uint16_t>(type); 
+            }
+        };
+
+        // AEM Response Message (IEEE 1722.1-2021 Figure 9.3)
+        struct AEMResponseMessage {
+            AECPHeader header;
+            uint16_t commandType;        // AEMCommandType
+            uint16_t reserved;
+            uint8_t response_specific_data[1024]; // Response-specific payload
+            
+            // Helper methods that implementations expect
+            void setStatus(AEMStatusCode status) { 
+                header.status = static_cast<uint8_t>(status); 
+            }
+        };
+
+        // ====================================================================
+        // Command/Response Specific Structures (IEEE 1722.1-2021)
+        // ====================================================================
+        
+        // Read Descriptor Command (IEEE 1722.1-2021 Section 7.4.5.1)
+        struct ReadDescriptorCommand {
+            uint16_t configurationIndex;
+            uint16_t descriptorType;
+            uint16_t descriptorIndex;
+        };
+        
+        // Read Descriptor Response (IEEE 1722.1-2021 Section 7.4.5.2)
+        struct ReadDescriptorResponse {
+            uint16_t configurationIndex;
+            uint16_t descriptorType;
+            uint16_t descriptorIndex;
+            uint8_t descriptorData[1024]; // Variable length descriptor
+            size_t descriptorLength;
+        };
+        
+        // Get Configuration Command (IEEE 1722.1-2021 Section 7.4.7.1)
+        struct GetConfigurationCommand {
+            // No specific data - just header
+        };
+        
+        // Get Configuration Response (IEEE 1722.1-2021 Section 7.4.7.2)
+        struct GetConfigurationResponse {
+            uint16_t configurationIndex;
+        };
+        
+        // Set Configuration Command (IEEE 1722.1-2021 Section 7.4.6.1)
+        struct SetConfigurationCommand {
+            uint16_t configurationIndex;
+        };
+        
+        // Set Configuration Response (IEEE 1722.1-2021 Section 7.4.6.2)
+        struct SetConfigurationResponse {
+            uint16_t configurationIndex;
+        };
+
+        // ====================================================================
+        // AECP Protocol Handler Interface (IEEE 1722.1-2021)
+        // ====================================================================
+        
+        class ProtocolHandler {
+        public:
+            virtual ~ProtocolHandler() = default;
+            
+            // Core protocol handling methods
+            virtual bool processCommand(const AEMCommandMessage& command, AEMResponseMessage& response) = 0;
+            virtual bool processResponse(const AEMResponseMessage& response) = 0;
+            
+            // Entity state management
+            virtual bool isEntityAcquired(uint64_t entityId) const = 0;
+            virtual bool isEntityLocked(uint64_t entityId) const = 0;
+            virtual bool acquireEntity(uint64_t entityId, uint64_t controllerId) = 0;
+            virtual bool releaseEntity(uint64_t entityId, uint64_t controllerId) = 0;
+            
+            // Descriptor operations
+            virtual bool readDescriptor(const ReadDescriptorCommand& command, ReadDescriptorResponse& response) = 0;
+            virtual bool writeDescriptor(uint16_t descriptorType, uint16_t descriptorIndex, const void* descriptorData, size_t dataSize) = 0;
+            
+            // Configuration management
+            virtual uint16_t getCurrentConfiguration(uint64_t entityId) const = 0;
+            virtual bool setConfiguration(uint64_t entityId, uint16_t configurationIndex) = 0;
+            
+            // Stream management
+            virtual bool startStreaming(uint64_t entityId, uint16_t descriptorIndex) = 0;
+            virtual bool stopStreaming(uint64_t entityId, uint16_t descriptorIndex) = 0;
+            
+            // Control operations
+            virtual bool setControl(uint64_t entityId, uint16_t descriptorIndex, const void* controlData, size_t dataSize) = 0;
+            virtual bool getControl(uint64_t entityId, uint16_t descriptorIndex, void* controlData, size_t& dataSize) = 0;
+        };
+
+    } // namespace AECP
+
+    // ========================================================================
+    // Backwards compatibility type aliases (OUTSIDE AECP namespace)
+    // ========================================================================
+    using AECP_Message_type = AECP::AECPMessageType;
+    using AECP_Status = AECP::AEMStatusCode;
+    using AEM_Command_type = AECP::AEMCommandType;
+
+} // namespace _2021
+} // namespace _1722_1
+} // namespace IEEE
+
+// Global backward compatibility aliases for maximum compatibility
+using AECP_Message_type = IEEE::_1722_1::_2021::AECP::AECPMessageType;
+using AECP_Status = IEEE::_1722_1::_2021::AECP::AEMStatusCode;
+using AEM_Command_type = IEEE::_1722_1::_2021::AECP::AEMCommandType;
