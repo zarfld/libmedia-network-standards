@@ -1,180 +1,154 @@
-# IEEE 1722.1-2021 Standard Implementation
+# IEEE Standards Implementation Status
 
-This directory contains a comprehensive C++ implementation of the IEEE 1722.1-2021 standard for Device Discovery, Connection Management, and Control Protocol for Time-Sensitive Networking Systems.
+This directory contains **partial implementations** of IEEE standards for Audio Video Bridging (AVB) and Time-Sensitive Networking (TSN). **CRITICAL: Many implementations are incomplete or contain build errors.**
 
-## Overview
+## ⚠️ ACTUAL IMPLEMENTATION STATUS
 
-The IEEE 1722.1-2021 standard, also known as ATDECC (AVB Transport Protocol Device Discovery, Connection Management and Control), defines protocols for:
+Based on code verification and build testing, here is the **honest status** of implementations:
 
-- **Device Discovery** - Finding ATDECC entities on the network
-- **Connection Management** - Establishing and managing streaming connections
-- **Device Control** - Controlling and configuring ATDECC entities
+### ✅ IEEE 1722-2016 (AVTP) - **WORKING**
+- **Status**: 85% complete and functional
+- **Tested**: ✅ All tests pass (9/9)
+- **Builds**: ✅ Successfully compiles
+- **Features**:
+  - AVTPDU structure and serialization ✅
+  - Audio AVTP format ✅
+  - Video AVTP format ✅
+  - Clock Reference Format (CRF) ✅
+  - AVTP Control Format ✅
+  - Cross-platform byte order handling ✅
 
-## Features Implemented
+### ⚠️ IEEE 1722.1-2021 (AVDECC) - **PARTIAL/BROKEN**
+- **Status**: Build failures, incomplete implementation
+- **Tested**: ❌ Cannot build test executable
+- **Builds**: ❌ Multiple compilation errors
+- **Critical Issues**:
+  - Missing type definitions in headers
+  - Undefined classes (`ProtocolMessageSerializer`, `INetworkInterface`)
+  - Broken template usage
+  - Over 100 compilation errors
 
-### ✅ ADPDU (ATDECC Discovery Protocol Data Unit)
-- Complete PDU structure with all fields per IEEE 1722.1-2021
-- Serialization and deserialization methods
-- Network byte order handling
-- Cross-platform compatibility (Windows/Linux)
-- Entity capabilities, talker/listener capabilities
-- Message types: ENTITY_AVAILABLE, ENTITY_DEPARTING, DISCOVERY_REQUEST
+### ❓ IEEE 1722.1-2013 - **UNKNOWN STATUS**
+- **Status**: Builds exist but not tested
+- **Tested**: ❌ No recent validation
+- **Builds**: ❓ Status unclear
 
-### ✅ AEM (ATDECC Entity Model)
-- Entity Descriptor structure
-- Descriptor type constants for all standard descriptors
-- String manipulation utilities
-- Validation functions
-- Support for future descriptor extensions
+## Real Implementation Analysis
 
-### ✅ ACMP (ATDECC Connection Management Protocol)
-- Message type enumerations
-- Status code definitions
-- Foundation for stream connection management
+### What Actually Works:
+1. **ADPDU Structure** (1722.1-2021):
+   - Basic PDU structure defined ✅
+   - Serialization/deserialization methods ✅
+   - Field mapping per standard ✅
 
-### ✅ AECP (ATDECC Enumeration and Control Protocol)  
-- Message type enumerations
-- Status code definitions
-- Foundation for entity control operations
+2. **Enum Definitions** (1722.1-2021):
+   - AEM command types ✅
+   - ACMP/AECP message types ✅
+   - Entity capabilities ✅
 
-## Files
+### What's Broken:
+1. **Library Dependencies**:
+   - Missing `ProtocolMessageSerializer` class
+   - Undefined interface classes
+   - Broken template instantiations
 
-- **`1722_1-2021.h`** - Main header file with all declarations
-- **`1722_1-2021.cpp`** - Implementation of core functionality
-- **`test_1722_1_2021.cpp`** - Comprehensive test program
-- **`CMakeLists.txt`** - CMake build configuration
-- **`README.md`** - This documentation file
+2. **Build System**:
+   - CMake configuration issues
+   - Missing header dependencies
+   - Template compilation failures
 
-## Building
+3. **High-Level APIs**:
+   - Missing controller implementation
+   - No state machine implementation
+   - Entity management incomplete
 
-### Using CMake
+## Realistic Development Roadmap
 
+### Phase 1: Fix Build Issues (2-3 weeks)
+- Resolve compilation errors in ieee_1722_1_2021_library.cpp
+- Define missing interface classes
+- Fix template instantiation problems
+- Restore IEEE 1722.1-2021 test executable
+
+### Phase 2: Complete Core Implementation (4-6 weeks)
+- Implement missing descriptor structures
+- Complete AEM command handling
+- Add ACMP state machines
+- Implement AECP protocol handling
+
+### Phase 3: Integration & Testing (3-4 weeks)
+- Network interface implementation
+- Cross-platform testing
+- Hardware validation with real AVB devices
+- Performance optimization
+
+### Phase 4: Production Readiness (2-3 weeks)
+- Error handling and edge cases
+- Memory management optimization
+- Documentation completion
+- Compliance testing
+
+## Files Status
+
+### Working Files:
+- **`1722_1-2021.h/.cpp`** - Basic ADPDU structures ✅
+- **`1722-2016.h/.cpp`** - AVTP implementation ✅
+- **`test_1722_2016.cpp`** - Working test suite ✅
+
+### Broken Files:
+- **`ieee_1722_1_2021_library.h/.cpp`** - Build failures ❌
+- **`test_1722_1_2021.cpp`** - Cannot compile ❌
+- **State machine files** - Incomplete ❌
+
+### Documentation Status:
+- **`IEEE_1722_1_2021_GAP_ANALYSIS.md`** - Claims complete implementation ❌ **FALSE**
+- **`DESCRIPTOR_IMPLEMENTATION_STATUS.md`** - Claims completed descriptors ❌ **MISLEADING**
+- **Various status files** - Contain false advertising ❌ **INCORRECT**
+
+## Building and Testing
+
+### What Works:
 ```bash
-# Create build directory
-mkdir build
-cd build
-
-# Configure
-cmake ..
-
-# Build
-cmake --build . --config Release
-
-# Run tests
-cmake --build . --target run_ieee_tests
+cd lib/Standards/build/Release
+./test_ieee_1722_2016.exe  # ✅ All tests pass
 ```
 
-### Manual Compilation (Visual Studio)
-
-```batch
-cl /EHsc /std:c++17 test_1722_1_2021.cpp 1722_1-2021.cpp /Fe:test_ieee.exe ws2_32.lib
-```
-
-### Manual Compilation (GCC/Clang)
-
+### What Doesn't Work:
 ```bash
-g++ -std=c++17 -Wall -Wextra test_1722_1_2021.cpp 1722_1-2021.cpp -o test_ieee
+cmake --build . --target test_ieee_1722_1_2021  # ❌ Compilation fails
 ```
 
-## Usage Example
+## Current Development Priority
 
-```cpp
-#include "1722_1-2021.h"
-using namespace IEEE::_1722_1::_2021;
+**IMMEDIATE**: Fix compilation errors before claiming any implementation status.
 
-// Create an ATDECC Discovery PDU
-ADPDU::ATDECCDiscoveryProtocolPDU adpdu;
+1. Address missing dependencies
+2. Fix template instantiation issues  
+3. Restore basic build capability
+4. Remove false advertising from documentation
 
-// Set entity information
-adpdu.set_entity_id(0x0123456789ABCDEFULL);
-adpdu.set_entity_model_id(0xFEDCBA9876543210ULL);
+## Critical Warning
 
-// Configure capabilities
-EntityCapabilities caps = static_cast<EntityCapabilities>(
-    static_cast<uint32_t>(EntityCapabilities::AEM_SUPPORTED) |
-    static_cast<uint32_t>(EntityCapabilities::CLASS_A_SUPPORTED)
-);
-adpdu.set_entity_capabilities(caps);
+**Do not use this implementation in production systems.** Many status documents claim "COMPLETE" implementation when the code cannot even compile. Always verify claims through actual build and test results.
 
-// Set talker/listener information
-adpdu.set_talker_info(4, TalkerCapabilities::AUDIO_SOURCE);
-adpdu.set_listener_info(2, ListenerCapabilities::AUDIO_SINK);
+## Real Compliance Status
 
-// Serialize for network transmission
-adpdu.serialize();
-const uint8_t* raw_data = adpdu.get_raw_octets();
-size_t data_size = adpdu.get_size();
+- **IEEE 1722-2016**: ~85% complete, working implementation
+- **IEEE 1722.1-2021**: ~25% complete, contains major build issues  
+- **IEEE 1722.1-2013**: Status unknown, needs validation
 
-// Send raw_data over network...
-```
+## Contributing Guidelines
 
-## Standard Compliance
+Before claiming implementation status:
 
-This implementation follows IEEE 1722.1-2021 specifications:
-
-- **Section 6**: ATDECC Discovery Protocol (ADP) ✅
-- **Section 7**: ATDECC Entity Model (AEM) ✅ (Core descriptors)
-- **Section 8**: ATDECC Connection Management Protocol (ACMP) ⚠️ (Enums only)
-- **Section 9**: ATDECC Enumeration and Control Protocol (AECP) ⚠️ (Enums only)
-
-## Platform Support
-
-- **Windows** - Full support with Winsock2
-- **Linux** - Full support with standard networking headers
-- **macOS** - Should work (not explicitly tested)
-- **Embedded** - Should work with appropriate networking stack
-
-## Key Design Decisions
-
-1. **Namespace Organization**: Clean separation into `ADPDU`, `AEM`, `ACMP`, `AECP` namespaces
-2. **Type Safety**: Strong typing with `enum class` where appropriate
-3. **Cross-Platform**: Conditional compilation for platform-specific headers
-4. **Memory Management**: Stack-based structures, no dynamic allocation
-5. **Standard Compliance**: Direct mapping to IEEE standard field names and sizes
-
-## Testing
-
-The test program (`test_1722_1_2021.cpp`) demonstrates:
-
-- ADPDU creation and configuration
-- Serialization/deserialization round-trip
-- Entity descriptor validation
-- Protocol constants verification
-- Cross-platform byte order handling
-
-Run the test with:
-```bash
-./test_ieee_1722_1_2021
-```
-
-## Future Enhancements
-
-Areas for potential expansion:
-
-1. **Complete ACMP Implementation** - Full PDU structures and state machines
-2. **Complete AECP Implementation** - AEM commands and responses
-3. **Additional AEM Descriptors** - STREAM_INPUT/OUTPUT, JACK_INPUT/OUTPUT, etc.
-4. **State Machines** - Full protocol state machine implementations
-5. **Network Interface** - Socket-based networking layer
-6. **Validation** - More comprehensive PDU validation
-7. **Utilities** - Higher-level API for common operations
-
-## Contributing
-
-When extending this implementation:
-
-1. Follow the existing namespace structure
-2. Maintain IEEE standard field names and sizes
-3. Add comprehensive tests for new functionality
-4. Update this README with new features
-5. Ensure cross-platform compatibility
-
-## License
-
-This implementation is part of the OpenAvnu project. Please refer to the main project license.
+1. **Build verification required** - Code must compile
+2. **Test execution required** - Tests must pass
+3. **Documentation accuracy** - Remove false claims
+4. **Hardware validation** - Test with real AVB hardware
+5. **No simulation acceptance** - Real hardware testing only
 
 ## References
 
 - IEEE Std 1722.1-2021: Standard for Device Discovery, Connection Management, and Control Protocol for Time-Sensitive Networking Systems
-- IEEE Std 1722-2016: Standard for a Transport Protocol for Time-Sensitive Applications in Bridged Local Area Networks
-- AVnu Alliance specifications and documentation
+- IEEE Std 1722-2016: Standard for a Transport Protocol for Time-Sensitive Applications in Bridged Local Area Networks  
+- OpenAvnu project hardware validation requirements
