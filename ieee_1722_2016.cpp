@@ -10,7 +10,7 @@
  * @copyright OpenAvnu Project
  */
 
-#include "1722-2016.h"
+#include "ieee_1722_2016.h"
 #include <cstring>
 #include <algorithm>
 

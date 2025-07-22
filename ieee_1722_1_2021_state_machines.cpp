@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "1722_1_state_machines.h"
+#include "ieee_1722_1_2021_state_machines.h"
 #include <algorithm>
 #include <cstring>
 

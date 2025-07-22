@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "1722_1_state_machines_refactored.h"
+#include "ieee_1722_1_2021_state_machines_refactored.h"
 #include <iostream>
 #include <iomanip>
 #include <thread>

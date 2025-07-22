@@ -6,7 +6,7 @@
  * Connection Management Protocol für Stream-Verbindungen
  */
 
-#include "1722_1-2021.h"
+#include "ieee_1722_1_2021_base.h"
 #include <memory>
 #include <mutex>
 #include <atomic>

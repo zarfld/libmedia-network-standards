@@ -21,8 +21,8 @@ endif()
 
 # Create the IEEE 1722.1-2021 Complete Standards Implementation Library
 add_library(ieee_1722_1_2021_complete STATIC
-    1722_1-2021_clean.cpp
-    1722_1-2021_clean.h
+    ieee_1722_1_2021_clean.cpp
+    ieee_1722_1_2021_clean.h
     ieee_1722_1_2021_complete_entity.cpp
     ieee_1722_1_2021_complete_entity.h
     ieee_1722_1_2021_aecp_windows_compatible.cpp
@@ -31,13 +31,13 @@ add_library(ieee_1722_1_2021_complete STATIC
 
 # Add IEEE 1722.1-2021 AECP Protocol Library (Windows Compatible)
 add_library(ieee_1722_1_2021_aecp STATIC
-    1722_1-2021.h
+    ieee_1722_1_2021_base.h
     ieee_1722_1_2021_aecp_windows_compatible.cpp
 )
 
 # Add IEEE 1722.1-2021 ACMP Protocol Library
 add_library(ieee_1722_1_2021_acmp STATIC
-    1722_1-2021.h
+    ieee_1722_1_2021_base.h
     ieee_1722_1_2021_acmp_implementation.cpp
 )
 

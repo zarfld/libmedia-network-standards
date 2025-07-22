@@ -1,7 +1,7 @@
 // IEEE 1722-2016 AVTP Implementation
 // Implementation of AVTP protocol classes defined in 1722-2016.h
 
-#include "1722-2016.h"
+#include "ieee_1722_2016.h"
 #include <cstring>
 #include <algorithm>
 

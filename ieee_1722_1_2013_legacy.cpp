@@ -10,7 +10,7 @@
  * @copyright OpenAvnu Project
  */
 
-#include "1722_1-2013.h"
+#include "ieee_1722_1_2013_legacy.h"
 
 namespace IEEE {
 namespace _1722_1 {

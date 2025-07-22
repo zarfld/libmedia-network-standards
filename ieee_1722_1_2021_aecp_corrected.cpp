@@ -6,7 +6,7 @@
  * Verwendet korrekte AECP-Namespace-Referenzen aus 1722_1-2021.h
  */
 
-#include "1722_1-2021.h"
+#include "ieee_1722_1_2021_base.h"
 #include <memory>
 #include <vector>
 #include <mutex>

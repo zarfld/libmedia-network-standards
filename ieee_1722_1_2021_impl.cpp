@@ -1,7 +1,7 @@
 // IEEE 1722.1-2021 AVDECC Implementation
 // Implementation of AVDECC protocol classes defined in 1722_1-2021.h
 
-#include "1722_1-2021.h"
+#include "ieee_1722_1_2021_base.h"
 #include <cstring>
 #include <random>
 

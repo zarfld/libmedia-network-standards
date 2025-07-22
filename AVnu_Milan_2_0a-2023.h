@@ -33,8 +33,8 @@
 #endif
 
 // Dependencies on IEEE standards
-#include "1722-2016.h"      // IEEE 1722-2016 AVTP Protocol Implementation
-#include "1722_1-2021.h"    // IEEE 1722.1-2021 AVDECC Entity Model
+#include "ieee_1722_2016.h"      // IEEE 1722-2016 AVTP Protocol Implementation
+#include "ieee_1722_1_2021_base.h"    // IEEE 1722.1-2021 AVDECC Entity Model
 
 // Using declarations for convenience
 using namespace IEEE::_1722::_2016;
