@@ -1,0 +1,44 @@
+# IEEE 802.1BA-2016 AVB Profiles - Lightweight Library
+cmake_minimum_required(VERSION 3.16)
+
+project(IEEE802_1BA_2016
+    VERSION 1.0.0
+    DESCRIPTION "IEEE 802.1BA-2016 AVB Profiles Library"
+    LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+option(IEEE_802_1BA_2016_BUILD_TESTS "Build IEEE 802.1BA-2016 tests" ON)
+
+set(IEEE_802_1BA_2016_HEADERS
+    IEEE_802_1_BA_21016.h
+)
+
+set(IEEE_802_1BA_2016_SOURCES
+    IEEE_802_1_BA_21016.cpp
+)
+
+add_library(ieee_802_1ba_2016 STATIC
+    ${IEEE_802_1BA_2016_SOURCES}
+    ${IEEE_802_1BA_2016_HEADERS}
+)
+
+target_include_directories(ieee_802_1ba_2016 PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include/ieee_802_1ba_2016>
+)
+
+if(IEEE_802_1BA_2016_BUILD_TESTS AND BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+
+install(TARGETS ieee_802_1ba_2016
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(FILES ${IEEE_802_1BA_2016_HEADERS}
+    DESTINATION include/ieee_802_1ba_2016
+)
