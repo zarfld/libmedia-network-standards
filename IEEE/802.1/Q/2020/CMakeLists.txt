@@ -19,6 +19,7 @@ set(IEEE_802_1Q_2020_HEADERS
     fdb.h
     filtering.h
     scheduler.h
+    port_profile.h
 )
 
 add_library(ieee_802_1q_2020 STATIC

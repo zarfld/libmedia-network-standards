@@ -6,6 +6,7 @@
 #include "IEEE_802_1_Q_2020.h"
 #include "qos.h"
 #include "filtering.h"
+#include "port_profile.h"
 #include "fdb.h"
 
 using namespace IEEE::_802_1Q::_2020;
@@ -114,6 +115,21 @@ int main() {
     EgressRule eg{}; eg.egress_vid = 300; eg.pcp_override = 7;
     auto tag_out = FilteringUtils::make_egress_tag(eg, /*pcp*/5);
     assert(tag_out.tci.vid == 300 && tag_out.tci.pcp == 7);
+
+    // Per-port CTAG/STAG profile classification and egress
+    auto ingress_prof = PortProfilesFactory::make_ingress_from_qos(qdef);
+    auto egress_prof  = PortProfilesFactory::make_egress_from_qos(qdef);
+    // Customize STAG table to map PCP 7->TC 0
+    ingress_prof.pcp2tc.stag[7] = 0;
+    auto cls_ctag = ingress_prof.classify(/*pcp*/6, TagTable::CTAG);
+    auto cls_stag = ingress_prof.classify(/*pcp*/7, TagTable::STAG);
+    assert(cls_ctag.second == qdef.pcp_to_tc(6));
+    assert(cls_stag.second == 0);
+    // Build egress headers for CTAG/STAG
+    auto eh_ctag = egress_prof.make_egress_header(/*tc*/cls_ctag.second, TagTable::CTAG);
+    auto eh_stag = egress_prof.make_egress_header(/*tc*/cls_stag.second, TagTable::STAG);
+    assert(eh_ctag.tpid == (uint16_t)EtherType::VLAN_TAGGED_CTAG);
+    assert(eh_stag.tpid == (uint16_t)EtherType::VLAN_TAGGED_STAG);
 
     std::cout << "IEEE 802.1Q-2020 basic tests passed\n";
     return 0;
