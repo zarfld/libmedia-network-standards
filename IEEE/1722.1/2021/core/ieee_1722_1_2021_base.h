@@ -17,6 +17,10 @@
  * - Proper method signatures matching implementation expectations
  */
 
+// REVIEW [Project convention]: Prefer authoritative jdksavdecc constants over hardcoded values.
+// Include (when available): "../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h"
+// Use JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR etc. to avoid mismatch with spec updates.
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -30,6 +34,9 @@
 #else
 #include <arpa/inet.h>
 #endif
+
+// REVIEW [IEEE 1722.1-2021, 5.x General]: All multi-byte fields on the wire are big-endian.
+// Ensure serialization/deserialization paths apply htons/htonl/ntohs/ntohl where appropriate.
 
 namespace IEEE {
 namespace _1722_1 {
@@ -133,6 +140,8 @@ enum class AEMCommandType : uint16_t {
     GET_MEMORY_OBJECT_LENGTH = 0x0048,
     SET_STREAM_BACKUP = 0x0049,
     GET_STREAM_BACKUP = 0x004A,
+    // REVIEW [Milan extension]: Support GET_DYNAMIC_INFO 0x004B per Milan (AVnu) extensions when Milan profile is enabled.
+    // Using jdksavdecc constants (e.g., JDKSAVDECC_AEM_COMMAND_GET_DYNAMIC_INFO) is preferred to avoid divergence.
     EXPANSION = 0x7FFF
 };
 
@@ -189,6 +198,9 @@ struct AEMResponseMessage {
     EntityID target_entity_id;
     EntityID controller_entity_id;
     std::vector<uint8_t> payload;
+
+    // REVIEW [IEEE 1722.1-2021, AEM descriptor integrity]: When returning descriptors, compute and insert AEM checksum (CRC32)
+    // over the descriptor excluding the checksum field; store checksum in network byte order.
     
     // Implementation-compatible methods
     AEMCommandType getAEMCommandType() const { return command_type; }
@@ -235,6 +247,8 @@ struct ReadDescriptorResponse {
     void setDescriptorType(uint16_t type) { descriptor_type = type; }
     void setDescriptorIndex(uint16_t index) { descriptor_index = index; }
     void setConfigurationIndex(uint16_t index) { configuration_index = index; }
+    // REVIEW [AEM available_index handling]: For READ_DESCRIPTOR of descriptors supporting available_index,
+    // increment available_index only on state change as per spec; do not bump on every read.
 };
 
 struct AcquireEntityCommand {
@@ -304,6 +318,9 @@ public:
     virtual bool isEntityAcquired(EntityID entityId) const = 0;
     virtual bool isEntityLocked(EntityID entityId) const = 0;
     virtual EntityID getEntityOwner(EntityID entityId) const = 0;
+
+    // REVIEW [Compliance hooks]: Implementations should validate descriptor CRC32, enforce Milan constraints
+    // (e.g., for Audio/Stream formats), and support optional Milan GET_DYNAMIC_INFO command.
 };
 
 // Factory helper class 

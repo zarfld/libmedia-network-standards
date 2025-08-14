@@ -1,8 +1,9 @@
 /**
  * @file 1722-2016.h
- * @brief IEEE 1722-2016 Standard Heade// =============================
-// AVTPDU Structure (Generic)
-// =============================VTPDU structure, stream formats, and protocol constants for IEEE 1722-2016.
+ * @brief IEEE 1722-2016 AVTP core definitions
+ *
+ * REVIEW: The brief/comment block was corrupted ("Heade// ... VTPDU"). Cleaned up for clarity.
+ *         Ensure documentation follows IEEE 1722-2016 definitions precisely.
  */
 
 #pragma once
@@ -38,8 +39,10 @@ enum class Subtype : uint8_t {
 struct AVTPDU {
     // AVTP Common Header (per 2016 spec)
     uint8_t subtype;              // AVTP subtype (audio, video, etc.)
+    // REVIEW [IEEE 1722-2016, Clause 5 AVTPDU Common Header]: Flags (sv, mr, gv, tv, tu) are bitfields within specific octets.
+    // Using separate bool fields loses on-wire layout and endianness. Represent as packed/bitfield or explicit byte layout.
     bool stream_valid;            // Stream ID valid flag (sv)
-    uint8_t version;              // AVTP version (should be 0x00 for 2016)
+    uint8_t version;              // AVTP version (0x00 for 2016)
     bool mr;                      // Media clock restart
     bool gv;                      // Gateway valid
     bool tv;                      // Timestamp valid
@@ -50,6 +53,8 @@ struct AVTPDU {
     uint16_t stream_data_length;  // Stream data length
     uint16_t format_specific_data; // Format-specific data (audio/video)
     std::array<uint8_t, 1500> payload; // Payload data
+    // REVIEW [IEEE 1722-2016, Clause 5]: Max Ethernet payload is 1500 bytes including AVTPDU, not just data payload.
+    // Consider limiting payload based on MTU minus header length, and document VLAN/SNAP cases.
     
     // Constructors
     AVTPDU();
@@ -58,10 +63,15 @@ struct AVTPDU {
     // Serialization methods
     void serialize(uint8_t* buffer, size_t& length) const;
     bool deserialize(const uint8_t* data, size_t length);
+    // REVIEW [IEEE 1722-2016, Clause 5]: Serialization must apply network byte order (big-endian) for multi-byte fields.
+    // Ensure hton/ntoh conversions are applied for timestamp, lengths, format fields.
     
     // Utility methods
     static constexpr size_t get_header_size() { return 20; } // AVTP header size
+    // REVIEW [IEEE 1722-2016, Clause 5]: Header size varies by subtype/format; 20 bytes constant may be incorrect for all cases.
+    // Validate per-subtype header layout (e.g., IEC61883-6, AAF, CVF).
     bool is_valid() const { return version == AVTP_VERSION_2016; }
+    // REVIEW: Validation should also check subtype-specific fixed bits, sv flag consistency, and stream_data_length bounds.
 };
 
 // =============================
@@ -73,6 +83,8 @@ enum class AudioFormat : uint16_t {
     AES67       = 0x02,
     SMPTE_ST2110_30 = 0x03
 };
+// REVIEW [Milan DCC 1.1a]: MILAN PCM imposes strict constraints (channel count, sample rate set, packing, timestamp rules).
+// Ensure corresponding AVTP format fields and payload layout meet Milan Profile requirements.
 
 enum class VideoFormat : uint16_t {
     IEC_61883_4 = 0x00,

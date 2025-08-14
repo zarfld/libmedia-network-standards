@@ -47,6 +47,7 @@ constexpr uint16_t IEEE_802_1AS_VERSION_2021 = 0x0002;
  */
 constexpr uint8_t PTP_VERSION_2_1 = 0x02;
 constexpr uint8_t PTP_MINOR_VERSION_1 = 0x01;
+// REVIEW [IEEE 802.1AS-2021, 10.2]: Version/minor handling is contextual; ensure Announce and Sync PDUs encode version fields per Table/Clause.
 
 /**
  * @brief Domain number ranges (802.1AS-2021 supports multiple domains)
@@ -414,9 +415,12 @@ public:
     virtual bool set_time(const Timestamp& time) = 0;
     virtual bool adjust_frequency(int32_t ppb) = 0;  // parts per billion
     virtual bool adjust_phase(TimeInterval offset) = 0;
+    // REVIEW [IEEE 802.1AS-2021, 10.2.12 Servo behavior]: Interfaces should define constraints and monotonicity/error handling for phase/frequency adjustments.
     
     // Master selection (BMCA - Best Master Clock Algorithm)
     bool is_better_than(const AnnounceMessage& announce) const;
+    // REVIEW [IEEE 802.1AS-2021, 10.3 BMCA]: Provide explicit tie-break evaluation order (priority1, class, accuracy, variance, priority2, identity).
+    // The current single helper name is ambiguous; document or expose comparison steps to avoid misinterpretation.
     uint8_t get_priority1() const;
     uint8_t get_priority2() const;
     void set_priority1(uint8_t priority);
