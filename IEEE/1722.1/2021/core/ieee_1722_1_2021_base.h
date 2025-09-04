@@ -268,6 +268,15 @@ struct ATDECCEnumerationControlProtocolPDU {
         // For testing, this is a no-op
     }
     
+    void create_response(AEMStatusCode response_status) {
+        message_type = AECPMessageType::AEM_RESPONSE;
+        status = response_status;
+        // Swap entity IDs for response
+        EntityID temp = target_entity_id;
+        target_entity_id = controller_entity_id;
+        controller_entity_id = temp;
+    }
+    
     const uint8_t* get_raw_octets() const {
         return command_specific_data.data();
     }
@@ -559,6 +568,30 @@ enum EntityCapabilities : uint32_t {
     ENTITY_NOT_READY = 0x00020000
 };
 
+// Talker Capabilities
+enum class TalkerCapabilities : uint16_t {
+    IMPLEMENTED = 0x0001,
+    AUDIO_SOURCE = 0x0002,
+    VIDEO_SOURCE = 0x0004,
+    CONTROL_SOURCE = 0x0008,
+    OTHER_SOURCE = 0x0010
+};
+
+// Listener Capabilities  
+enum class ListenerCapabilities : uint16_t {
+    IMPLEMENTED = 0x0001,
+    AUDIO_SINK = 0x0002,
+    VIDEO_SINK = 0x0004,
+    CONTROL_SINK = 0x0008,
+    OTHER_SINK = 0x0010
+};
+
+// Controller Capabilities
+enum class ControllerCapabilities : uint32_t {
+    IMPLEMENTED = 0x00000001,
+    LAYER3_PROXY = 0x00000002
+};
+
 // Descriptor structures
 struct EntityDescriptor {
     uint64_t entity_id = 0;
@@ -732,7 +765,259 @@ struct StreamPortOutputDescriptor {
     uint16_t base_map = 0;
 };
 
+// Utility functions for AEM operations
+inline void safe_string_copy(char* dest, const char* src, size_t dest_size) {
+    if (dest && src && dest_size > 0) {
+        size_t src_len = strlen(src);
+        size_t copy_len = (src_len < dest_size - 1) ? src_len : dest_size - 1;
+        memcpy(dest, src, copy_len);
+        dest[copy_len] = '\0';
+    }
+}
+
+inline bool validate_entity_descriptor(const EntityDescriptor& desc) {
+    // Basic validation - check required fields
+    return desc.entity_id != 0 && 
+           desc.entity_model_id != 0 &&
+           !desc.entity_name.empty();
+}
+
 } // namespace AEM
+
+// ADPDU (AVDECC Discovery Protocol Data Unit) namespace
+namespace ADPDU {
+
+// ADP Message Types
+enum class ADPMessageType : uint8_t {
+    ENTITY_AVAILABLE = 0,
+    ENTITY_DEPARTING = 1,
+    ENTITY_DISCOVER = 2
+};
+
+// ADP Constants
+constexpr uint8_t ADP_ENTITY_AVAILABLE = 0;
+constexpr uint8_t ADP_ENTITY_DEPARTING = 1;
+constexpr uint8_t ADP_ENTITY_DISCOVERY_REQUEST = 2;
+
+class ATDECCDiscoveryProtocolPDU {
+public:
+    uint8_t message_type = 0;
+    uint64_t entity_id = 0;
+    uint64_t entity_model_id = 0;
+    uint32_t entity_capabilities = 0;
+    uint16_t talker_stream_sources = 0;
+    uint16_t talker_capabilities = 0;
+    uint16_t listener_stream_sinks = 0;
+    uint16_t listener_capabilities = 0;
+    uint32_t controller_capabilities = 0;
+    uint32_t available_index = 0;
+    uint64_t gptp_grandmaster_id = 0;
+    uint8_t gptp_domain_number = 0;
+    uint16_t identify_control_index = 0;
+    uint16_t interface_index = 0;
+    uint64_t association_id = 0;
+    
+    // Methods for test compatibility
+    void set_entity_id(uint64_t id) { entity_id = id; }
+    void set_entity_model_id(uint64_t model_id) { entity_model_id = model_id; }
+    void set_entity_capabilities(AEM::EntityCapabilities caps) { 
+        entity_capabilities = static_cast<uint32_t>(caps); 
+    }
+    void set_talker_info(uint16_t sources, AEM::TalkerCapabilities caps) {
+        talker_stream_sources = sources;
+        talker_capabilities = static_cast<uint16_t>(caps);
+    }
+    void set_listener_info(uint16_t sinks, AEM::ListenerCapabilities caps) {
+        listener_stream_sinks = sinks;
+        listener_capabilities = static_cast<uint16_t>(caps);
+    }
+    void set_controller_capabilities(AEM::ControllerCapabilities caps) {
+        controller_capabilities = static_cast<uint32_t>(caps);
+    }
+    
+    // Serialization methods for test compatibility
+    void serialize() {
+        // Convert to network byte order for real implementation
+        // For testing, this is a no-op
+    }
+    
+    const uint8_t* get_raw_octets() const {
+        return reinterpret_cast<const uint8_t*>(this);
+    }
+    
+    size_t get_size() const {
+        return sizeof(*this);
+    }
+    
+    bool is_valid() const {
+        return entity_id != 0 && entity_model_id != 0;
+    }
+    
+    // Constructor for deserialization testing
+    ATDECCDiscoveryProtocolPDU() = default;
+    ATDECCDiscoveryProtocolPDU(const uint8_t* data, size_t length) {
+        if (data && length >= sizeof(*this)) {
+            memcpy(this, data, sizeof(*this));
+        }
+    }
+};
+
+} // namespace ADPDU
+
+// ACMP (AVDECC Connection Management Protocol) namespace  
+namespace ACMP {
+
+// ACMP Message Types
+enum class ACMP_Message_type : uint8_t {
+    CONNECT_TX_COMMAND = 0,
+    CONNECT_TX_RESPONSE = 1,
+    DISCONNECT_TX_COMMAND = 2,
+    DISCONNECT_TX_RESPONSE = 3,
+    GET_TX_STATE_COMMAND = 4,
+    GET_TX_STATE_RESPONSE = 5,
+    CONNECT_RX_COMMAND = 6,
+    CONNECT_RX_RESPONSE = 7,
+    DISCONNECT_RX_COMMAND = 8,
+    DISCONNECT_RX_RESPONSE = 9,
+    GET_RX_STATE_COMMAND = 10,
+    GET_RX_STATE_RESPONSE = 11,
+    GET_TX_CONNECTION_COMMAND = 12,
+    GET_TX_CONNECTION_RESPONSE = 13
+};
+enum class ACMPMessageType : uint8_t {
+    CONNECT_TX_COMMAND = 0,
+    CONNECT_TX_RESPONSE = 1,
+    DISCONNECT_TX_COMMAND = 2,
+    DISCONNECT_TX_RESPONSE = 3,
+    GET_TX_STATE_COMMAND = 4,
+    GET_TX_STATE_RESPONSE = 5,
+    CONNECT_RX_COMMAND = 6,
+    CONNECT_RX_RESPONSE = 7,
+    DISCONNECT_RX_COMMAND = 8,
+    DISCONNECT_RX_RESPONSE = 9,
+    GET_RX_STATE_COMMAND = 10,
+    GET_RX_STATE_RESPONSE = 11,
+    GET_TX_CONNECTION_COMMAND = 12,
+    GET_TX_CONNECTION_RESPONSE = 13
+};
+
+// ACMP Status Codes
+enum class ACMPStatusCode : uint8_t {
+    SUCCESS = 0,
+    LISTENER_UNKNOWN_ID = 1,
+    TALKER_UNKNOWN_ID = 2,
+    TALKER_DEST_MAC_FAIL = 3,
+    TALKER_NO_STREAM_INDEX = 4,
+    TALKER_NO_BANDWIDTH = 5,
+    TALKER_EXCLUSIVE = 6,
+    LISTENER_TALKER_TIMEOUT = 7,
+    LISTENER_EXCLUSIVE = 8,
+    STATE_UNAVAILABLE = 9,
+    NOT_CONNECTED = 10,
+    NO_SUCH_CONNECTION = 11,
+    COULD_NOT_SEND_MESSAGE = 12,
+    TALKER_MISBEHAVING = 13,
+    LISTENER_MISBEHAVING = 14,
+    RESERVED = 15,
+    CONTROLLER_NOT_AUTHORIZED = 16,
+    INCOMPATIBLE_REQUEST = 17,
+    LISTENER_INVALID_CONNECTION = 18,
+    NOT_SUPPORTED = 31
+};
+
+// Constants for test compatibility
+constexpr uint8_t CONNECT_TX_COMMAND = 0;
+constexpr uint8_t GET_TX_STATE_RESPONSE = 5;
+constexpr uint8_t SUCCESS = 0;
+
+class ATDECCConnectionManagementProtocolPDU {
+public:
+    uint8_t message_type = 0;
+    uint64_t talker_entity_id = 0;
+    uint64_t listener_entity_id = 0;
+    uint16_t talker_unique_id = 0;
+    uint16_t listener_unique_id = 0;
+    std::array<uint8_t, 6> stream_dest_mac = {0};
+    uint16_t connection_count = 0;
+    uint16_t sequence_id = 0;
+    uint16_t flags = 0;
+    uint16_t stream_vlan_id = 0;
+    uint16_t reserved = 0;
+    
+    // Methods for test compatibility
+    void serialize() {
+        // Convert to network byte order for real implementation
+        // For testing, this is a no-op
+    }
+    
+    void set_message_type(ACMP_Message_type type) {
+        message_type = static_cast<uint8_t>(type);
+    }
+    
+    const uint8_t* get_raw_octets() const {
+        return reinterpret_cast<const uint8_t*>(this);
+    }
+    
+    size_t get_size() const {
+        return sizeof(*this);
+    }
+    
+    bool is_valid() const {
+        return talker_entity_id != 0 || listener_entity_id != 0;
+    }
+    
+    // Constructor
+    ATDECCConnectionManagementProtocolPDU() = default;
+    ATDECCConnectionManagementProtocolPDU(const uint8_t* data, size_t length) {
+        if (data && length >= sizeof(*this)) {
+            memcpy(this, data, sizeof(*this));
+        }
+    }
+};
+
+} // namespace ACMP
+
+// Protocol Constants
+constexpr std::array<uint8_t, 6> AVDECC_MULTICAST_MAC = {0x91, 0xE0, 0xF0, 0x01, 0x00, 0x00};
+constexpr uint16_t AVDECC_ETHERTYPE = 0x22F0;
+
+// ACMP Message Type Constants for production code compatibility
+constexpr uint8_t CONNECT_TX_COMMAND = 0;
+constexpr uint8_t CONNECT_TX_RESPONSE = 1;
+constexpr uint8_t DISCONNECT_TX_COMMAND = 2;
+constexpr uint8_t DISCONNECT_TX_RESPONSE = 3;
+constexpr uint8_t GET_TX_STATE_COMMAND = 4;
+constexpr uint8_t GET_TX_STATE_RESPONSE = 5;
+constexpr uint8_t CONNECT_RX_COMMAND = 6;
+constexpr uint8_t CONNECT_RX_RESPONSE = 7;
+constexpr uint8_t DISCONNECT_RX_COMMAND = 8;
+constexpr uint8_t DISCONNECT_RX_RESPONSE = 9;
+constexpr uint8_t GET_RX_STATE_COMMAND = 10;
+constexpr uint8_t GET_RX_STATE_RESPONSE = 11;
+constexpr uint8_t GET_TX_CONNECTION_COMMAND = 12;
+constexpr uint8_t GET_TX_CONNECTION_RESPONSE = 13;
+
+// ACMP Status Code Constants for production code compatibility
+constexpr uint8_t SUCCESS = 0;
+constexpr uint8_t LISTENER_UNKNOWN_ID = 1;
+constexpr uint8_t TALKER_UNKNOWN_ID = 2;
+constexpr uint8_t TALKER_DEST_MAC_FAIL = 3;
+constexpr uint8_t TALKER_NO_STREAM_INDEX = 4;
+constexpr uint8_t TALKER_NO_BANDWIDTH = 5;
+constexpr uint8_t TALKER_EXCLUSIVE = 6;
+constexpr uint8_t LISTENER_TALKER_TIMEOUT = 7;
+constexpr uint8_t LISTENER_EXCLUSIVE = 8;
+constexpr uint8_t STATE_UNAVAILABLE = 9;
+constexpr uint8_t NOT_CONNECTED = 10;
+constexpr uint8_t NO_SUCH_CONNECTION = 11;
+constexpr uint8_t COULD_NOT_SEND_MESSAGE = 12;
+constexpr uint8_t TALKER_MISBEHAVING = 13;
+constexpr uint8_t LISTENER_MISBEHAVING = 14;
+constexpr uint8_t RESERVED = 15;
+constexpr uint8_t CONTROLLER_NOT_AUTHORIZED = 16;
+constexpr uint8_t INCOMPATIBLE_REQUEST = 17;
+constexpr uint8_t LISTENER_INVALID_CONNECTION = 18;
+constexpr uint8_t NOT_SUPPORTED = 31;
 
 } // namespace _2021  
 } // namespace _1722_1

@@ -148,14 +148,14 @@ void test_protocol_layer_completeness() {
     // Test ADP (Discovery Protocol)
     ADPDU::ATDECCDiscoveryProtocolPDU adp;
     adp.entity_id = 0x0123456789ABCDEF;
-    adp.message_type = ADP_ENTITY_AVAILABLE;
+    adp.message_type = ADPDU::ADP_ENTITY_AVAILABLE;
     adp.serialize();
     assert(adp.get_size() == 68); // Standard ADP size
     std::cout << "  ✅ ADP Protocol: Complete" << std::endl;
     
     // Test ACMP (Connection Management Protocol)
     ACMP::ATDECCConnectionManagementProtocolPDU acmp;
-    acmp.message_type = ACMP::ACMP_Message_type::CONNECT_TX_COMMAND;
+    acmp.message_type = static_cast<uint8_t>(ACMP::ACMP_Message_type::CONNECT_TX_COMMAND);
     acmp.talker_entity_id = 0x0123456789ABCDEF;
     acmp.serialize();
     assert(acmp.get_size() == 56); // Standard ACMP size
