@@ -12,33 +12,30 @@
 #include <atomic>
 #include <cstring>
 
-// Windows compatibility for byte order functions
+// Platform-specific definitions without including system headers
 #ifdef _WIN32
-    #include <winsock2.h>
-    #include <ws2tcpip.h>
-    #pragma comment(lib, "ws2_32.lib")
-    
-    // Define be64toh and htobe64 for Windows
-    #if defined(_MSC_VER)
-        #include <stdlib.h>
-        #define be64toh(x) _byteswap_uint64(x)
-        #define htobe64(x) _byteswap_uint64(x)
-        #define be32toh(x) _byteswap_ulong(x)
-        #define htobe32(x) _byteswap_ulong(x)
-        #define be16toh(x) _byteswap_ushort(x)
-        #define htobe16(x) _byteswap_ushort(x)
-        
-        // Windows structure packing
-        #define PACKED_STRUCT_BEGIN __pragma(pack(push, 1))
-        #define PACKED_STRUCT_END __pragma(pack(pop))
-        #define PACKED_ATTRIBUTE
-    #endif
+// Windows-specific byte order and time functions using MSVC intrinsics
+#define be64toh(x) _byteswap_uint64(x)
+#define htobe64(x) _byteswap_uint64(x)
+#define be32toh(x) _byteswap_ulong(x)
+#define htobe32(x) _byteswap_ulong(x)
+#define be16toh(x) _byteswap_ushort(x)
+#define htobe16(x) _byteswap_ushort(x)
+
+// Windows structure packing
+#define PACKED_STRUCT_BEGIN __pragma(pack(push, 1))
+#define PACKED_STRUCT_END __pragma(pack(pop))
+#define PACKED_ATTRIBUTE
+
+// Windows time function declaration (avoid including windows.h)
+extern "C" unsigned __int64 __stdcall GetTickCount64(void);
+
 #else
-    #include <endian.h>
-    #include <arpa/inet.h>
-    #define PACKED_STRUCT_BEGIN
-    #define PACKED_STRUCT_END  
-    #define PACKED_ATTRIBUTE __attribute__((packed))
+#include <endian.h>
+#include <arpa/inet.h>
+#define PACKED_STRUCT_BEGIN
+#define PACKED_STRUCT_END  
+#define PACKED_ATTRIBUTE __attribute__((packed))
 #endif
 
 namespace IEEE {
@@ -125,23 +122,23 @@ struct ACMPPDUFormat {
     uint64_t getControllerEntityId() const { return be64toh(controller_entity_id); }
     uint64_t getTalkerEntityId() const { return be64toh(talker_entity_id); }
     uint64_t getListenerEntityId() const { return be64toh(listener_entity_id); }
-    uint16_t getTalkerUniqueId() const { return ntohs(talker_unique_id); }
-    uint16_t getListenerUniqueId() const { return ntohs(listener_unique_id); }
-    uint16_t getConnectionCount() const { return ntohs(connection_count); }
-    uint16_t getSequenceId() const { return ntohs(sequence_id); }
-    uint16_t getFlags() const { return ntohs(flags); }
-    uint16_t getStreamVlanId() const { return ntohs(stream_vlan_id); }
+    uint16_t getTalkerUniqueId() const { return be16toh(talker_unique_id); }
+    uint16_t getListenerUniqueId() const { return be16toh(listener_unique_id); }
+    uint16_t getConnectionCount() const { return be16toh(connection_count); }
+    uint16_t getSequenceId() const { return be16toh(sequence_id); }
+    uint16_t getFlags() const { return be16toh(flags); }
+    uint16_t getStreamVlanId() const { return be16toh(stream_vlan_id); }
     
     void setStreamId(uint64_t id) { stream_id = htobe64(id); }
     void setControllerEntityId(uint64_t id) { controller_entity_id = htobe64(id); }
     void setTalkerEntityId(uint64_t id) { talker_entity_id = htobe64(id); }
     void setListenerEntityId(uint64_t id) { listener_entity_id = htobe64(id); }
-    void setTalkerUniqueId(uint16_t id) { talker_unique_id = htons(id); }
-    void setListenerUniqueId(uint16_t id) { listener_unique_id = htons(id); }
-    void setConnectionCount(uint16_t count) { connection_count = htons(count); }
-    void setSequenceId(uint16_t id) { sequence_id = htons(id); }
-    void setFlags(uint16_t f) { flags = htons(f); }
-    void setStreamVlanId(uint16_t vlan) { stream_vlan_id = htons(vlan); }
+    void setTalkerUniqueId(uint16_t id) { talker_unique_id = htobe16(id); }
+    void setListenerUniqueId(uint16_t id) { listener_unique_id = htobe16(id); }
+    void setConnectionCount(uint16_t count) { connection_count = htobe16(count); }
+    void setSequenceId(uint16_t id) { sequence_id = htobe16(id); }
+    void setFlags(uint16_t f) { flags = htobe16(f); }
+    void setStreamVlanId(uint16_t vlan) { stream_vlan_id = htobe16(vlan); }
     
     // Get status from the message
     ACMPStatusCode getStatus() const {
