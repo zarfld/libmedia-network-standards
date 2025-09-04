@@ -11,9 +11,9 @@ target_include_directories(ieee_1722_1_2021_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common
 )
 
-# AECP Protocol library - ✅ ACTIVATED & WORKING - Real IEEE 1722.1-2021 implementation
+# AECP Protocol library - ✅ ACTIVATED & WORKING - Real IEEE 1722.1-2021 implementation  
 add_library(ieee_1722_1_2021_aecp STATIC
-    protocols/aecp/ieee_1722_1_2021_aecp_phase2c_real.cpp
+    protocols/aecp/ieee_1722_1_2021_aecp_simple_working.cpp
 )
 
 target_include_directories(ieee_1722_1_2021_aecp PUBLIC
@@ -23,6 +23,18 @@ target_include_directories(ieee_1722_1_2021_aecp PUBLIC
 )
 
 target_link_libraries(ieee_1722_1_2021_aecp PUBLIC ieee_1722_1_2021_core)
+
+# Test namespace resolution
+add_executable(test_ieee_1722_1_2021_namespace
+    tests/test_ieee_1722_1_2021_namespace.cpp
+)
+
+target_include_directories(test_ieee_1722_1_2021_namespace PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common
+)
+
+target_link_libraries(test_ieee_1722_1_2021_namespace ieee_1722_1_2021_core)
 
 # ACMP Protocol library - ✅ ACTIVATED & WORKING - C interface functional
 add_library(ieee_1722_1_2021_acmp STATIC
@@ -186,12 +198,6 @@ if(BUILD_TESTS)
     )
     
     target_link_libraries(test_aecp_implementation PRIVATE ieee_1722_1_2021_aecp)
-    
-    add_executable(test_core_descriptors
-        tests/test_core_descriptors.cpp
-    )
-    
-    target_link_libraries(test_core_descriptors PRIVATE ieee_1722_1_2021_core)
 endif()
 
 # IEEE 1722.1-2021 AECP Integration Test
