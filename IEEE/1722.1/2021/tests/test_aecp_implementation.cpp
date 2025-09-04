@@ -54,11 +54,11 @@ void test_aecp_read_descriptor_response() {
     AEM::EntityDescriptor entity_desc = {};
     entity_desc.entity_id = 0x0123456789ABCDEF;
     entity_desc.entity_model_id = 0x001B2100000001;
-    entity_desc.entity_capabilities = EntityCapabilities::AEM_SUPPORTED;
-    strcpy(entity_desc.entity_name, "OpenAvnu Test Entity");
-    strcpy(entity_desc.firmware_version, "1.0.0");
-    strcpy(entity_desc.serial_number, "TEST001");
-    strcpy(entity_desc.group_name, "OpenAvnu");
+    entity_desc.entity_capabilities = AEM::EntityCapabilities::AEM_SUPPORTED;
+    entity_desc.entity_name = "OpenAvnu Test Entity";
+    entity_desc.firmware_version = "1.0.0";
+    entity_desc.serial_number = "TEST001";
+    entity_desc.group_name = "OpenAvnu";
     
     AECP::ATDECCEnumerationControlProtocolPDU aecp_resp;
     aecp_resp.target_entity_id = 0x0123456789ABCDEF;
@@ -173,7 +173,7 @@ void test_protocol_layer_completeness() {
     // Test AEM (Entity Model)
     AEM::EntityDescriptor entity_desc = {};
     entity_desc.entity_id = 0x0123456789ABCDEF;
-    entity_desc.entity_capabilities = EntityCapabilities::AEM_SUPPORTED;
+    entity_desc.entity_capabilities = AEM::EntityCapabilities::AEM_SUPPORTED;
     std::cout << "  ✅ AEM Entity Model: Complete (size: " << sizeof(AEM::EntityDescriptor) << " bytes)" << std::endl;
     
     std::cout << "✅ IEEE 1722.1-2021 Protocol Layer is COMPLETE!" << std::endl;

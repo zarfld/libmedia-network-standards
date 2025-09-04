@@ -762,4 +762,6 @@ bool PathDelayEngine::is_calibrated() const {
     return pImpl->is_calibrated();
 }
 
-} // namespace IEEE_802_1AS_2021
+} // namespace _2021
+} // namespace _802_1AS
+} // namespace IEEE

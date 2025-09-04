@@ -33,7 +33,7 @@ public:
         Timestamp timestamp;
         uint16_t sequence_id;
         bool valid;
-        ::::std::chrono::steady_clock::time_point capture_time;
+        std::chrono::steady_clock::time_point capture_time;
     };
 
     virtual ~HardwareTimestampInterface() = default;
@@ -252,6 +252,8 @@ private:
     ::std::unique_ptr<Implementation> pImpl;
 };
 
-} // namespace IEEE_802_1AS_2021
+} // namespace _2021
+} // namespace _802_1AS  
+} // namespace IEEE
 
 #endif // IEEE_802_1AS_2021_TIME_SYNC_ENGINE_H
