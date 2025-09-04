@@ -23,21 +23,13 @@
 #define NOMINMAX
 #endif
 
-// Include Windows headers with C++ linkage
+// Include Windows headers with C++ linkage - NO extern "C" needed for STL compatibility
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-// Ensure we're in C++ mode for any subsequent includes
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// Any C-style Windows APIs we need can go here
-
-#ifdef __cplusplus
-}
-#endif
+// Windows-specific utility functions can be C++ functions
+// No extern "C" wrapper needed - this prevents STL template linkage conflicts
 
 #else
 // Non-Windows platforms

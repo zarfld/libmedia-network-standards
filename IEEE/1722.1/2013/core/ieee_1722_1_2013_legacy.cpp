@@ -242,33 +242,6 @@ namespace ADP {
     }
 
     // ==============================
-    // Network byte order utility functions
-    // ==============================
-    
-#ifdef _WIN32
-    // Windows implementations for 64-bit byte order conversion
-    static uint64_t htonll(uint64_t value) {
-        return ((uint64_t)htonl((uint32_t)(value & 0xFFFFFFFF)) << 32) | htonl((uint32_t)(value >> 32));
-    }
-    
-    static uint64_t ntohll(uint64_t value) {
-        return ((uint64_t)ntohl((uint32_t)(value & 0xFFFFFFFF)) << 32) | ntohl((uint32_t)(value >> 32));
-    }
-#else
-    // Unix/Linux typically have these defined
-    #ifndef htonll
-    static uint64_t htonll(uint64_t value) {
-        return ((uint64_t)htonl((uint32_t)(value & 0xFFFFFFFF)) << 32) | htonl((uint32_t)(value >> 32));
-    }
-    #endif
-    
-    #ifndef ntohll
-    static uint64_t ntohll(uint64_t value) {
-        return ((uint64_t)ntohl((uint32_t)(value & 0xFFFFFFFF)) << 32) | ntohl((uint32_t)(value >> 32));
-    }
-    #endif
-#endif
-
 } // namespace ADP
 } // namespace _2013
 } // namespace _1722_1

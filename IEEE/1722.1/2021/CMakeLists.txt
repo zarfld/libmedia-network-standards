@@ -6,6 +6,16 @@ add_library(ieee_1722_1_2021_core STATIC
     core/ieee_1722_1_2021_minimal.cpp
 )
 
+# Explicitly set C++ compilation and standards
+set_target_properties(ieee_1722_1_2021_core PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+# Force C++ compilation for .cpp files
+set_source_files_properties(core/ieee_1722_1_2021_minimal.cpp PROPERTIES LANGUAGE CXX)
+
 target_include_directories(ieee_1722_1_2021_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../Common

@@ -22,13 +22,46 @@
 #include <cstring>
 #include <vector>
 
-// Cross-platform networking headers
+// Cross-platform networking headers with Windows socket conflict prevention
 #ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
     #include <winsock2.h>
     #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+    
+    // Windows byte order conversion functions
+    #ifndef htonll
+        inline uint64_t htonll(uint64_t value) {
+            return ((uint64_t)htonl((uint32_t)(value & 0xFFFFFFFF)) << 32) | htonl((uint32_t)(value >> 32));
+        }
+    #endif
+    
+    #ifndef ntohll  
+        inline uint64_t ntohll(uint64_t value) {
+            return ((uint64_t)ntohl((uint32_t)(value & 0xFFFFFFFF)) << 32) | ntohl((uint32_t)(value >> 32));
+        }
+    #endif
 #else
     #include <arpa/inet.h>
     #include <netinet/in.h>
+    
+    // Unix/Linux byte order conversion functions
+    #ifndef htonll
+        inline uint64_t htonll(uint64_t value) {
+            return ((uint64_t)htonl((uint32_t)(value & 0xFFFFFFFF)) << 32) | htonl((uint32_t)(value >> 32));
+        }
+    #endif
+    
+    #ifndef ntohll
+        inline uint64_t ntohll(uint64_t value) {
+            return ((uint64_t)ntohl((uint32_t)(value & 0xFFFFFFFF)) << 32) | ntohl((uint32_t)(value >> 32));
+        }
+    #endif
 #endif
 
 namespace IEEE {
