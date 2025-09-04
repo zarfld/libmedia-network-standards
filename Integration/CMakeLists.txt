@@ -2,25 +2,20 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(ieee_standards_integration STATIC
-    example_integration.cpp
-    hive_hardware_test.cpp
+    simple_integration.cpp
+    test_standards_build.cpp
     # Additional integration files as needed
 )
 
 target_include_directories(ieee_standards_integration PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../IEEE/1722.1/2021/core
-    ${CMAKE_CURRENT_SOURCE_DIR}/../IEEE/1722.1/2021/library
+    ${CMAKE_CURRENT_SOURCE_DIR}/../IEEE/802.1/Q/2020
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common
 )
 
 # Link to required libraries
-if(TARGET ieee_1722_1_2021_complete)
-    target_link_libraries(ieee_standards_integration PUBLIC ieee_1722_1_2021_complete)
-endif()
-
-if(TARGET ieee_1722_2016_core)
-    target_link_libraries(ieee_standards_integration PUBLIC ieee_1722_2016_core)
+if(TARGET ieee_802_1q_2020)
+    target_link_libraries(ieee_standards_integration PUBLIC ieee_802_1q_2020)
 endif()
 
 if(TARGET ieee_standards_common)

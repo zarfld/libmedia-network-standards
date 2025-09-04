@@ -31,27 +31,123 @@
 #include <vector>
 #include <cstring>
 #include <cstdio>
+#include <string>
+#include <vector>
+#include <cstring>
+#include <cstdio>
 
 namespace IEEE {
 namespace _1722 {
 namespace _2021 {
 namespace StateMachines {
 
-// Import types from parent namespaces
-using namespace IEEE::_1722_1::_2021::AEM;
-using namespace IEEE::_1722_1::_2021::ADPDU;
-using namespace IEEE::_1722_1::_2021::ACMP;
+// Import types from parent namespaces that actually exist
 using namespace IEEE::_1722_1::_2021::AECP;
+
+// Forward declarations for types not yet implemented
+namespace AEM {
+    enum class Command_type : uint16_t {
+        ENTITY_AVAILABLE = 0x0000,
+        READ_DESCRIPTOR = 0x0001,
+        WRITE_DESCRIPTOR = 0x0002
+    };
+    using AEM_Command_type = Command_type;
+    
+    struct EntityDescriptor {
+        uint64_t entity_id = 0;
+        uint64_t entity_model_id = 0;
+        uint32_t entity_capabilities = 0;
+        uint16_t talker_stream_sources = 0;
+        uint16_t talker_capabilities = 0;
+        uint16_t listener_stream_sinks = 0;
+        uint16_t listener_capabilities = 0;
+        uint32_t controller_capabilities = 0;
+    };
+}
+
+namespace ADPDU {
+    struct ATDECCDiscoveryProtocolPDU {
+        uint64_t entity_id = 0;
+        uint64_t entity_model_id = 0;
+        uint32_t entity_capabilities = 0;
+        uint16_t talker_stream_sources = 0;
+        uint16_t talker_capabilities = 0;
+        uint16_t listener_stream_sinks = 0;
+        uint16_t listener_capabilities = 0;
+        uint32_t controller_capabilities = 0;
+        
+        void set_entity_id(uint64_t id) { entity_id = id; }
+        void set_entity_model_id(uint64_t id) { entity_model_id = id; }
+        void set_entity_capabilities(uint32_t caps) { entity_capabilities = caps; }
+        void set_talker_info(uint16_t streams, uint16_t caps) { 
+            talker_stream_sources = streams; 
+            talker_capabilities = caps; 
+        }
+        void set_listener_info(uint16_t streams, uint16_t caps) { 
+            listener_stream_sinks = streams; 
+            listener_capabilities = caps; 
+        }
+    };
+}
+
+namespace ACMP {
+    enum class Message_type : uint8_t {
+        CONNECT_TX_COMMAND = 0,
+        CONNECT_TX_RESPONSE = 1,
+        DISCONNECT_TX_COMMAND = 2,
+        DISCONNECT_TX_RESPONSE = 3
+    };
+    using ACMP_Message_type = Message_type;
+    
+    enum class Status : uint8_t {
+        SUCCESS = 0,
+        LISTENER_UNKNOWN_ID = 1,
+        TALKER_UNKNOWN_ID = 2,
+        TALKER_DEST_MAC_FAIL = 3,
+        TALKER_NO_STREAM_INDEX = 4
+    };
+    using ACMP_Status = Status;
+}
 
 // Basic type aliases for cleaner code
 using EntityID = uint64_t;
 using EntityModelID = uint64_t;
-using AemCommandType = AEM_Command_type;
-using AemCommandStatus = AECP_Status;
-using ACMPMessageType = ACMP_Message_type;
+using AemCommandType = AEM::AEM_Command_type;
+using AemCommandStatus = uint16_t; // Status codes as uint16_t
+using ACMPMessageType = ACMP::ACMP_Message_type;
 using DescriptorType = uint16_t;
 using AcquireFlags = uint32_t;
 using LockFlags = uint32_t;
+
+// Missing capability enums
+enum class EntityCapabilities : uint32_t {
+    AEM_SUPPORTED = 0x00000001,
+    CLASS_A_SUPPORTED = 0x00000002,
+    CLASS_B_SUPPORTED = 0x00000004,
+    GPTP_SUPPORTED = 0x00000008
+};
+
+enum class TalkerCapabilities : uint16_t {
+    IMPLEMENTED = 0x0001,
+    AUDIO_SOURCE = 0x0002
+};
+
+enum class ListenerCapabilities : uint16_t {
+    IMPLEMENTED = 0x0001,
+    AUDIO_SINK = 0x0002
+};
+
+enum class ControllerCapabilities : uint32_t {
+    IMPLEMENTED = 0x00000001
+};
+
+// Missing flag types
+using ConnectionFlags = uint16_t;
+using StreamInfoFlags = uint16_t;
+
+// Time point aliases for compatibility - using uint64_t for milliseconds since epoch
+using TimePoint = uint64_t; // milliseconds since epoch
+using Duration = uint32_t;  // duration in milliseconds
 
 // ============================================================================
 // MAC ADDRESS TYPE  
@@ -197,7 +293,7 @@ struct ACMPConnectTxCommand {
 
 struct ACMPConnectTxResponse {
     uint16_t sequenceID;
-    ACMP_Status status;
+    ACMP::ACMP_Status status;
     EntityID talkerEntityID;
     EntityID listenerEntityID;
     uint16_t talkerUniqueID;
@@ -218,7 +314,7 @@ struct ACMPDisconnectTxCommand {
 
 struct ACMPDisconnectTxResponse {
     uint16_t sequenceID;
-    ACMP_Status status;
+    ACMP::ACMP_Status status;
     EntityID talkerEntityID;
     EntityID listenerEntityID;
     uint16_t talkerUniqueID;
@@ -350,9 +446,9 @@ struct LocalEntity {
     uint16_t interfaceIndex;
     EntityID associationID;
     
-    // Entity model
-    EntityModel entityModel;
-    EntityDynamicState dynamicState;
+    // Entity model (placeholder - simplified for now)
+    EntityModelID entityModel;
+    uint32_t dynamicState; // Simplified as uint32_t for now
 };
 
 // ============================================================================
