@@ -21,13 +21,10 @@ namespace _802_1AS {
 namespace _2021 {
 
 /**
- * @brief Hardware Timestamp Interface Base Implementation
- * @details Abstract interface - no hardware-specific implementations in standards library
- */
-HardwareTimestampInterface::~HardwareTimestampInterface() = default;
-
-/**
  * @brief Time Synchronization Engine Implementation
+ * @details Internal implementation class for TimeSynchronizationEngine
+ */
+class TimeSynchronizationEngine::Implementation {
 public:
     Implementation(const std::string& interface_name)
         : interface_name_(interface_name)
@@ -223,6 +220,7 @@ private:
 
 /**
  * @brief Time Synchronization Engine Implementation
+ * @details Complete time synchronization with hardware abstraction
  */
 class TimeSynchronizationEngine::Implementation {
 public:
@@ -538,7 +536,7 @@ public:
         return true;
     }
 
-    MeasurementResult get_current_measurement() const {
+    PathDelayMeasurement get_current_measurement() const {
         std::lock_guard<std::mutex> lock(mutex_);
         return current_result_;
     }
@@ -599,7 +597,7 @@ private:
     std::condition_variable cv_;
     std::thread measurement_thread_;
     
-    MeasurementResult current_result_;
+    PathDelayMeasurement current_result_;
 };
 
 // IntelHALTimestampInterface Implementation
@@ -663,11 +661,11 @@ TimeSynchronizationEngine::TimeSynchronizationEngine(std::unique_ptr<HardwareTim
 
 TimeSynchronizationEngine::~TimeSynchronizationEngine() = default;
 
-bool TimeSynchronizationEngine::start_synchronization() {
+bool TimeSynchronizationEngine::start() {
     return pImpl->start_synchronization();
 }
 
-bool TimeSynchronizationEngine::stop_synchronization() {
+bool TimeSynchronizationEngine::stop() {
     return pImpl->stop_synchronization();
 }
 

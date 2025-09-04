@@ -3,11 +3,27 @@
 #include <cstdint>
 #include <cstring>
 
+// Ensure proper Windows header ordering to prevent template linkage conflicts
 #ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
+    #endif
+    #ifndef NOMINMAX
+    #define NOMINMAX
+    #endif
+    
+    // Include C++ STL headers first to establish proper linkage
+    #include <type_traits>
+    #include <vector>
+    #include <memory>
+    
+    // Now include Windows headers with proper C++ linkage
+    #include <windows.h>
     #include <winsock2.h>
     #include <ws2tcpip.h>
     #include <intrin.h>  // For _byteswap_uint64
     #pragma comment(lib, "ws2_32.lib")
+    
     #ifndef htobe64
         #define htobe64(x) _byteswap_uint64(x)
         #define be64toh(x) _byteswap_uint64(x)
