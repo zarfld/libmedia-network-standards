@@ -8,6 +8,12 @@
  * @copyright IEEE Standards - Complete IEEE 802.1AS-2021 implementation
  */
 
+// TODO: CRITICAL ARCHITECTURE VIOLATION - Intel HAL code contaminating Standards layer
+// TODO: Remove all intel_hal_* calls from this Standards implementation
+// TODO: Use proper hardware abstraction interface instead of direct HAL calls
+// TODO: Move all hardware-specific logic to HAL layer where it belongs
+// TODO: Keep Standards layer pure IEEE 802.1AS-2021 compliant
+
 #include "time_sync_engine.h"
 #include <algorithm>
 #include <cmath>
@@ -36,6 +42,9 @@ public:
     }
 
     bool initialize_hal() {
+        // TODO: MAJOR ARCHITECTURE VIOLATION - Intel HAL code in Standards layer!
+        // TODO: This entire method violates hardware abstraction principles
+        // TODO: Remove intel_hal_* calls and use proper hardware abstraction interface
 #ifdef OPENAVNU_BUILD_INTEL_HAL
         if (hal_initialized_) return true;
 

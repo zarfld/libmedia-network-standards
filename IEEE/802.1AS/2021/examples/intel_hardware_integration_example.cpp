@@ -16,6 +16,9 @@
 
 #include "../core/ieee_802_1as_2021_fixed.h"
 #include "../core/time_sync_engine_fixed.h"
+// TODO: CRITICAL ARCHITECTURE VIOLATION - Direct Intel HAL includes in Standards layer!
+// TODO: This include violates hardware abstraction principles 
+// TODO: Standards layer must remain hardware-agnostic - move this to HAL layer
 #include "../../../../intel_avb/intel_hal_interface.h" // Intel HAL for hardware access
 #include <iostream>
 #include <memory>

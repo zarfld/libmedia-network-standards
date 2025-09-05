@@ -13,6 +13,9 @@
  * @date 2025
  */
 
+// TODO: CRITICAL ARCHITECTURE VIOLATION - Intel HAL includes in Standards Integration
+// TODO: Remove Intel-specific includes from Standards layer
+// TODO: Use proper hardware abstraction interface instead
 #include "ieee_1722_1_2021_intel_hal_bridge.h"
 #include <iostream>
 #include <iomanip>

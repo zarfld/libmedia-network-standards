@@ -1,6 +1,12 @@
 /**
  * @file ieee_1722_1_2021_intel_hal_bridge.h
  * @brief Simple Intel Hardware Bridge for IEEE 1722.1-2021
+ * 
+ * TODO: CRITICAL ARCHITECTURE VIOLATION!!!
+ * TODO: This entire file violates Standards layer purity!
+ * TODO: Intel HAL-specific headers do NOT belong in Standards/IEEE directory
+ * TODO: Move to lib/intel_avb or lib/common/hal where it belongs
+ * TODO: Standards layer must remain hardware-agnostic
  */
 
 #pragma once
