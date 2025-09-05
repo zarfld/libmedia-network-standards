@@ -16,15 +16,15 @@
 #include <functional>
 #include <memory>
 
-namespace ieee_802_1as_2021 {
+namespace IEEE {
+namespace _802_1 {
+namespace AS {
+namespace _2021 {
 
-// Import types from IEEE_802_1AS_2021 namespace for cleaner code
-using AnnounceMessage = IEEE_802_1AS_2021::AnnounceMessage;
-using SyncMessage = IEEE_802_1AS_2021::SyncMessage;
-using FollowUpMessage = IEEE_802_1AS_2021::FollowUpMessage;
-using ClockIdentity = IEEE_802_1AS_2021::ClockIdentity;
-using ClockQuality = IEEE_802_1AS_2021::ClockQuality;
-using PortIdentity = IEEE_802_1AS_2021::PortIdentity;
+// Forward declarations for clean naming
+// (These types are defined globally in ieee_802_1as_2021.h without namespace)
+class BMCAEngine;
+class TimeAwareSystem;
 
 /**
  * @brief Port State Machine per IEEE 802.1AS-2021 Section 10.2
@@ -214,6 +214,9 @@ private:
     std::unique_ptr<Implementation> pImpl;
 };
 
-} // namespace ieee_802_1as_2021
+} // namespace _2021
+} // namespace AS
+} // namespace _802_1
+} // namespace IEEE
 
 #endif // IEEE_802_1AS_2021_PORT_STATE_MACHINE_H

@@ -15,20 +15,23 @@
 #include <algorithm>
 #include <map>
 
+// Endianness conversion utilities (Standards layer - platform neutral)
 #ifdef _WIN32
-    #include <winsock2.h>
-    #define htobe16 htons
-    #define htobe32 htonl
-    #define htobe64 htonll
-    #define be16toh ntohs
-    #define be32toh ntohl
-    #define be64toh ntohll
+    // Windows endianness conversion without winsock2.h contamination
+    #include <cstdlib>
+    #define htobe16(x) _byteswap_ushort(x)
+    #define htobe32(x) _byteswap_ulong(x)  
+    #define htobe64(x) _byteswap_uint64(x)
+    #define be16toh(x) _byteswap_ushort(x)
+    #define be32toh(x) _byteswap_ulong(x)
+    #define be64toh(x) _byteswap_uint64(x)
 #else
     #include <endian.h>
 #endif
 
 namespace IEEE {
-namespace _802_1AS {
+namespace _802_1 {
+namespace AS {
 namespace _2021 {
 
 // ============================================================================
@@ -607,5 +610,6 @@ bool validate_clock_identity(const ClockIdentity& identity) {
 } // namespace Utils
 
 } // namespace _2021
-} // namespace _802_1AS
+} // namespace AS
+} // namespace _802_1
 } // namespace IEEE

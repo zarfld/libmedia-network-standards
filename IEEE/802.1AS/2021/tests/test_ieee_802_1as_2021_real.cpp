@@ -16,7 +16,7 @@
 #include <vector>
 #include <cassert>
 
-using namespace ieee_802_1as_2021;
+using namespace IEEE::_802_1::AS::_2021;
 
 // Simple test framework
 struct TestResult {
@@ -305,7 +305,7 @@ bool test_statistics_tracking() {
 // ============================================================================
 
 bool test_system_startup() {
-    IEEE_802_1AS_2021::TimeAwareSystem::Configuration system_config;
+    TimeAwareSystem::Configuration system_config;
     system_config.domain_number = 0;
     system_config.priority1 = 248;
     system_config.priority2 = 248;
@@ -313,7 +313,7 @@ bool test_system_startup() {
     system_config.clock_accuracy = 0xFE;
     system_config.offset_scaled_log_variance = 0x436A;
     
-    IEEE_802_1AS_2021::TimeAwareSystem system(system_config);
+    TimeAwareSystem system(system_config);
     
     // Basic system creation test
     TEST_ASSERT(true, "System should create successfully");

@@ -40,11 +40,17 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core)
 set(IEEE_802_1AS_2021_SOURCES
     core/ieee_802_1as_2021.cpp
     core/time_sync_engine.cpp
+    core/performance_measurement.cpp
+    core/conformity_test_framework.cpp
+    core/message_validation.cpp
 )
 
 set(IEEE_802_1AS_2021_HEADERS
     core/ieee_802_1as_2021.h
     core/time_sync_engine.h
+    core/performance_measurement.h
+    core/conformity_test_framework.h
+    core/message_validation.h
 )
 
 # Create the main library
@@ -125,6 +131,14 @@ install(EXPORT ieee_802_1as_2021-targets
     FILE ieee_802_1as_2021-targets.cmake
     DESTINATION lib/cmake/ieee_802_1as_2021
 )
+
+# Add examples subdirectory with unique binary directory
+if(IEEE_802_1AS_2021_BUILD_EXAMPLES)
+    add_subdirectory(examples ieee_802_1as_2021_examples_build)
+    message(STATUS "IEEE 802.1AS-2021 Integration Example: ENABLED")
+else()
+    message(STATUS "IEEE 802.1AS-2021 Integration Example: DISABLED")
+endif()
 
 # Summary
 message(STATUS "")

@@ -25,12 +25,10 @@ add_executable(ieee_802_1as_2021_integration_example
 target_include_directories(ieee_802_1as_2021_integration_example PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_SOURCE_DIR}/../core
-    ${CMAKE_CURRENT_SOURCE_DIR}/../state_machines
 )
 
 target_link_libraries(ieee_802_1as_2021_integration_example
     PRIVATE ieee_802_1as_2021_core
-    PRIVATE ieee_802_1as_2021_state_machines
 )
 
 # Platform-specific linking
@@ -44,14 +42,6 @@ elseif(UNIX AND NOT APPLE)
     )
 endif()
 
-# Intel HAL integration
-if(OPENAVNU_BUILD_INTEL_HAL)
-    target_compile_definitions(ieee_802_1as_2021_integration_example PRIVATE OPENAVNU_BUILD_INTEL_HAL)
-    target_link_libraries(ieee_802_1as_2021_integration_example PRIVATE intel-ethernet-hal-static)
-    target_include_directories(ieee_802_1as_2021_integration_example PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../thirdparty/intel-ethernet-hal/include)
-endif()
-
 # Set executable properties
 set_target_properties(ieee_802_1as_2021_integration_example PROPERTIES
     CXX_STANDARD 17
@@ -59,7 +49,7 @@ set_target_properties(ieee_802_1as_2021_integration_example PROPERTIES
     OUTPUT_NAME "ieee_802_1as_2021_integration_example"
 )
 
-# Compiler-specific settings
+# Compiler-specific settings  
 target_compile_options(ieee_802_1as_2021_integration_example PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/W4>
     $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -pedantic>

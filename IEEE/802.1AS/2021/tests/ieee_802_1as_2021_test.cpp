@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <cassert>
 
-using namespace IEEE_802_1AS_2021;
+using namespace IEEE::_802_1::AS::_2021;
 
 // ============================================================================
 // Mock Implementations for Testing

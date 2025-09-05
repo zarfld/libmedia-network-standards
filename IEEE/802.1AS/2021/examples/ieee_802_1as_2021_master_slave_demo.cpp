@@ -17,7 +17,7 @@
 #include "../core/time_sync_engine.h"
 #include "../state_machines/port_state_machine.h"
 
-using namespace IEEE_802_1AS_2021;
+using namespace IEEE::_802_1::AS::_2021;
 
 class IEEE802_1AS_MasterSlaveDemo {
 public:

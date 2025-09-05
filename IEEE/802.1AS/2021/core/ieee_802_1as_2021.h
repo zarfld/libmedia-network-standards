@@ -22,6 +22,16 @@
 #ifndef IEEE_802_1AS_2021_H
 #define IEEE_802_1AS_2021_H
 
+// Windows SDK compatibility fixes (moved to implementation files only)
+#ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
+#endif
+
 #include <cstdint>
 #include <vector>
 #include <string>
@@ -30,7 +40,8 @@
 #include <array>
 
 namespace IEEE {
-namespace _802_1AS {
+namespace _802_1 {
+namespace AS {
 namespace _2021 {
 
 // ============================================================================
@@ -132,6 +143,43 @@ struct Timestamp {
     
     Timestamp() : seconds_field(0), nanoseconds_field(0) {}
     Timestamp(uint64_t sec, uint32_t nsec) : seconds_field(sec), nanoseconds_field(nsec) {}
+    
+    // Convert to nanoseconds (for arithmetic)
+    uint64_t to_nanoseconds() const {
+        return static_cast<uint64_t>(seconds_field) * 1000000000ULL + nanoseconds_field;
+    }
+    
+    // Create from nanoseconds
+    static Timestamp from_nanoseconds(uint64_t ns) {
+        return Timestamp(ns / 1000000000ULL, ns % 1000000000ULL);
+    }
+    
+    // Arithmetic operators
+    Timestamp operator-(const Timestamp& other) const {
+        uint64_t this_ns = to_nanoseconds();
+        uint64_t other_ns = other.to_nanoseconds();
+        if (this_ns >= other_ns) {
+            return from_nanoseconds(this_ns - other_ns);
+        } else {
+            return from_nanoseconds(0); // Avoid negative timestamps
+        }
+    }
+    
+    Timestamp operator+(const Timestamp& other) const {
+        return from_nanoseconds(to_nanoseconds() + other.to_nanoseconds());
+    }
+    
+    bool operator<(const Timestamp& other) const {
+        return to_nanoseconds() < other.to_nanoseconds();
+    }
+    
+    bool operator>(const Timestamp& other) const {
+        return to_nanoseconds() > other.to_nanoseconds();
+    }
+    
+    bool operator==(const Timestamp& other) const {
+        return to_nanoseconds() == other.to_nanoseconds();
+    }
 };
 
 // ============================================================================
@@ -485,7 +533,8 @@ namespace Utils {
 }
 
 } // namespace _2021
-} // namespace _802_1AS
+} // namespace AS
+} // namespace _802_1
 } // namespace IEEE
 
 #endif // IEEE_802_1AS_2021_H

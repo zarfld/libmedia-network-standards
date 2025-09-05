@@ -58,9 +58,13 @@ public:
         shutdown();
     }
     
+    // DEPRECATED: Direct Intel HAL initialization violates Standards layer architecture
+    [[deprecated("Standards layer examples must be hardware-agnostic. Hardware initialization should be handled by injected interface implementations outside Standards layer. This function will be removed after migration to proper dependency injection pattern.")]]
     bool initialize() {
         std::cout << "🔧 Initializing Intel Hardware Timestamp for " << interface_name_ << std::endl;
         
+        // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
+        // TODO: Remove intel_hal_* calls and use proper hardware abstraction interface
         // Initialize Intel HAL
         if (intel_hal_init(interface_name_.c_str()) != 0) {
             std::cerr << "❌ Failed to initialize Intel HAL" << std::endl;
@@ -78,19 +82,25 @@ public:
         return true;
     }
     
+    // DEPRECATED: Direct Intel HAL shutdown violates Standards layer architecture  
+    [[deprecated("Standards layer examples must be hardware-agnostic. Hardware cleanup should be handled by injected interface implementations outside Standards layer. This function will be removed after migration to proper dependency injection pattern.")]]
     void shutdown() {
         if (initialized_) {
+            // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
             intel_hal_shutdown();
             initialized_ = false;
         }
     }
     
     // Implement HardwareTimestampInterface
+    // DEPRECATED: Direct Intel HAL timestamp capture violates Standards layer architecture
+    [[deprecated("Standards layer examples must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_get_timestamp calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
     virtual Timestamp capture_timestamp() override {
         if (!initialized_) {
             return Timestamp(); // Invalid timestamp
         }
         
+        // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
         // Get hardware timestamp from Intel HAL
         uint64_t hw_timestamp_ns = 0;
         if (intel_hal_get_timestamp(&hw_timestamp_ns) == 0) {
@@ -107,20 +117,29 @@ public:
         return 8; // Intel NICs typically have 8ns resolution
     }
     
+    // DEPRECATED: Direct Intel HAL availability check violates Standards layer architecture
+    [[deprecated("Standards layer examples must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_is_timestamp_available calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
     virtual bool is_hardware_timestamping_available() const override {
+        // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
         return initialized_ && intel_hal_is_timestamp_available();
     }
     
+    // DEPRECATED: Direct Intel HAL clock adjustment violates Standards layer architecture
+    [[deprecated("Standards layer examples must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_adjust_clock calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
     virtual bool adjust_clock(int64_t offset_ns) override {
         if (!initialized_) return false;
         
+        // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
         // Use Intel HAL to adjust clock
         return intel_hal_adjust_clock(offset_ns) == 0;
     }
     
+    // DEPRECATED: Direct Intel HAL frequency adjustment violates Standards layer architecture
+    [[deprecated("Standards layer examples must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_set_frequency_adjustment calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
     virtual bool set_frequency_adjustment(double frequency_adjustment) override {
         if (!initialized_) return false;
         
+        // TODO: ARCHITECTURE VIOLATION - Intel HAL code in Standards layer example!
         // Convert ppm to Intel HAL frequency adjustment format
         int32_t adj = static_cast<int32_t>(frequency_adjustment * 1e6); // Convert to ppb
         return intel_hal_set_frequency_adjustment(adj) == 0;

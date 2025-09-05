@@ -15,7 +15,10 @@
 #include <vector>
 #include <cstring>
 
-namespace ieee_802_1as_2021 {
+namespace IEEE {
+namespace _802_1 {
+namespace AS {
+namespace _2021 {
 
 // ============================================================================
 // PortStateMachine Implementation
@@ -671,4 +674,7 @@ bool BMCAEngine::has_valid_best_master() const {
     return pImpl->has_valid_best_master();
 }
 
-} // namespace ieee_802_1as_2021
+} // namespace _2021
+} // namespace AS
+} // namespace _802_1
+} // namespace IEEE

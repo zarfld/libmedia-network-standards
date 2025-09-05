@@ -17,7 +17,8 @@
 #include <functional>
 
 namespace IEEE {
-namespace _802_1AS {
+namespace _802_1 {
+namespace AS {
 namespace _2021 {
 
 /**
@@ -133,6 +134,10 @@ public:
     bool start();
     bool stop();
     bool reset_synchronization();
+    
+    // Convenience methods for compatibility with legacy APIs
+    bool start_synchronization() { return start(); }
+    bool stop_synchronization() { return stop(); }
 
     // Message processing
     bool process_sync_message(const SyncMessage& sync, const Timestamp& rx_timestamp);
@@ -147,6 +152,42 @@ public:
     // Configuration
     bool set_configuration(const Configuration& config);
     Configuration get_configuration() const;
+
+    // IEEE 802.1AS-2021 State Machines (Figures 10-3 through 10-9)
+    bool process_announce_message(const AnnounceMessage& announce, const Timestamp& rx_timestamp);
+    bool process_pdelay_req_message(const PDelayReqMessage& pdelay_req, const Timestamp& rx_timestamp);
+    bool process_pdelay_resp_message(const PDelayRespMessage& pdelay_resp, const Timestamp& rx_timestamp);
+    
+    // State Machine States
+    enum class SiteSyncSyncState {
+        INITIALIZING,
+        SENDING_SYNC,
+        SYNC_RECEIPT_TIMEOUT
+    };
+    
+    enum class PortSyncSyncReceiveState {
+        DISCARD,
+        RECEIVED_SYNC,
+        RECEIVED_FOLLOWUP
+    };
+    
+    enum class ClockSlaveState {
+        INITIALIZING,
+        SEND_SYNC_INDICATION,
+        SEND_FOLLOWUP_INDICATION
+    };
+    
+    enum class ClockMasterSyncSendState {
+        INITIALIZING,
+        SEND_SYNC_MESSAGE,
+        SEND_FOLLOWUP_MESSAGE
+    };
+    
+    // State Machine Status Queries
+    SiteSyncSyncState get_site_sync_state() const;
+    PortSyncSyncReceiveState get_port_sync_receive_state() const;
+    ClockSlaveState get_clock_slave_state() const;
+    ClockMasterSyncSendState get_clock_master_send_state() const;
 
     // Statistics
     Statistics get_statistics() const;
@@ -227,6 +268,16 @@ public:
     bool stop();
     bool initiate_path_delay_measurement();
 
+    // DEPRECATED METHOD NAMES - Use renamed methods for consistency
+    [[deprecated("Use start() instead - renamed for consistency with other engines")]]
+    bool start_measurements() { return start(); }
+    
+    [[deprecated("Use stop() instead - renamed for consistency with other engines")]]
+    bool stop_measurements() { return stop(); }
+    
+    [[deprecated("Use initiate_path_delay_measurement() instead - clearer name following IEEE 802.1AS-2021 terminology")]]
+    bool send_pdelay_request() { return initiate_path_delay_measurement(); }
+
     // Message processing
     bool process_pdelay_request(const PDelayReqMessage& request, const Timestamp& rx_timestamp);
     bool process_pdelay_response(const PDelayRespMessage& response, const Timestamp& rx_timestamp);
@@ -247,13 +298,49 @@ public:
     bool stop_calibration();
     bool is_calibrated() const;
 
+    // DEPRECATED COMPATIBILITY CLASS - ARCHITECTURAL VIOLATIONS
+    /**
+     * @brief Deprecated Implementation with Intel HAL violations
+     * @deprecated Use dependency injection with HardwareTimestampInterface instead
+     * @details This class contains direct Intel HAL calls that violate Standards layer architecture.
+     * It will be removed after migration to proper hardware abstraction pattern.
+     */
+    class [[deprecated("Violates Standards layer architecture - use dependency injection with HardwareTimestampInterface instead")]] 
+    DeprecatedImplementation {
+    public:
+        // Constructor
+        [[deprecated("Use TimeSynchronizationEngine(std::unique_ptr<HardwareTimestampInterface>) instead")]]
+        DeprecatedImplementation(const std::string& interface_name);
+        
+        // Destructor
+        ~DeprecatedImplementation();
+        
+        // Deprecated hardware access methods - use HardwareTimestampInterface instead
+        [[deprecated("Standards layer must be hardware-agnostic. Hardware cleanup should be handled by injected HardwareTimestampInterface implementation. This function will be removed after migration to proper dependency injection pattern.")]]
+        void shutdown_hal();
+        
+        [[deprecated("Standards layer must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_get_tx_timestamp calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
+        bool capture_tx_timestamp(uint16_t sequence_id, HardwareTimestampInterface::TimestampCapture& capture);
+        
+        [[deprecated("Standards layer must use injected HardwareTimestampInterface for hardware abstraction. Direct intel_hal_get_rx_timestamp calls violate architectural separation. This function will be removed after migration to proper dependency injection pattern.")]]
+        bool capture_rx_timestamp(uint16_t sequence_id, HardwareTimestampInterface::TimestampCapture& capture);
+        
+        // Add other deprecated methods as needed
+        
+    private:
+        std::string interface_name_;
+        bool hal_initialized_;
+        void* device_handle_;  // Intel HAL device handle - architectural violation
+    };
+
 private:
     class Implementation;
     ::std::unique_ptr<Implementation> pImpl;
 };
 
 } // namespace _2021
-} // namespace _802_1AS  
+} // namespace AS
+} // namespace _802_1  
 } // namespace IEEE
 
 #endif // IEEE_802_1AS_2021_TIME_SYNC_ENGINE_H
