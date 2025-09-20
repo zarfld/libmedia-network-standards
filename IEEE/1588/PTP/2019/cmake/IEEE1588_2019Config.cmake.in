@@ -1,0 +1,31 @@
+@PACKAGE_INIT@
+
+# IEEE 1588-2019 PTP v2.1 Configuration
+
+set(IEEE1588_2019_VERSION @PROJECT_VERSION@)
+
+# Set component availability
+set(IEEE1588_2019_FOUND TRUE)
+set(IEEE1588_2019_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_PREFIX@/include")
+set(IEEE1588_2019_LIBRARIES "")
+
+# Import targets if available
+if(EXISTS "@PACKAGE_CMAKE_INSTALL_PREFIX@/lib/cmake/IEEE1588_2019/IEEE1588_2019Targets.cmake")
+    include("@PACKAGE_CMAKE_INSTALL_PREFIX@/lib/cmake/IEEE1588_2019/IEEE1588_2019Targets.cmake")
+endif()
+
+# Verify all required components
+check_required_components(IEEE1588_2019)
+
+# Real-time compatibility information
+set(IEEE1588_2019_REALTIME_COMPATIBLE TRUE)
+set(IEEE1588_2019_FEATURES 
+    "Real-time compatible"
+    "No dynamic allocation"
+    "No exceptions"
+    "Bounded execution time"
+    "POD types"
+    "Hardware agnostic"
+)
+
+message(STATUS "Found IEEE 1588-2019 v${IEEE1588_2019_VERSION} (Real-time compatible)")

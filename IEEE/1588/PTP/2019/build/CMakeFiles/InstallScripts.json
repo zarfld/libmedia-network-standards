@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
