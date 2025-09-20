@@ -1,20 +1,20 @@
 /**
  * @file realtime_types_example.cpp
- * @brief Real-time compatible example for IEEE 1588-2019 types
+ * @brief Time-sensitive design example for IEEE 1588-2019 types
  * 
- * This example demonstrates how to use IEEE 1588-2019 types in real-time
- * environments including RTOS and embedded systems.
+ * This example demonstrates how to use IEEE 1588-2019 types following
+ * time-sensitive design principles suitable for predictable timing.
  * 
- * REAL-TIME COMPATIBILITY DEMONSTRATED:
+ * TIME-SENSITIVE DESIGN PRINCIPLES DEMONSTRATED:
  * - No dynamic memory allocation
  * - No exceptions or blocking calls  
  * - Deterministic execution time (O(1) operations)
  * - Error handling via result types
- * - Suitable for RTOS and embedded systems
+ * - Designed for time-critical applications
  * 
  * @copyright
  * This example demonstrates IEEE 1588-2019 standard compliance
- * with real-time system requirements.
+ * with time-sensitive design principles.
  * 
  * @version 1.0.0
  * @date 2025-09-20
@@ -27,11 +27,11 @@
 using namespace IEEE::_1588::PTP::_2019::Types;
 
 /**
- * @brief Demonstrate real-time compatible PTP timestamp operations
- * @note All operations have bounded execution time - suitable for real-time
+ * @brief Demonstrate time-sensitive PTP timestamp operations
+ * @note All operations have bounded execution time - suitable for time-critical applications
  */
 void demonstrateTimestampOperations() {
-    std::cout << "\n=== Real-Time PTP Timestamp Operations ===\n";
+    std::cout << "\n=== Time-Sensitive PTP Timestamp Operations ===\n";
     
     // Create timestamp (O(1) operation)
     Timestamp ts;
@@ -39,7 +39,7 @@ void demonstrateTimestampOperations() {
     ts.seconds_low = 1695168000; // Example: Sept 2023
     ts.nanoseconds = 123456789;
     
-    // Validate timestamp (O(1) check - real-time safe)
+    // Validate timestamp (O(1) check - deterministic)
     if (ts.isValid()) {
         std::cout << "Timestamp is valid\n";
         std::cout << "Total seconds: " << ts.getTotalSeconds() << "\n";
@@ -56,12 +56,12 @@ void demonstrateTimestampOperations() {
 }
 
 /**
- * @brief Demonstrate real-time compatible correction field operations
+ * @brief Demonstrate time-sensitive correction field operations
  */
 void demonstrateCorrectionField() {
-    std::cout << "\n=== Real-Time Correction Field Operations ===\n";
+    std::cout << "\n=== Time-Sensitive Correction Field Operations ===\n";
     
-    // All operations are constexpr and O(1) - real-time safe
+    // All operations are constexpr and O(1) - deterministic
     constexpr double nanoseconds = 1234.5;
     constexpr auto correction = CorrectionField::fromNanoseconds(nanoseconds);
     constexpr double recovered = correction.toNanoseconds();
@@ -75,10 +75,10 @@ void demonstrateCorrectionField() {
 }
 
 /**
- * @brief Demonstrate real-time compatible port identity operations
+ * @brief Demonstrate time-sensitive port identity operations
  */
 void demonstratePortIdentity() {
-    std::cout << "\n=== Real-Time Port Identity Operations ===\n";
+    std::cout << "\n=== Time-Sensitive Port Identity Operations ===\n";
     
     // Create port identities (O(1) operations)
     PortIdentity port1;
@@ -89,7 +89,7 @@ void demonstratePortIdentity() {
     port2.clock_identity = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
     port2.port_number = 2;
     
-    // Comparison operations are O(1) - real-time safe
+    // Comparison operations are O(1) - deterministic
     if (port1 == port2) {
         std::cout << "Port identities are equal\n";
     } else {
@@ -105,10 +105,10 @@ void demonstratePortIdentity() {
 }
 
 /**
- * @brief Demonstrate real-time compatible error handling
+ * @brief Demonstrate deterministic error handling
  */
 void demonstrateErrorHandling() {
-    std::cout << "\n=== Real-Time Error Handling ===\n";
+    std::cout << "\n=== Deterministic Error Handling ===\n";
     
     // Function that might fail - returns result instead of throwing
     auto validateTimestamp = [](const Timestamp& ts) -> PTPResult<bool> {
@@ -142,10 +142,10 @@ void demonstrateErrorHandling() {
 }
 
 /**
- * @brief Demonstrate real-time compatible time interval operations
+ * @brief Demonstrate time-sensitive time interval operations
  */
 void demonstrateTimeInterval() {
-    std::cout << "\n=== Real-Time Time Interval Operations ===\n";
+    std::cout << "\n=== Time-Sensitive Time Interval Operations ===\n";
     
     // All operations are constexpr and O(1)
     constexpr double interval_ns = 500.25;
@@ -158,10 +158,10 @@ void demonstrateTimeInterval() {
 }
 
 /**
- * @brief Demonstrate enum usage in real-time context
+ * @brief Demonstrate enum usage in time-sensitive context
  */
 void demonstrateEnums() {
-    std::cout << "\n=== Real-Time Enum Operations ===\n";
+    std::cout << "\n=== Time-Sensitive Enum Operations ===\n";
     
     // Enums are POD types with O(1) operations
     MessageType msg_type = MessageType::Sync;
@@ -172,10 +172,10 @@ void demonstrateEnums() {
     std::cout << "Port state (Master): " << static_cast<int>(port_state) << "\n";
     std::cout << "Time source (GPS): " << static_cast<int>(time_source) << "\n";
     
-    // Switch statements are O(1) and real-time safe
+    // Switch statements are O(1) and deterministic
     switch (msg_type) {
         case MessageType::Sync:
-            std::cout << "Processing Sync message (real-time path)\n";
+            std::cout << "Processing Sync message (time-critical path)\n";
             break;
         case MessageType::Announce:
             std::cout << "Processing Announce message\n";
@@ -187,10 +187,10 @@ void demonstrateEnums() {
 }
 
 int main() {
-    std::cout << "IEEE 1588-2019 Real-Time Compatible Types Example\n";
-    std::cout << "================================================\n";
+    std::cout << "IEEE 1588-2019 Time-Sensitive Design Example\n";
+    std::cout << "============================================\n";
     
-    // All demonstrations use only real-time compatible operations:
+    // All demonstrations use time-sensitive design principles:
     // - No dynamic allocation
     // - No exceptions
     // - Bounded execution time
@@ -203,13 +203,13 @@ int main() {
     demonstrateTimeInterval();
     demonstrateEnums();
     
-    std::cout << "\n=== Real-Time Compatibility Summary ===\n";
+    std::cout << "\n=== Time-Sensitive Design Summary ===\n";
     std::cout << "✓ All types are POD (Plain Old Data)\n";
     std::cout << "✓ No dynamic memory allocation\n";
     std::cout << "✓ No exceptions - error codes used instead\n";
     std::cout << "✓ All operations have O(1) bounded execution time\n";
     std::cout << "✓ No blocking calls or undefined timing behavior\n";
-    std::cout << "✓ Suitable for RTOS and embedded systems\n";
+    std::cout << "✓ Designed for time-critical applications\n";
     std::cout << "✓ All critical operations are constexpr/noexcept\n";
     
     std::cout << "\n=== Constants (Compile-time determined) ===\n";

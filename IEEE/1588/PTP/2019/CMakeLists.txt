@@ -101,21 +101,21 @@ if(IEEE1588_2019_BUILD_EXAMPLES)
         examples/basic_types_example.cpp
     )
     
-    # Real-time compatible example
-    add_executable(ieee1588_2019_realtime_example
-        examples/realtime_types_example.cpp
+    # Time-sensitive design example
+    add_executable(ieee1588_2019_time_sensitive_example
+        examples/time_sensitive_types_example.cpp
     )
     
     target_link_libraries(ieee1588_2019_basic_example
         PRIVATE IEEE1588_2019_interface
     )
     
-    target_link_libraries(ieee1588_2019_realtime_example
+    target_link_libraries(ieee1588_2019_time_sensitive_example
         PRIVATE IEEE1588_2019_interface
     )
     
     # Set output directory
-    set_target_properties(ieee1588_2019_basic_example ieee1588_2019_realtime_example
+    set_target_properties(ieee1588_2019_basic_example ieee1588_2019_time_sensitive_example
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples
     )

@@ -6,12 +6,12 @@
  * implementation, following the standard specifications exactly for maximum
  * interoperability and compliance.
  * 
- * REAL-TIME COMPATIBILITY:
+ * DETERMINISTIC DESIGN:
  * - All types are POD (Plain Old Data) with deterministic memory layout
  * - No dynamic memory allocation
  * - All operations are bounded execution time
  * - No blocking calls or exceptions in critical paths
- * - Suitable for RTOS and embedded environments
+ * - Designed for time-sensitive applications
  * 
  * @copyright
  * This implementation follows IEEE 1588-2019 standard specifications.
@@ -74,7 +74,7 @@ using SequenceId = UInteger16;
 /**
  * @brief Correction Field - time correction in units of nanoseconds * 2^16
  * 
- * Real-time compatible: All operations are constexpr with bounded execution time.
+ * Deterministic design: All operations are constexpr with bounded execution time.
  * No dynamic allocation or blocking calls.
  */
 struct CorrectionField {
@@ -83,7 +83,7 @@ struct CorrectionField {
     /**
      * @brief Convert to nanoseconds
      * @return Correction value in nanoseconds
-     * @note Real-time safe: O(1) execution time, no blocking
+     * @note Deterministic: O(1) execution time, no blocking
      */
     constexpr double toNanoseconds() const noexcept {
         return static_cast<double>(value) / 65536.0;
@@ -93,7 +93,7 @@ struct CorrectionField {
      * @brief Create from nanoseconds
      * @param ns Nanoseconds value
      * @return CorrectionField instance
-     * @note Real-time safe: O(1) execution time, no blocking
+     * @note Deterministic: O(1) execution time, no blocking
      */
     static constexpr CorrectionField fromNanoseconds(double ns) noexcept {
         return {static_cast<UInteger64>(ns * 65536.0)};
@@ -103,7 +103,7 @@ struct CorrectionField {
 /**
  * @brief PTP Timestamp - seconds and nanoseconds representation
  * 
- * Real-time compatible: POD structure with deterministic operations.
+ * Deterministic design: POD structure with deterministic operations.
  * Hardware abstraction layer will provide time conversions.
  */
 struct Timestamp {
@@ -114,7 +114,7 @@ struct Timestamp {
     /**
      * @brief Get total seconds (48-bit)
      * @return Total seconds value
-     * @note Real-time safe: O(1) execution time
+     * @note Deterministic: O(1) execution time
      */
     constexpr UInteger64 getTotalSeconds() const noexcept {
         return (static_cast<UInteger64>(seconds_high) << 32) | seconds_low;
@@ -123,7 +123,7 @@ struct Timestamp {
     /**
      * @brief Set total seconds (48-bit)
      * @param total_seconds Total seconds value
-     * @note Real-time safe: O(1) execution time
+     * @note Deterministic: O(1) execution time
      */
     constexpr void setTotalSeconds(UInteger64 total_seconds) noexcept {
         seconds_high = static_cast<UInteger48>(total_seconds >> 32);
@@ -133,7 +133,7 @@ struct Timestamp {
     /**
      * @brief Validate nanoseconds field
      * @return true if nanoseconds is valid (< 1,000,000,000)
-     * @note Real-time safe: O(1) execution time
+     * @note Deterministic: O(1) execution time
      */
     constexpr bool isValid() const noexcept {
         return nanoseconds < 1000000000U;
@@ -143,7 +143,7 @@ struct Timestamp {
 /**
  * @brief Port Identity - combination of clock identity and port number
  * 
- * Real-time compatible: POD structure with O(1) comparison operations.
+ * Deterministic design: POD structure with O(1) comparison operations.
  */
 struct PortIdentity {
     ClockIdentity clock_identity; ///< Clock identifier
@@ -151,7 +151,7 @@ struct PortIdentity {
     
     /**
      * @brief Equality comparison
-     * @note Real-time safe: O(1) execution time
+     * @note Deterministic: O(1) execution time
      */
     bool operator==(const PortIdentity& other) const noexcept {
         return clock_identity == other.clock_identity && 
@@ -160,7 +160,7 @@ struct PortIdentity {
     
     /**
      * @brief Less-than comparison for ordering
-     * @note Real-time safe: O(1) execution time
+     * @note Deterministic: O(1) execution time
      */
     bool operator<(const PortIdentity& other) const noexcept {
         if (clock_identity != other.clock_identity) {
@@ -182,14 +182,14 @@ struct ClockQuality {
 /**
  * @brief Time Interval - scaled nanoseconds for time intervals
  * 
- * Real-time compatible: All operations are constexpr with bounded execution time.
+ * Deterministic design: All operations are constexpr with bounded execution time.
  */
 struct TimeInterval {
     Integer64 scaled_nanoseconds; ///< Time interval in units of 2^-16 nanoseconds
     
     /**
      * @brief Convert to nanoseconds
-     * @note Real-time safe: O(1) execution time, no blocking
+     * @note Deterministic: O(1) execution time, no blocking
      */
     constexpr double toNanoseconds() const noexcept {
         return static_cast<double>(scaled_nanoseconds) / 65536.0;
@@ -197,7 +197,7 @@ struct TimeInterval {
     
     /**
      * @brief Create from nanoseconds
-     * @note Real-time safe: O(1) execution time, no blocking
+     * @note Deterministic: O(1) execution time, no blocking
      */
     static constexpr TimeInterval fromNanoseconds(double ns) noexcept {
         return {static_cast<Integer64>(ns * 65536.0)};
@@ -314,9 +314,9 @@ constexpr Integer8 DEFAULT_LOG_SYNC_INTERVAL = 0;     // 1 second
 constexpr Integer8 DEFAULT_LOG_MIN_DELAY_REQ_INTERVAL = 0; // 1 second
 
 /**
- * @brief Real-time compatible error codes for PTP operations
+ * @brief Deterministic error codes for PTP operations
  * 
- * Error handling without exceptions - suitable for real-time and embedded systems.
+ * Error handling without exceptions - suitable for time-sensitive applications.
  * All error conditions are represented as enumeration values with O(1) checking.
  */
 enum class PTPError : UInteger8 {
@@ -338,10 +338,10 @@ enum class PTPError : UInteger8 {
 };
 
 /**
- * @brief Real-time compatible result type for operations that may fail
+ * @brief Deterministic result type for operations that may fail
  * 
  * Template class providing error handling without exceptions.
- * Suitable for real-time systems with deterministic behavior.
+ * Suitable for time-sensitive systems with deterministic behavior.
  * 
  * @tparam T The type of value returned on success
  */
@@ -358,7 +358,7 @@ public:
     /**
      * @brief Construct successful result
      * @param value The success value
-     * @note Real-time safe: O(1) construction, no dynamic allocation
+     * @note Deterministic: O(1) construction, no dynamic allocation
      */
     constexpr explicit PTPResult(const T& value) noexcept 
         : value_(value), has_value_(true) {}
@@ -366,14 +366,14 @@ public:
     /**
      * @brief Construct error result
      * @param error The error code
-     * @note Real-time safe: O(1) construction, no dynamic allocation
+     * @note Deterministic: O(1) construction, no dynamic allocation
      */
     constexpr explicit PTPResult(PTPError error) noexcept 
         : error_(error), has_value_(false) {}
     
     /**
      * @brief Copy constructor
-     * @note Real-time safe: O(1) operation
+     * @note Deterministic: O(1) operation
      */
     constexpr PTPResult(const PTPResult& other) noexcept 
         : has_value_(other.has_value_) {
@@ -387,7 +387,7 @@ public:
     /**
      * @brief Check if result contains a value
      * @return true if successful, false if error
-     * @note Real-time safe: O(1) check
+     * @note Deterministic: O(1) check
      */
     constexpr bool hasValue() const noexcept {
         return has_value_;
@@ -396,7 +396,7 @@ public:
     /**
      * @brief Check if result contains an error
      * @return true if error, false if successful
-     * @note Real-time safe: O(1) check
+     * @note Deterministic: O(1) check
      */
     constexpr bool hasError() const noexcept {
         return !has_value_;
@@ -405,7 +405,7 @@ public:
     /**
      * @brief Get the value (only call if hasValue() returns true)
      * @return The success value
-     * @note Real-time safe: O(1) access, caller must check hasValue() first
+     * @note Deterministic: O(1) access, caller must check hasValue() first
      */
     constexpr const T& getValue() const noexcept {
         return value_;
@@ -414,7 +414,7 @@ public:
     /**
      * @brief Get the error code (only call if hasError() returns true)
      * @return The error code
-     * @note Real-time safe: O(1) access, caller must check hasError() first
+     * @note Deterministic: O(1) access, caller must check hasError() first
      */
     constexpr PTPError getError() const noexcept {
         return error_;
@@ -424,7 +424,7 @@ public:
      * @brief Get value or return default if error
      * @param default_value Value to return on error
      * @return The value or default
-     * @note Real-time safe: O(1) operation
+     * @note Deterministic: O(1) operation
      */
     constexpr T getValueOr(const T& default_value) const noexcept {
         return has_value_ ? value_ : default_value;
@@ -436,7 +436,7 @@ public:
  * @tparam T Value type
  * @param value The success value
  * @return PTPResult containing the value
- * @note Real-time safe: O(1) construction
+ * @note Deterministic: O(1) construction
  */
 template<typename T>
 constexpr PTPResult<T> makeSuccess(const T& value) noexcept {
@@ -448,7 +448,7 @@ constexpr PTPResult<T> makeSuccess(const T& value) noexcept {
  * @tparam T Value type
  * @param error The error code
  * @return PTPResult containing the error
- * @note Real-time safe: O(1) construction
+ * @note Deterministic: O(1) construction
  */
 template<typename T>
 constexpr PTPResult<T> makeError(PTPError error) noexcept {

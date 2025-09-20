@@ -2,15 +2,15 @@
 
 This directory contains the hardware-agnostic implementation of IEEE 1588-2019 Precision Time Protocol version 2.1, providing enhanced timing capabilities beyond basic gPTP (802.1AS) with **real-time system compatibility**.
 
-## Real-Time System Compatibility
+## Time-Sensitive Design Principles
 
-This implementation is designed for **real-time environments** including:
-- **RTOS (Real-Time Operating Systems)**
-- **Embedded systems and microcontrollers** 
+This implementation follows **deterministic design patterns** suitable for:
+- **Time-sensitive applications requiring predictable behavior**
+- **Systems with strict timing requirements**
 - **Professional audio/video systems requiring deterministic timing**
-- **Industrial automation with hard real-time constraints**
+- **Applications where timing predictability is critical**
 
-### Real-Time Design Principles
+### Design Characteristics
 - ✅ **No dynamic memory allocation** in critical code paths
 - ✅ **No exceptions** - error handling via return codes and result types  
 - ✅ **No blocking calls** - all operations have bounded execution time
