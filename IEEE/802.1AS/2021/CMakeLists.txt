@@ -90,10 +90,8 @@ if(IEEE_802_1AS_2021_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
-# Add examples
-if(IEEE_802_1AS_2021_BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
+# Add examples - REMOVED: Duplicate add_subdirectory call
+# The examples are added later with a unique binary directory (line ~137)
 
 # Add state machines
 add_subdirectory(state_machines)
