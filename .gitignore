@@ -1,12 +1,15 @@
 # OpenAvnu Standards Layer .gitignore
 
 # Ignore build artifacts
-/build/
+build/
+build/**
+**/build/
+**/build/**
 /CMakeFiles/
 /CMakeCache.txt
 /cmake_install.cmake
 /Makefile
-/build
+**/**/build
 
 # Ignore object files and binaries
 *.o
