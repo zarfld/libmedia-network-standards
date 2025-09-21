@@ -9,7 +9,7 @@ build/**
 /CMakeCache.txt
 /cmake_install.cmake
 /Makefile
-**/**/build
+**/build/** */
 
 # Ignore object files and binaries
 *.o
