@@ -1,0 +1,72 @@
+# OpenAvnu Standards Layer .gitignore
+
+# Ignore build artifacts
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/build
+
+# Ignore object files and binaries
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.lib
+*.a
+*.tlog
+
+# Ignore generated documentation - no documentation is required
+#/docs/completed/
+#/docs/archive/
+#/docs/insights/
+
+# Ignore test output
+/test/*.log
+/test/*.out
+/test/*.tmp
+
+# Ignore VS Code workspace settings
+#.vscode/
+#*.code-workspace
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependency directories
+#/thirdparty/
+#/external/
+
+# Ignore temporary files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore Python cache (if any scripts)
+/__pycache__/
+*.pyc
+
+# Ignore package manager files
+node_modules/
+package-lock.json
+
+# Ignore coverage reports
+coverage/
+*.gcda
+*.gcno
+*.gcov
+
+# Ignore user-specific files
+*.user
+*.suo
+
+# Ignore logs
+*.log
+
+# Ignore standards reference PDFs (never commit spec docs)
+/workdir/
+*.pdf
