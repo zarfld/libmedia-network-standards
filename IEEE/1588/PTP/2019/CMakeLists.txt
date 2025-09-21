@@ -27,8 +27,8 @@ set(IEEE1588_2019_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Source files (will be populated as implementation progresses)
 set(IEEE1588_2019_SOURCES
+    src/clocks.cpp
     # src/types.cpp
-    # src/clock.cpp
     # src/messages.cpp
     # src/algorithms.cpp
     # src/security.cpp
@@ -41,7 +41,8 @@ set(IEEE1588_2019_HEADERS
     include/IEEE/1588/PTP/2019/ieee1588_2019.hpp
     include/IEEE/1588/PTP/2019/namespace.hpp
     include/IEEE/1588/PTP/2019/types.hpp
-    # include/IEEE/1588/PTP/2019/messages.hpp
+    include/IEEE/1588/PTP/2019/messages.hpp
+    include/clocks.hpp
     # include/IEEE/1588/PTP/2019/clock.hpp
     # include/IEEE/1588/PTP/2019/algorithms.hpp
     # include/IEEE/1588/PTP/2019/security.hpp
@@ -106,6 +107,11 @@ if(IEEE1588_2019_BUILD_EXAMPLES)
         examples/time_sensitive_types_example.cpp
     )
     
+    # Simple verification test
+    add_executable(ieee1588_2019_simple_test
+        examples/simple_clock_test.cpp
+    )
+    
     target_link_libraries(ieee1588_2019_basic_example
         PRIVATE IEEE1588_2019_interface
     )
@@ -114,8 +120,12 @@ if(IEEE1588_2019_BUILD_EXAMPLES)
         PRIVATE IEEE1588_2019_interface
     )
     
+    target_link_libraries(ieee1588_2019_simple_test
+        PRIVATE IEEE1588_2019_interface
+    )
+    
     # Set output directory
-    set_target_properties(ieee1588_2019_basic_example ieee1588_2019_time_sensitive_example
+    set_target_properties(ieee1588_2019_basic_example ieee1588_2019_time_sensitive_example ieee1588_2019_simple_test
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples
     )

@@ -46,6 +46,11 @@ using Integer16 = std::int16_t;   ///< 16-bit signed integer
 using Integer32 = std::int32_t;   ///< 32-bit signed integer
 using Integer64 = std::int64_t;   ///< 64-bit signed integer
 
+// Forward declarations
+enum class PTPError : UInteger8;
+template<typename T> class PTPResult;
+struct TimeInterval;
+
 // IEEE 1588-2019 specific types
 
 /**
@@ -81,6 +86,17 @@ struct CorrectionField {
     UInteger64 value; ///< Correction value in scaled nanoseconds
     
     /**
+     * @brief Default constructor
+     */
+    constexpr CorrectionField() noexcept : value(0) {}
+    
+    /**
+     * @brief Value constructor
+     * @param val Initial value
+     */
+    constexpr explicit CorrectionField(UInteger64 val) noexcept : value(val) {}
+    
+    /**
      * @brief Convert to nanoseconds
      * @return Correction value in nanoseconds
      * @note Deterministic: O(1) execution time, no blocking
@@ -96,7 +112,35 @@ struct CorrectionField {
      * @note Deterministic: O(1) execution time, no blocking
      */
     static constexpr CorrectionField fromNanoseconds(double ns) noexcept {
-        return {static_cast<UInteger64>(ns * 65536.0)};
+        return CorrectionField(static_cast<UInteger64>(ns * 65536.0));
+    }
+    
+    /**
+     * @brief Constructor from TimeInterval (for static_cast support)
+     * @param interval TimeInterval value
+     * @note Deterministic: O(1) execution time, defined after TimeInterval
+     */
+    explicit CorrectionField(const TimeInterval& interval) noexcept;
+    
+    /**
+     * @brief Addition assignment operator
+     * @param other CorrectionField to add
+     * @return Reference to this CorrectionField
+     * @note Deterministic: O(1) execution time, for clocks.cpp compatibility
+     */
+    constexpr CorrectionField& operator+=(const CorrectionField& other) noexcept {
+        value += other.value;
+        return *this;
+    }
+    
+    /**
+     * @brief Left shift operator for scaling
+     * @param shift Number of bits to shift
+     * @return New CorrectionField with shifted value
+     * @note Deterministic: O(1) execution time, for clocks.cpp compatibility
+     */
+    constexpr CorrectionField operator<<(unsigned int shift) const noexcept {
+        return CorrectionField(value << shift);
     }
 };
 
@@ -138,6 +182,59 @@ struct Timestamp {
     constexpr bool isValid() const noexcept {
         return nanoseconds < 1000000000U;
     }
+    
+    /**
+     * @brief Validate timestamp fields
+     * @return PTPResult indicating success or error
+     * @note Required for message validation compatibility
+     */
+    PTPResult<void> validate() const noexcept;
+    
+    /**
+     * @brief Comparison operators for Timestamp
+     * @note Deterministic: O(1) execution time, required for timeout calculations
+     */
+    constexpr bool operator<(const Timestamp& other) const noexcept {
+        UInteger64 this_total = getTotalSeconds();
+        UInteger64 other_total = other.getTotalSeconds();
+        if (this_total != other_total) {
+            return this_total < other_total;
+        }
+        return nanoseconds < other.nanoseconds;
+    }
+    
+    constexpr bool operator>(const Timestamp& other) const noexcept {
+        return other < *this;
+    }
+    
+    constexpr bool operator<=(const Timestamp& other) const noexcept {
+        return !(other < *this);
+    }
+    
+    constexpr bool operator>=(const Timestamp& other) const noexcept {
+        return !(*this < other);
+    }
+    
+    constexpr bool operator==(const Timestamp& other) const noexcept {
+        return getTotalSeconds() == other.getTotalSeconds() && 
+               nanoseconds == other.nanoseconds;
+    }
+    
+    constexpr bool operator!=(const Timestamp& other) const noexcept {
+        return !(*this == other);
+    }
+    
+    /**
+     * @brief Arithmetic operators for Timestamp
+     * @note Deterministic: O(1) execution time, required for time interval calculations
+     */
+    TimeInterval operator-(const Timestamp& other) const noexcept;
+    
+    /**
+     * @brief Multiply timestamp by scalar (for timeout calculations)
+     * @note Deterministic: O(1) execution time
+     */
+    Timestamp operator*(std::uint8_t multiplier) const noexcept;
 };
 
 /**
@@ -168,6 +265,13 @@ struct PortIdentity {
         }
         return port_number < other.port_number;
     }
+    
+    /**
+     * @brief Validate port identity fields
+     * @return PTPResult indicating success or error
+     * @note Required for message validation compatibility
+     */
+    PTPResult<void> validate() const noexcept;
 };
 
 /**
@@ -203,6 +307,39 @@ struct TimeInterval {
         return {static_cast<Integer64>(ns * 65536.0)};
     }
 };
+
+//==============================================================================
+// Timestamp operator implementations (defined after TimeInterval)
+//==============================================================================
+
+/**
+ * @brief CorrectionField constructor from TimeInterval
+ * @note Defined here after TimeInterval is complete
+ */
+inline CorrectionField::CorrectionField(const TimeInterval& interval) noexcept 
+    : value(static_cast<UInteger64>(interval.scaled_nanoseconds)) {}
+
+/**
+ * @brief Timestamp arithmetic operator implementations
+ * @note Defined here after TimeInterval is complete
+ */
+inline TimeInterval Timestamp::operator-(const Timestamp& other) const noexcept {
+    // Calculate difference in nanoseconds, then convert to TimeInterval
+    UInteger64 this_ns = getTotalSeconds() * 1000000000ULL + nanoseconds;
+    UInteger64 other_ns = other.getTotalSeconds() * 1000000000ULL + other.nanoseconds;
+    Integer64 diff_ns = static_cast<Integer64>(this_ns) - static_cast<Integer64>(other_ns);
+    return TimeInterval{diff_ns * 65536}; // Convert to scaled nanoseconds (2^16 factor)
+}
+
+inline Timestamp Timestamp::operator*(std::uint8_t multiplier) const noexcept {
+    UInteger64 total_ns = getTotalSeconds() * 1000000000ULL + nanoseconds;
+    total_ns *= multiplier;
+    
+    Timestamp result;
+    result.setTotalSeconds(total_ns / 1000000000ULL);
+    result.nanoseconds = static_cast<UInteger32>(total_ns % 1000000000ULL);
+    return result;
+}
 
 /**
  * @brief Log Message Interval - logarithmic representation of message intervals
@@ -334,6 +471,21 @@ enum class PTPError : UInteger8 {
     State_Error = 0x0B,         ///< Invalid state for operation
     Memory_Error = 0x0C,        ///< Memory allocation/access error
     Network_Error = 0x0D,       ///< Network operation failed
+    
+    // Additional message validation errors (for message format validation)
+    INVALID_VERSION = 0x10,      ///< Invalid PTP version in message
+    INVALID_LENGTH = 0x11,       ///< Invalid message length
+    INVALID_RESERVED_FIELD = 0x12, ///< Non-zero reserved field
+    INVALID_CLOCK_CLASS = 0x13,  ///< Invalid clock class value
+    INVALID_STEPS_REMOVED = 0x14, ///< Invalid steps removed value
+    
+    // Additional error codes for clocks.cpp compatibility
+    UNSUPPORTED_MESSAGE = 0x15,  ///< Message type not supported
+    INVALID_MESSAGE_SIZE = 0x16, ///< Message size validation failed
+    INVALID_PORT = 0x17,         ///< Port number validation failed
+    INVALID_TIMESTAMP = 0x18,    ///< Timestamp validation failed (alias for Invalid_Timestamp)
+    INVALID_PARAMETER = 0x19,    ///< Parameter validation failed (alias for Invalid_Parameter)
+    
     Unknown_Error = 0xFF        ///< Unknown or unspecified error
 };
 
@@ -429,6 +581,164 @@ public:
     constexpr T getValueOr(const T& default_value) const noexcept {
         return has_value_ ? value_ : default_value;
     }
+    
+    /**
+     * @brief Check if result is successful (alias for hasValue)
+     * @return true if successful, false if error
+     * @note Compatibility method for clock state machine API
+     */
+    constexpr bool is_success() const noexcept {
+        return has_value_;
+    }
+    
+    /**
+     * @brief Get the value (alias for getValue)
+     * @return The success value
+     * @note Compatibility method for clock state machine API
+     */
+    constexpr const T& get_value() const noexcept {
+        return value_;
+    }
+    
+    /**
+     * @brief Get the error (alias for getError)
+     * @return The error code
+     * @note Compatibility method for clock state machine API
+     */
+    constexpr PTPError get_error() const noexcept {
+        return error_;
+    }
+    
+    /**
+     * @brief Create successful result (static method)
+     * @param value The success value
+     * @return Successful PTPResult
+     * @note Compatibility method for clock state machine API
+     */
+    static constexpr PTPResult success(const T& value) noexcept {
+        return PTPResult(value);
+    }
+    
+    /**
+     * @brief Create error result (static method)
+     * @param error The error code
+     * @return Error PTPResult
+     * @note Compatibility method for clock state machine API
+     */
+    static constexpr PTPResult failure(PTPError error) noexcept {
+        return PTPResult(error);
+    }
+    
+    /**
+     * @brief Create error result (alias for failure)
+     * @param error The error code
+     * @return Error PTPResult
+     * @note Compatibility method for messages.hpp API
+     */
+    static constexpr PTPResult makeError(PTPError error) noexcept {
+        return failure(error);
+    }
+};
+
+/**
+ * @brief Template specialization for void type
+ * @details Special handling for operations that don't return values
+ */
+template<>
+class PTPResult<void> {
+private:
+    PTPError error_;    ///< Error code when failed
+    bool has_value_;    ///< True if successful, false if error
+
+public:
+    /**
+     * @brief Construct successful result
+     * @note Deterministic: O(1) construction, no dynamic allocation
+     */
+    constexpr PTPResult() noexcept 
+        : error_(PTPError::Success), has_value_(true) {}
+    
+    /**
+     * @brief Construct error result
+     * @param error The error code
+     * @note Deterministic: O(1) construction, no dynamic allocation
+     */
+    constexpr explicit PTPResult(PTPError error) noexcept 
+        : error_(error), has_value_(false) {}
+    
+    /**
+     * @brief Check if result is successful
+     * @return true if successful, false if error
+     * @note Deterministic: O(1) check
+     */
+    constexpr bool hasValue() const noexcept {
+        return has_value_;
+    }
+    
+    /**
+     * @brief Check if result contains an error
+     * @return true if error, false if successful
+     * @note Deterministic: O(1) check
+     */
+    constexpr bool hasError() const noexcept {
+        return !has_value_;
+    }
+    
+    /**
+     * @brief Get the error code (only call if hasError() returns true)
+     * @return The error code
+     * @note Deterministic: O(1) access, caller must check hasError() first
+     */
+    constexpr PTPError getError() const noexcept {
+        return error_;
+    }
+    
+    /**
+     * @brief Check if result is successful (alias for hasValue)
+     * @return true if successful, false if error
+     * @note Compatibility method for clock state machine API
+     */
+    constexpr bool is_success() const noexcept {
+        return has_value_;
+    }
+    
+    /**
+     * @brief Get the error (alias for getError)
+     * @return The error code
+     * @note Compatibility method for clock state machine API
+     */
+    constexpr PTPError get_error() const noexcept {
+        return error_;
+    }
+    
+    /**
+     * @brief Create successful result (static method)
+     * @return Successful PTPResult
+     * @note Compatibility method for clock state machine API
+     */
+    static constexpr PTPResult success() noexcept {
+        return PTPResult();
+    }
+    
+    /**
+     * @brief Create error result (static method)
+     * @param error The error code
+     * @return Error PTPResult
+     * @note Compatibility method for clock state machine API
+     */
+    static constexpr PTPResult failure(PTPError error) noexcept {
+        return PTPResult(error);
+    }
+    
+    /**
+     * @brief Create error result (alias for failure)
+     * @param error The error code
+     * @return Error PTPResult
+     * @note Compatibility method for messages.hpp API
+     */
+    static constexpr PTPResult makeError(PTPError error) noexcept {
+        return failure(error);
+    }
 };
 
 /**
@@ -453,6 +763,34 @@ constexpr PTPResult<T> makeSuccess(const T& value) noexcept {
 template<typename T>
 constexpr PTPResult<T> makeError(PTPError error) noexcept {
     return PTPResult<T>(error);
+}
+
+//==============================================================================
+// Method definitions for types that need PTPResult
+//==============================================================================
+
+/**
+ * @brief Validate timestamp fields
+ * @return PTPResult indicating success or error
+ * @note Required for message validation compatibility
+ */
+inline PTPResult<void> Timestamp::validate() const noexcept {
+    if (!isValid()) {
+        return PTPResult<void>::makeError(PTPError::Invalid_Timestamp);
+    }
+    return PTPResult<void>::success();
+}
+
+/**
+ * @brief Validate port identity fields
+ * @return PTPResult indicating success or error
+ * @note Required for message validation compatibility
+ */
+inline PTPResult<void> PortIdentity::validate() const noexcept {
+    if (port_number == 0) {
+        return PTPResult<void>::makeError(PTPError::Port_Number_Error);
+    }
+    return PTPResult<void>::success();
 }
 
 } // namespace Types

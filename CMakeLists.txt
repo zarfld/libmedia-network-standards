@@ -19,6 +19,7 @@ else()
 endif()
 
 # Build options
+option(BUILD_IEEE_1588_2019 "Build IEEE 1588-2019 PTP v2.1 implementation" ON)
 option(BUILD_IEEE_1722_2016 "Build IEEE 1722-2016 AVTP implementation" ON)
 option(BUILD_IEEE_1722_1_2013 "Build IEEE 1722.1-2013 legacy AVDECC implementation" ON)
 option(BUILD_IEEE_1722_1_2021 "Build IEEE 1722.1-2021 modern AVDECC implementation" ON)
@@ -31,6 +32,7 @@ option(BUILD_TESTS "Build test applications" ON)
 option(BUILD_STANDARDS_INTEGRATION "Build Standards Integration examples/tests" ON)
 # Include directories for hierarchical structure
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1588/PTP/2019/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722/2016/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722.1/2013/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722.1/2021/core)
@@ -42,6 +44,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/AVnu/Milan/1.2-2023)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Common)
 
 # Add subdirectories based on build options
+if(BUILD_IEEE_1588_2019)
+    add_subdirectory(IEEE/1588/PTP/2019)
+endif()
+
 if(BUILD_IEEE_1722_2016)
     add_subdirectory(IEEE/1722/2016)
 endif()
@@ -77,6 +83,7 @@ endif()
 
 # Summary
 message(STATUS "IEEE 1722 Standards Library Configuration:")
+message(STATUS "  IEEE 1588-2019 (PTP v2.1): ${BUILD_IEEE_1588_2019}")
 message(STATUS "  IEEE 1722-2016 (AVTP): ${BUILD_IEEE_1722_2016}")
 message(STATUS "  IEEE 1722.1-2013 (Legacy AVDECC): ${BUILD_IEEE_1722_1_2013}")
 message(STATUS "  IEEE 1722.1-2021 (Modern AVDECC): ${BUILD_IEEE_1722_1_2021}")
@@ -89,6 +96,7 @@ message(STATUS "  Standards Integration: ${BUILD_STANDARDS_INTEGRATION}")
 
 message(STATUS "")
 message(STATUS "IEEE Standards Implementation Status:")
+message(STATUS "  ✅ IEEE 1588-2019 (PTP v2.1): NEW IMPLEMENTATION")
 message(STATUS "  ✅ IEEE 1722.1-2021 (Modern AVDECC): COMPLETE")
 message(STATUS "  ✅ IEEE 1722-2016 (AVTP): COMPLETE") 
 message(STATUS "  ✅ IEEE 1722.1-2013 (Legacy AVDECC): COMPLETE")
