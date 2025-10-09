@@ -1,3 +1,25 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-AES70-001"
+    - "REQ-STK-AES70-002"
+    - "REQ-STK-AES70-003"
+    - "REQ-STK-AES70-004"
+    - "REQ-STK-AES70-005"
+    - "REQ-STK-AES70-006"
+    - "REQ-STK-AES70-007"
+    - "REQ-STK-AES70-008"
+    - "REQ-STK-AES70-009"
+    - "REQ-STK-AES70-010"
+---
+
 # AES70-2018 Open Control Architecture (OCA) Requirements Specification
 
 **Document Information:**

@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: 29148
+phase: 02-requirements
+version: 1.0.0
+author: Requirements Engineering Team
+date: 2025-10-10
+status: approved
+traceability:
+  stakeholderRequirements:
+    - REQ-STK-IEEE8021AS-001
+    - REQ-STK-IEEE8021AS-002
+    - REQ-STK-IEEE8021AS-003
+    - REQ-STK-IEEE8021AS-004
+    - REQ-STK-IEEE8021AS-005
+---
 # IEEE 802.1AS-2021 gPTP Requirements Specification
 
 **Standards Compliance**: ISO/IEC/IEEE 29148:2018  
