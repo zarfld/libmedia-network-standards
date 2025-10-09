@@ -985,5 +985,6 @@ The system shall enforce rights cross-platform including platform-agnostic prote
 - ITU-R BS.2076 "Audio Definition Model (ADM)"
 - SMPTE ST 2094 "Dynamic Metadata for Color Volume Transform"
 - Dolby Atmos Technical Guidelines
-- DTS:X Technical Specification 
+- DTS:X Technical Specification
+ 
  
