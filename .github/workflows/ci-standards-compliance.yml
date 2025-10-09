@@ -284,12 +284,12 @@ jobs:
       - name: Generate traceability matrix
         run: |
           echo "🔍 Generating requirements traceability matrix..."
-          ALLOW_EMPTY_SPECS=1 python scripts/generate-traceability-matrix.py
+          ALLOW_EMPTY_SPECS=1 python Scripts/generate-traceability-matrix.py
 
       - name: Validate traceability
         run: |
           echo "✅ Checking traceability completeness..."
-          ALLOW_EMPTY_SPECS=1 python scripts/validate-traceability.py || {
+          ALLOW_EMPTY_SPECS=1 python Scripts/validate-traceability.py || {
             echo "❌ Traceability validation failed"
             echo "Every requirement must trace to:"
             echo "  - Stakeholder requirement (StR-XXX)"
@@ -368,7 +368,7 @@ jobs:
         uses: actions/checkout@v4
       - name: ADR Impact Scan
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/adr_impact_scan.py --warn-only || echo "ADR impact scan completed"
+          ALLOW_EMPTY_SPECS=1 python Scripts/adr_impact_scan.py --warn-only || echo "ADR impact scan completed"
 
       - name: Validate Architecture Decision Records
         run: |
