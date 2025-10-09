@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-IEEE1588-001"
+    - "REQ-STK-IEEE1588-002"
+    - "REQ-STK-IEEE1588-003"
+    - "REQ-STK-IEEE1588-004"
+    - "REQ-STK-IEEE1588-005"
+---
 # IEEE 1588-2019 PTP v2.1 Requirements Specification
 
 **Standards Compliance**: ISO/IEC/IEEE 29148:2018  

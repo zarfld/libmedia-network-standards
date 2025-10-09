@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-AES3-001"
+    - "REQ-STK-AES3-002"
+    - "REQ-STK-AES3-003"
+    - "REQ-STK-AES3-004"
+    - "REQ-STK-AES3-005"
+---
 # AES3-2009 Digital Audio Interface Requirements Specification
 
 **Document Information:**

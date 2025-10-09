@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-IEEE8021AX-001"
+    - "REQ-STK-IEEE8021AX-002"
+    - "REQ-STK-IEEE8021AX-003"
+    - "REQ-STK-IEEE8021AX-004"
+    - "REQ-STK-IEEE8021AX-005"
+---
 # IEEE 802.1AX-2020 Link Aggregation Control Protocol Requirements Specification
 
 **Document Information:**

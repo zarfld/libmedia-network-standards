@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-IEEE8021Q-001"
+    - "REQ-STK-IEEE8021Q-002"
+    - "REQ-STK-IEEE8021Q-003"
+    - "REQ-STK-IEEE8021Q-004"
+    - "REQ-STK-IEEE8021Q-005"
+---
 # IEEE 802.1Q-2022 Bridges and Bridged Networks Requirements Specification
 
 **Document Information:**
