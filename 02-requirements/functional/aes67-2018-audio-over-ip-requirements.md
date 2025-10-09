@@ -1,6 +1,10 @@
 # AES67-2018 Professional Audio-over-IP Interoperability Requirements
 
-**D**REQ-SYS-A**REQ-SYS-A**REQ-SYS-AES67-007:** The system SHALL implement DiffServ quality of service mechanisms as described in RFC 2474, supporting differentiated treatment for clock, media, and best-effort traffic classes.
+**D**REQ-SYS-A**REQ-SYS-A**REQ-SYS-A**REQ-SYS-AES67-010:** The system SHALL support professional audio encoding formats: L16 (16-bit linear) as defined in RFC 3551 clause 4.5.11 and L24 (24-bit linear) as defined in RFC 3190 clause 4.
+
+**REQ-SYS-AES67-011:** The system SHALL implement mandatory support for 48 kHz sampling rate and SHOULD support 96 kHz and 44.1 kHz sampling rates for comprehensive compatibility.
+
+**REQ-SYS-AES67-012:** The system SHALL enforce maximum RTP payload size of 1440 bytes to prevent fragmentation over standard Ethernet infrastructure with 1500-byte MTU.007:** The system SHALL implement DiffServ quality of service mechanisms as described in RFC 2474, supporting differentiated treatment for clock, media, and best-effort traffic classes.
 
 **REQ-SYS-AES67-008:** The system SHALL provide configurable DSCP marking with default values: EF (46) for clock traffic, AF41 (34) for media traffic, and DF (0) for best-effort traffic.
 
