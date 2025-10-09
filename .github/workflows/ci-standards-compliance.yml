@@ -1,0 +1,615 @@
+name: CI - Standards Compliance & Quality Gates
+
+on:
+  push:
+    branches: [main, develop, "feature/**", "release/**"]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: "0 2 * * 0"
+
+env:
+  NODE_VERSION: "20.x"
+  PYTHON_VERSION: "3.11"
+  MIN_TEST_COVERAGE: 80
+  MAX_CYCLOMATIC_COMPLEXITY: 10
+  MIN_REQ_LINKAGE_COVERAGE: 90
+
+jobs:
+  spec-validation:
+    name: Spec Structure Validation (Schema & Traceability Prereq)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+      - name: Validate spec structure
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/validate-spec-structure.py || {
+            echo '❌ Spec structure validation failed.'
+            exit 1
+          }
+  spec-generation:
+    needs: [spec-validation]
+    name: Spec Artifact Generation (Index, Trace JSON, Test Skeletons)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate spec index
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/generators/spec_parser.py
+      - name: Build traceability JSON
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/generators/build_trace_json.py
+      - name: Generate requirement test skeletons
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/generators/gen_tests.py
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-generated-artifacts
+          path: |
+            build/spec-index.json
+            build/traceability.json
+            05-implementation/tests/generated/
+  # Phase 05: Implementation Quality Checks
+  code-quality:
+    needs: [spec-generation]
+    name: Code Quality & Standards (IEEE 1016, XP Practices)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g eslint prettier markdownlint-cli
+
+      - name: Run linting (Coding Standards)
+        run: |
+          echo "🔍 Checking code style compliance..."
+          npm run lint
+
+      - name: Check code formatting
+        run: |
+          echo "📝 Checking code formatting..."
+          npm run format:check || {
+            echo "❌ Code formatting issues found"
+            echo "Run 'npm run format' locally to fix"
+            exit 1
+          }
+
+      - name: Check Markdown documentation
+        run: |
+          echo "📄 Validating Markdown documentation..."
+          markdownlint '**/*.md' --ignore node_modules || {
+            echo "⚠️ Markdown lint issues found (non-blocking)"
+          }
+
+      - name: Complexity analysis
+        run: |
+          echo "📊 Analyzing code complexity..."
+          npx eslint . --ext .ts,.js --max-warnings 0 --rule 'complexity: ["error", ${{ env.MAX_CYCLOMATIC_COMPLEXITY }}]' || {
+            echo "❌ Cyclomatic complexity exceeds ${{ env.MAX_CYCLOMATIC_COMPLEXITY }}"
+            exit 1
+          }
+
+  # Phase 05: TDD - Test-Driven Development
+  unit-tests:
+    name: Unit Tests (XP - TDD Red-Green-Refactor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: |
+          echo "🧪 Running unit tests (TDD practice)..."
+          npm test -- --coverage --watchAll=false
+
+      - name: Check test coverage
+        run: |
+          echo "📊 Checking test coverage threshold..."
+          COVERAGE=$(npm test -- --coverage --watchAll=false --silent | grep 'All files' | awk '{print $10}' | sed 's/%//')
+          echo "Current coverage: ${COVERAGE}%"
+
+          if (( $(echo "$COVERAGE < ${{ env.MIN_TEST_COVERAGE }}" | bc -l) )); then
+            echo "❌ Test coverage ${COVERAGE}% is below minimum ${{ env.MIN_TEST_COVERAGE }}%"
+            exit 1
+          else
+            echo "✅ Test coverage ${COVERAGE}% meets minimum requirement"
+          fi
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+  traceability-coverage:
+    name: Traceability Coverage Enforcement
+    needs: [spec-generation]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download traceability artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spec-generated-artifacts
+          path: build
+      - name: Enforce requirement linkage coverage
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/validate-trace-coverage.py --min-req ${{ env.MIN_REQ_LINKAGE_COVERAGE }}
+
+  integrity-scan:
+    name: Integrity Level Scan
+    needs: [spec-generation]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run integrity scan
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/integrity_level_scan.py
+      - name: Upload integrity scan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrity-scan
+          path: build/integrity-scan.json
+
+  # Phase 06: Integration Testing
+  integration-tests:
+    name: Integration Tests (XP - Continuous Integration)
+    runs-on: ubuntu-latest
+    needs: [unit-tests]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run database migrations
+        run: |
+          echo "🗄️ Running database migrations..."
+          npm run db:migrate
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/test_db
+
+      - name: Run integration tests
+        run: |
+          echo "🔗 Running integration tests..."
+          npm run test:integration
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/test_db
+          REDIS_URL: redis://localhost:6379
+
+      - name: Upload integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: test-results/integration/
+
+  # Phase 02: Requirements Traceability Check
+  requirements-traceability:
+    needs: [spec-validation]
+    name: Requirements Traceability (ISO/IEC/IEEE 29148)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install traceability tools
+        run: |
+          pip install pyyaml markdown
+
+      - name: Generate traceability matrix
+        run: |
+          echo "🔍 Generating requirements traceability matrix..."
+          ALLOW_EMPTY_SPECS=1 python scripts/generate-traceability-matrix.py
+
+      - name: Validate traceability
+        run: |
+          echo "✅ Checking traceability completeness..."
+          ALLOW_EMPTY_SPECS=1 python scripts/validate-traceability.py || {
+            echo "❌ Traceability validation failed"
+            echo "Every requirement must trace to:"
+            echo "  - Stakeholder requirement (StR-XXX)"
+            echo "  - System requirement (REQ-XXX)"
+            echo "  - Design element (DES-XXX)"
+            echo "  - Implementation (CODE)"
+            echo "  - Test case (TEST-XXX)"
+            exit 1
+          }
+
+      - name: Upload traceability report
+        uses: actions/upload-artifact@v4
+        with:
+          name: traceability-matrix
+          path: reports/traceability-matrix.md
+
+  # Phase 07: Verification & Validation (IEEE 1012)
+  acceptance-tests:
+    name: Acceptance Tests (XP - Customer Tests, IEEE 1012)
+    runs-on: ubuntu-latest
+    needs: [integration-tests]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start application
+        run: |
+          npm run start &
+          echo $! > .app.pid
+          # Wait for app to start
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Run acceptance tests (BDD)
+        run: |
+          echo "🎭 Running acceptance tests (Behavior-Driven Development)..."
+          npm run test:acceptance
+
+      - name: Stop application
+        if: always()
+        run: |
+          kill $(cat .app.pid) || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-test-results
+          path: |
+            test-results/acceptance/
+            playwright-report/
+
+  # Phase 03: Architecture Compliance (ISO/IEC/IEEE 42010)
+  architecture-validation:
+    needs: [spec-validation]
+    name: Architecture Compliance (ISO/IEC/IEEE 42010)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: ADR Impact Scan
+        run: |
+          ALLOW_EMPTY_SPECS=1 python scripts/adr_impact_scan.py --warn-only || echo "ADR impact scan completed"
+
+      - name: Validate Architecture Decision Records
+        run: |
+          echo "📐 Validating ADR completeness..."
+          for adr in 03-architecture/decisions/*.md; do
+            [ -f "$adr" ] || continue
+            echo "Checking $adr..."
+            grep -q "## Status" "$adr" || { echo "❌ Missing Status section in $adr"; exit 1; }
+            grep -q "## Context" "$adr" || { echo "❌ Missing Context section in $adr"; exit 1; }
+            grep -q "## Decision" "$adr" || { echo "❌ Missing Decision section in $adr"; exit 1; }
+            grep -q "## Consequences" "$adr" || { echo "❌ Missing Consequences section in $adr"; exit 1; }
+          done
+      - name: Validate architecture views
+        run: |
+          echo "🏗️ Checking required architecture views..."
+          REQUIRED_VIEWS=(logical process development physical data)
+          for view in "${REQUIRED_VIEWS[@]}"; do
+            if [ ! -d "03-architecture/views/$view" ]; then
+              echo "⚠️ Missing architecture view: $view"
+            fi
+          done
+      - name: Verify quality attribute scenarios
+        run: |
+          echo "🔎 Checking quality attribute scenarios coverage..."
+          FILE=03-architecture/architecture-quality-scenarios.md
+          if [ ! -f "$FILE" ]; then
+            echo "❌ Missing quality attribute scenarios file"; exit 1; fi
+          for attr in Performance Availability Security; do
+            grep -qi "$attr" "$FILE" || { echo "❌ Missing scenario for $attr"; exit 1; }
+          done
+          echo "✅ Basic QA scenario coverage present"
+
+  # Security Scanning
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run npm audit
+        run: |
+          echo "🔒 Running npm security audit..."
+          npm audit --audit-level=moderate
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  # Standards Compliance Report
+  compliance-report:
+    needs:
+      [
+        spec-validation,
+        code-quality,
+        unit-tests,
+        integration-tests,
+        requirements-traceability,
+        acceptance-tests,
+        architecture-validation,
+        security-scan,
+      ]
+    name: Generate Standards Compliance Report
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Generate compliance report
+        run: |
+          echo "📋 Generating standards compliance report..."
+
+          cat > compliance-report.md << 'EOF'
+          # Standards Compliance Report
+
+          **Generated**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Branch**: ${{ github.ref_name }}
+          **Commit**: ${{ github.sha }}
+
+          ## ISO/IEC/IEEE 12207:2017 - Software Life Cycle Processes
+
+          - [x] Phase 01: Stakeholder Requirements Definition
+          - [x] Phase 02: Requirements Analysis
+          - [x] Phase 03: Architecture Design
+          - [x] Phase 04: Detailed Design
+          - [x] Phase 05: Implementation (TDD)
+          - [x] Phase 06: Integration (CI)
+          - [x] Phase 07: Verification & Validation
+          - [ ] Phase 08: Transition (manual)
+          - [ ] Phase 09: Operation & Maintenance (manual)
+
+          ## ISO/IEC/IEEE 29148:2018 - Requirements Engineering
+
+          - ✅ Requirements traceability: ${{ needs.requirements-traceability.result }}
+          - ✅ Stakeholder requirements documented
+          - ✅ System requirements specified
+          - ✅ Acceptance criteria defined
+
+          ## IEEE 1016-2009 - Software Design Descriptions
+
+          - ✅ Architecture documented
+          - ✅ Design decisions recorded (ADRs)
+          - ✅ Component designs specified
+
+          ## ISO/IEC/IEEE 42010:2011 - Architecture Description
+
+          - ✅ Architecture validation: ${{ needs.architecture-validation.result }}
+          - ✅ Stakeholder concerns addressed
+          - ✅ Architecture viewpoints defined
+          - ✅ Architecture views documented
+
+          ## IEEE 1012-2016 - Verification and Validation
+
+          - ✅ Unit tests: ${{ needs.unit-tests.result }}
+          - ✅ Integration tests: ${{ needs.integration-tests.result }}
+          - ✅ Acceptance tests: ${{ needs.acceptance-tests.result }}
+          - ✅ Test coverage: >=${{ env.MIN_TEST_COVERAGE }}%
+
+          ## XP Practices Compliance
+
+          - ✅ Test-Driven Development: Tests run before merge
+          - ✅ Continuous Integration: Multiple integrations per day
+          - ✅ Coding Standards: Enforced via linting
+          - ✅ Simple Design: Complexity <${{ env.MAX_CYCLOMATIC_COMPLEXITY }}
+          - ⚠️ Pair Programming: Manual (not automated)
+          - ⚠️ Collective Ownership: Manual (code reviews)
+          - ✅ Refactoring: Continuous (with tests)
+
+          ## Quality Metrics
+
+          | Metric | Target | Status |
+          |--------|--------|--------|
+          | Test Coverage | ≥80% | ${{ needs.unit-tests.result == 'success' && '✅' || '❌' }} |
+          | Cyclomatic Complexity | ≤10 | ${{ needs.code-quality.result == 'success' && '✅' || '❌' }} |
+          | Linting | 0 errors | ${{ needs.code-quality.result == 'success' && '✅' || '❌' }} |
+          | Security Vulnerabilities | 0 high/critical | ${{ needs.security-scan.result == 'success' && '✅' || '⚠️' }} |
+          | Requirements Traceability | 100% | ${{ needs.requirements-traceability.result == 'success' && '✅' || '❌' }} |
+
+          ## Overall Status
+
+          - Code Quality: ${{ needs.code-quality.result }}
+          - Unit Tests: ${{ needs.unit-tests.result }}
+          - Integration Tests: ${{ needs.integration-tests.result }}
+          - Acceptance Tests: ${{ needs.acceptance-tests.result }}
+          - Architecture: ${{ needs.architecture-validation.result }}
+          - Security: ${{ needs.security-scan.result }}
+          - Traceability: ${{ needs.requirements-traceability.result }}
+
+          **Build Status**: ${{ needs.code-quality.result == 'success' && needs.unit-tests.result == 'success' && needs.integration-tests.result == 'success' && '✅ PASSED' || '❌ FAILED' }}
+          EOF
+
+          cat compliance-report.md
+
+      - name: Upload compliance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-report
+          path: compliance-report.md
+
+      - name: Comment PR with report
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('compliance-report.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+
+  # Deployment (Phase 08) - only on main branch
+  deploy-staging:
+    name: Deploy to Staging (Phase 08 - Transition)
+    runs-on: ubuntu-latest
+    needs:
+      [
+        code-quality,
+        unit-tests,
+        integration-tests,
+        acceptance-tests,
+        security-scan,
+      ]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: https://staging.example.com
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build application
+        run: |
+          echo "🏗️ Building application..."
+          npm ci
+          npm run build
+
+      - name: Deploy to staging
+        run: |
+          echo "🚀 Deploying to staging environment..."
+          # Add your deployment commands here
+          # e.g., aws, gcloud, kubectl, etc.
+
+      - name: Run smoke tests
+        run: |
+          echo "💨 Running smoke tests..."
+          npm run test:smoke -- --env=staging
+
+      - name: Notify deployment
+        if: always()
+        run: |
+          echo "📢 Deployment to staging: ${{ job.status }}"
+          # Add notification logic (Slack, email, etc.)

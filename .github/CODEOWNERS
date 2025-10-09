@@ -1,0 +1,17 @@
+# CODEOWNERS - defines required reviewers for critical governed artifacts
+# Pattern order matters. Most specific rules should come first.
+
+# Architecture & design governance
+03-architecture/**  @architecture-team
+
+# Requirements specs
+02-requirements/**  @product-owner @requirements-analyst
+
+# Standards compliance scripts
+scripts/**          @dev-leads
+
+# CI workflows
+.github/workflows/** @devops-team
+
+# Default fallback
+* @project-maintainers
