@@ -58,7 +58,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## Stakeholder Requirements
 
-### SR-01: Professional Audio Engineers
+### REQ-STK-IEEE8021AS-001: Professional Audio Engineers
 
 **Need**: Precise timing synchronization for professional audio production systems
 
@@ -66,7 +66,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Success Criteria**: Timing accuracy better than 1 microsecond across all network nodes, synchronized sample clock distribution
 
-### SR-02: Video Production Teams
+### REQ-STK-IEEE8021AS-002: Video Production Teams
 
 **Need**: Frame-accurate timing synchronization for professional video production workflows
 
@@ -74,7 +74,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Success Criteria**: Frame-locked timing distribution, synchronization accuracy supporting 4K/8K video production
 
-### SR-03: Broadcast Infrastructure Operators
+### REQ-STK-IEEE8021AS-003: Broadcast Infrastructure Operators
 
 **Need**: Reliable, scalable timing distribution for broadcast facility infrastructure
 
@@ -82,7 +82,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Success Criteria**: Multi-domain support, redundant grandmaster capability, seamless failover mechanisms
 
-### SR-04: TSN Network Equipment Manufacturers
+### REQ-STK-IEEE8021AS-004: TSN Network Equipment Manufacturers
 
 **Need**: IEEE 802.1AS-2021 compliant timing distribution for TSN infrastructure products
 
@@ -90,7 +90,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Success Criteria**: Full IEEE 802.1AS-2021 compliance, interoperability with major TSN vendors, certification readiness
 
-### SR-05: System Integration Companies
+### REQ-STK-IEEE8021AS-005: System Integration Companies
 
 **Need**: Manageable and monitorable timing distribution for complex installation projects
 
@@ -100,43 +100,43 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## System Requirements
 
-### SYS-01: Enhanced Multi-Domain Support
+### REQ-SYS-IEEE8021AS-001: Enhanced Multi-Domain Support
 
 **Requirement**: The IEEE 802.1AS-2021 implementation SHALL support multiple timing domains for complex network topologies
 
-**Derived From**: SR-03, SR-05
+**Derived From**: REQ-STK-IEEE8021AS-003, REQ-STK-IEEE8021AS-005
 
 **Dependencies**: Domain-aware network infrastructure, multi-domain capable bridges
 
-### SYS-02: Precision Timing Accuracy
+### REQ-SYS-IEEE8021AS-002: Precision Timing Accuracy
 
 **Requirement**: The implementation SHALL achieve sub-microsecond timing synchronization accuracy
 
-**Derived From**: SR-01, SR-02
+**Derived From**: REQ-STK-IEEE8021AS-001, REQ-STK-IEEE8021AS-002
 
 **Criteria**: Timing accuracy better than 500 nanoseconds under normal network conditions
 
-### SYS-03: Scalable Network Architecture
+### REQ-SYS-IEEE8021AS-003: Scalable Network Architecture
 
 **Requirement**: The implementation SHALL support scalable timing distribution across large network topologies
 
-**Derived From**: SR-03, SR-05
+**Derived From**: REQ-STK-IEEE8021AS-003, REQ-STK-IEEE8021AS-005
 
 **Constraints**: Support for minimum 1000 nodes, maximum 20 hop paths, multiple redundant timing sources
 
-### SYS-04: Backward Compatibility
+### REQ-SYS-IEEE8021AS-004: Backward Compatibility
 
 **Requirement**: The implementation SHALL maintain backward compatibility with existing 802.1AS deployments
 
-**Derived From**: SR-04, SR-05
+**Derived From**: REQ-STK-IEEE8021AS-004, REQ-STK-IEEE8021AS-005
 
 **Dependencies**: IEEE 802.1AS-2020/2011 interoperability, graceful feature negotiation
 
-### SYS-05: Security and Management
+### REQ-SYS-IEEE8021AS-005: Security and Management
 
 **Requirement**: The implementation SHALL provide enhanced security and management capabilities
 
-**Derived From**: SR-03, SR-05
+**Derived From**: REQ-STK-IEEE8021AS-003, REQ-STK-IEEE8021AS-005
 
 **Features**: Secure time distribution, YANG model support, network management integration
 
@@ -144,7 +144,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ### Multi-Domain Support Requirements
 
-#### FR-MD-01: Domain Configuration
+#### REQ-FUN-IEEE8021AS-001: Domain Configuration
 
 **Requirement**: The implementation SHALL support configuration and management of multiple timing domains
 
@@ -157,7 +157,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Acceptance Criteria**: Multiple timing domains operate independently, domain conflicts are resolved according to specification
 
-#### FR-MD-02: Cross-Domain Synchronization
+#### REQ-FUN-IEEE8021AS-002: Cross-Domain Synchronization
 
 **Requirement**: The implementation SHALL support synchronization relationships between timing domains
 
@@ -172,7 +172,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ### Path Delay Mechanism Requirements
 
-#### FR-PDM-01: Peer-to-Peer Path Delay
+#### REQ-FUN-IEEE8021AS-003: Peer-to-Peer Path Delay
 
 **Requirement**: The implementation SHALL support peer-to-peer path delay measurement mechanism
 
@@ -185,7 +185,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Acceptance Criteria**: Path delay measurements are accurate within specification limits, delay calculations update smoothly
 
-#### FR-PDM-02: End-to-End Path Delay
+#### REQ-FUN-IEEE8021AS-004: End-to-End Path Delay
 
 **Requirement**: The implementation SHALL support end-to-end path delay measurement mechanism (new in 2021)
 
@@ -200,7 +200,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ### Best Master Clock Algorithm (BMCA) Requirements
 
-#### FR-BMCA-01: Enhanced Clock Selection
+#### REQ-FUN-IEEE8021AS-005: Enhanced Clock Selection
 
 **Requirement**: The implementation SHALL support enhanced BMCA for optimal grandmaster selection
 
@@ -213,7 +213,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Acceptance Criteria**: Best master clock selection produces optimal timing source, clock changes are handled gracefully
 
-#### FR-BMCA-02: Multi-Domain BMCA
+#### REQ-FUN-IEEE8021AS-006: Multi-Domain BMCA
 
 **Requirement**: The implementation SHALL support BMCA operation across multiple domains
 
@@ -228,7 +228,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ### Message Processing Requirements
 
-#### FR-MSG-01: Core gPTP Messages
+#### REQ-FUN-IEEE8021AS-007: Core gPTP Messages
 
 **Requirement**: The implementation SHALL support all core gPTP message types with enhanced capabilities
 
@@ -241,7 +241,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Acceptance Criteria**: All message types are processed correctly, timestamps are accurate, TLVs are handled properly
 
-#### FR-MSG-02: Extended TLV Support
+#### REQ-FUN-IEEE8021AS-008: Extended TLV Support
 
 **Requirement**: The implementation SHALL support extended TLV capabilities for enhanced functionality
 
@@ -256,7 +256,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ### State Machine Requirements
 
-#### FR-SM-01: Port State Machines
+#### REQ-FUN-IEEE8021AS-009: Port State Machines
 
 **Requirement**: The implementation SHALL implement enhanced port state machines for improved reliability
 
@@ -269,7 +269,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Acceptance Criteria**: State transitions occur correctly, fault recovery is automatic, port roles are properly negotiated
 
-#### FR-SM-02: Site Synchronization
+#### REQ-FUN-IEEE8021AS-010: Site Synchronization
 
 **Requirement**: The implementation SHALL support site synchronization state machines for multi-port devices
 
@@ -284,7 +284,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## Non-Functional Requirements
 
-### NFR-01: Timing Performance Requirements
+### REQ-NFR-IEEE8021AS-001: Timing Performance Requirements
 
 **Accuracy**: Timing synchronization SHALL achieve better than 500 nanoseconds accuracy under normal conditions
 
@@ -294,7 +294,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Recovery**: Timing recovery after fault SHALL complete within 2 seconds
 
-### NFR-02: Scalability Requirements
+### REQ-NFR-IEEE8021AS-002: Scalability Requirements
 
 **Network Size**: The implementation SHALL support networks with minimum 1000 synchronized nodes
 
@@ -304,7 +304,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Message Rate**: The implementation SHALL handle minimum 1000 gPTP messages per second per port
 
-### NFR-03: Reliability Requirements
+### REQ-NFR-IEEE8021AS-003: Reliability Requirements
 
 **Availability**: The timing synchronization SHALL maintain 99.99% availability during continuous operation
 
@@ -314,7 +314,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Error Rate**: Message processing error rate SHALL not exceed 0.01% under normal conditions
 
-### NFR-04: Security Requirements
+### REQ-NFR-IEEE8021AS-004: Security Requirements
 
 **Authentication**: The implementation SHALL support authentication mechanisms for secure time distribution
 
@@ -326,7 +326,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## Use Cases
 
-### UC-01: Professional Audio Studio Setup
+### UC-IEEE8021AS-001: Professional Audio Studio Setup
 
 **Actors**: Audio Engineer, Audio Equipment, gPTP Infrastructure
 
@@ -344,7 +344,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Postconditions**: All audio devices are precisely synchronized, enabling multi-channel recording
 
-### UC-02: Live Broadcast Production
+### UC-IEEE8021AS-002: Live Broadcast Production
 
 **Actors**: Broadcast Engineer, Video/Audio Equipment, Timing Infrastructure
 
@@ -362,7 +362,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 **Postconditions**: Live production continues with maintained synchronization despite timing failures
 
-### UC-03: Large-Scale Installation
+### UC-IEEE8021AS-003: Large-Scale Installation
 
 **Actors**: System Integrator, Professional AV Equipment, Network Management
 
@@ -382,7 +382,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## User Stories
 
-### US-01: Automatic Timing Synchronization
+### US-IEEE8021AS-001: Automatic Timing Synchronization
 
 **As a** professional audio engineer  
 **I want** automatic timing synchronization across all my audio equipment  
@@ -394,7 +394,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 - Synchronization accuracy meets professional audio requirements
 - Timing status is clearly visible in equipment interfaces
 
-### US-02: Redundant Timing Infrastructure
+### US-IEEE8021AS-002: Redundant Timing Infrastructure
 
 **As a** broadcast facility operator  
 **I want** redundant timing distribution with automatic failover  
@@ -406,7 +406,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 - Failover occurs automatically without service interruption
 - Timing quality is monitored and alerted
 
-### US-03: Multi-Zone Timing Management
+### US-IEEE8021AS-003: Multi-Zone Timing Management
 
 **As a** system integrator  
 **I want** to manage timing across multiple zones in large installations  
@@ -420,7 +420,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 ## Acceptance Criteria
 
-### AC-01: IEEE 802.1AS-2021 Compliance
+### AC-IEEE8021AS-001: IEEE 802.1AS-2021 Compliance
 
 - [ ] All mandatory gPTP message types implemented correctly
 - [ ] Multi-domain support fully functional and tested
@@ -429,7 +429,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 - [ ] Security framework implemented according to specification
 - [ ] YANG model support for network management integration
 
-### AC-02: Timing Performance Validation
+### AC-IEEE8021AS-002: Timing Performance Validation
 
 - [ ] Timing accuracy better than 500 nanoseconds achieved in testing
 - [ ] Convergence time meets specification requirements
@@ -437,7 +437,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 - [ ] Scalability validated with large network topologies
 - [ ] Fault recovery tested and meets timing requirements
 
-### AC-03: Interoperability and Compatibility
+### AC-IEEE8021AS-003: Interoperability and Compatibility
 
 - [ ] Interoperability demonstrated with major TSN equipment vendors
 - [ ] Backward compatibility with 802.1AS-2020/2011 verified
@@ -445,7 +445,7 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 - [ ] Milan compatibility demonstrated and tested
 - [ ] Network management integration functional
 
-### AC-04: Reliability and Security
+### AC-IEEE8021AS-004: Reliability and Security
 
 - [ ] Redundant timing operation tested and validated
 - [ ] Security mechanisms implemented and tested
@@ -459,21 +459,21 @@ IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the pr
 
 | Stakeholder Requirement | System Requirements | Implementation Focus |
 |------------------------|-------------------|---------------------|
-| SR-01 Professional Audio Engineers | SYS-02, SYS-03 | Precision timing, scalability |
-| SR-02 Video Production Teams | SYS-02, SYS-04 | Timing accuracy, compatibility |
-| SR-03 Broadcast Infrastructure | SYS-01, SYS-03, SYS-05 | Multi-domain, scalability, security |
-| SR-04 TSN Equipment Manufacturers | SYS-04, SYS-05 | Standards compliance, management |
-| SR-05 System Integration Companies | SYS-01, SYS-05 | Multi-domain, management capabilities |
+| REQ-STK-IEEE8021AS-001 Professional Audio Engineers | REQ-SYS-IEEE8021AS-002, REQ-SYS-IEEE8021AS-003 | Precision timing, scalability |
+| REQ-STK-IEEE8021AS-002 Video Production Teams | REQ-SYS-IEEE8021AS-002, REQ-SYS-IEEE8021AS-004 | Timing accuracy, compatibility |
+| REQ-STK-IEEE8021AS-003 Broadcast Infrastructure | REQ-SYS-IEEE8021AS-001, REQ-SYS-IEEE8021AS-003, REQ-SYS-IEEE8021AS-005 | Multi-domain, scalability, security |
+| REQ-STK-IEEE8021AS-004 TSN Equipment Manufacturers | REQ-SYS-IEEE8021AS-004, REQ-SYS-IEEE8021AS-005 | Standards compliance, management |
+| REQ-STK-IEEE8021AS-005 System Integration Companies | REQ-SYS-IEEE8021AS-001, REQ-SYS-IEEE8021AS-005 | Multi-domain, management capabilities |
 
 ### Functional Requirements Implementation
 
 | Functional Requirement | Implementation Components | Test Coverage |
 |----------------------|-------------------------|--------------|
-| FR-MD-01 Domain Configuration | Multi-domain state machines, configuration management | Domain isolation tests |
-| FR-PDM-01 Peer-to-Peer Delay | Path delay measurement, timestamp processing | Delay accuracy tests |
-| FR-BMCA-01 Clock Selection | Enhanced BMCA algorithm, clock quality evaluation | Master selection tests |
-| FR-MSG-01 Message Processing | Message handlers, timestamp generation | Protocol compliance tests |
-| FR-SM-01 State Machines | Port state management, transition logic | State machine validation |
+| REQ-FUN-IEEE8021AS-001 Domain Configuration | Multi-domain state machines, configuration management | Domain isolation tests |
+| REQ-FUN-IEEE8021AS-003 Peer-to-Peer Delay | Path delay measurement, timestamp processing | Delay accuracy tests |
+| REQ-FUN-IEEE8021AS-005 Clock Selection | Enhanced BMCA algorithm, clock quality evaluation | Master selection tests |
+| REQ-FUN-IEEE8021AS-007 Message Processing | Message handlers, timestamp generation | Protocol compliance tests |
+| REQ-FUN-IEEE8021AS-009 State Machines | Port state management, transition logic | State machine validation |
 
 ---
 

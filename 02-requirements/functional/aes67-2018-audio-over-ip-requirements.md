@@ -1,6 +1,10 @@
 # AES67-2018 Professional Audio-over-IP Interoperability Requirements
 
-**Document Version:** 1.0  
+**D**REQ-SYS-AES67-001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol (PTP) as the primary synchronization mechanism for professional audio applications.
+
+**REQ-SYS-AES67-002:** The system SHALL support the AES67 Media Profile for optimal audio performance on standard IP networks, providing enhanced timing accuracy compared to default IEEE 1588 profiles.
+
+**REQ-SYS-AES67-003:** The system SHALL maintain media clock synchronization with network clock, sharing the IEEE 1588 epoch of 1 January 1970 00:00:00 TAI as defined in IEEE 1588-2008 clause 7.2.2.nt Version:** 1.0  
 **Date:** 2024-12-28  
 **Status:** Draft  
 **Standards Compliance:** ISO/IEC/IEEE 29148:2018
@@ -43,63 +47,63 @@ This specification encompasses:
 
 ### 2.1 Professional Audio Engineers
 **Need:** Reliable, low-latency audio transport for live sound applications
-- **REQ-STK-001:** System SHALL support audio transport with deterministic latency ≤ 10ms end-to-end
-- **REQ-STK-002:** System SHALL provide sample-accurate synchronization across multiple audio devices
-- **REQ-STK-003:** System SHALL maintain audio quality equivalent to AES/EBU digital audio standards
+- **REQ-STK-AES67-001:** System SHALL support audio transport with deterministic latency ≤ 10ms end-to-end
+- **REQ-STK-AES67-002:** System SHALL provide sample-accurate synchronization across multiple audio devices
+- **REQ-STK-AES67-003:** System SHALL maintain audio quality equivalent to AES/EBU digital audio standards
 
 ### 2.2 Broadcast Facility Operators  
 **Need:** Interoperable audio distribution for production environments
-- **REQ-STK-004:** System SHALL enable seamless integration with existing broadcast infrastructure
-- **REQ-STK-005:** System SHALL support multiple simultaneous audio streams per device
-- **REQ-STK-006:** System SHALL provide discovery mechanisms for automatic device recognition
+- **REQ-STK-AES67-004:** System SHALL enable seamless integration with existing broadcast infrastructure
+- **REQ-STK-AES67-005:** System SHALL support multiple simultaneous audio streams per device
+- **REQ-STK-AES67-006:** System SHALL provide discovery mechanisms for automatic device recognition
 
 ### 2.3 Network Infrastructure Engineers
 **Need:** Manageable QoS and bandwidth utilization for audio traffic
-- **REQ-STK-007:** System SHALL implement DiffServ QoS marking for traffic prioritization
-- **REQ-STK-008:** System SHALL support both multicast and unicast distribution modes
-- **REQ-STK-009:** System SHALL provide network bandwidth efficiency through configurable packet sizes
+- **REQ-STK-AES67-007:** System SHALL implement DiffServ QoS marking for traffic prioritization
+- **REQ-STK-AES67-008:** System SHALL support both multicast and unicast distribution modes
+- **REQ-STK-AES67-009:** System SHALL provide network bandwidth efficiency through configurable packet sizes
 
 ### 2.4 Device Manufacturers
 **Need:** Standardized implementation guidelines for interoperability
-- **REQ-STK-010:** System SHALL define mandatory and optional protocol features for compliance
-- **REQ-STK-011:** System SHALL specify conformance testing procedures and criteria
-- **REQ-STK-012:** System SHALL provide implementation flexibility while ensuring interoperability
+- **REQ-STK-AES67-010:** System SHALL define mandatory and optional protocol features for compliance
+- **REQ-STK-AES67-011:** System SHALL specify conformance testing procedures and criteria
+- **REQ-STK-AES67-012:** System SHALL provide implementation flexibility while ensuring interoperability
 
 ### 2.5 Integration System Designers
 **Need:** Scalable audio networking solutions for complex installations
-- **REQ-STK-013:** System SHALL support heterogeneous network environments (AVB and non-AVB)
-- **REQ-STK-014:** System SHALL enable connection management through standardized protocols
-- **REQ-STK-015:** System SHALL provide session negotiation capabilities for format selection
+- **REQ-STK-AES67-013:** System SHALL support heterogeneous network environments (AVB and non-AVB)
+- **REQ-STK-AES67-014:** System SHALL enable connection management through standardized protocols
+- **REQ-STK-AES67-015:** System SHALL provide session negotiation capabilities for format selection
 
 ## 3. System Requirements
 
 ### 3.1 Synchronization Architecture
-**REQ-SYS-001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol (PTP) as the primary synchronization mechanism for professional audio applications.
+**REQ-SYS-AES67-:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol (PTP) as the primary synchronization mechanism for professional audio applications.
 
-**REQ-SYS-002:** The system SHALL support the AES67 Media Profile for optimal audio performance on standard IP networks, providing enhanced timing accuracy compared to default IEEE 1588 profiles.
+**REQ-SYS-AES67-:** The system SHALL support the AES67 Media Profile for optimal audio performance on standard IP networks, providing enhanced timing accuracy compared to default IEEE 1588 profiles.
 
-**REQ-SYS-003:** The system SHALL maintain media clock synchronization with network clock, sharing the IEEE 1588 epoch of 1 January 1970 00:00:00 TAI as defined in IEEE 1588-2008 clause 7.2.2.
+**REQ-SYS-AES67-:** The system SHALL maintain media clock synchronization with network clock, sharing the IEEE 1588 epoch of 1 January 1970 00:00:00 TAI as defined in IEEE 1588-2008 clause 7.2.2.
 
 ### 3.2 Transport Infrastructure
-**REQ-SYS-004:** The system SHALL utilize IPv4 as the network layer protocol for media packet transport as defined in RFC 791, with consideration for future IPv6 compatibility.
+**REQ-SYS-AES67-:** The system SHALL utilize IPv4 as the network layer protocol for media packet transport as defined in RFC 791, with consideration for future IPv6 compatibility.
 
-**REQ-SYS-005:** The system SHALL implement Real-time Transport Protocol (RTP) as defined in RFC 3550 for audio stream delivery, operating in accordance with RTP Profile for Audio and Video Conferences with Minimal Control (RFC 3551).
+**REQ-SYS-AES67-:** The system SHALL implement Real-time Transport Protocol (RTP) as defined in RFC 3550 for audio stream delivery, operating in accordance with RTP Profile for Audio and Video Conferences with Minimal Control (RFC 3551).
 
-**REQ-SYS-006:** The system SHALL support UDP transport layer protocol as defined in RFC 768 for RTP packet delivery, ensuring minimal protocol overhead for real-time applications.
+**REQ-SYS-AES67-:** The system SHALL support UDP transport layer protocol as defined in RFC 768 for RTP packet delivery, ensuring minimal protocol overhead for real-time applications.
 
 ### 3.3 Quality of Service Framework
-**REQ-SYS-007:** The system SHALL implement DiffServ quality of service mechanisms as described in RFC 2474, supporting differentiated treatment for clock, media, and best-effort traffic classes.
+**REQ-SYS-AES67-:** The system SHALL implement DiffServ quality of service mechanisms as described in RFC 2474, supporting differentiated treatment for clock, media, and best-effort traffic classes.
 
-**REQ-SYS-008:** The system SHALL provide configurable DSCP marking with default values: EF (46) for clock traffic, AF41 (34) for media traffic, and DF (0) for best-effort traffic.
+**REQ-SYS-AES67-:** The system SHALL provide configurable DSCP marking with default values: EF (46) for clock traffic, AF41 (34) for media traffic, and DF (0) for best-effort traffic.
 
-**REQ-SYS-009:** The system SHALL support IGMP v2 (RFC 2236) as minimum requirement and MAY support IGMP v3 (RFC 3376) for multicast group management.
+**REQ-SYS-AES67-:** The system SHALL support IGMP v2 (RFC 2236) as minimum requirement and MAY support IGMP v3 (RFC 3376) for multicast group management.
 
 ### 3.4 Audio Encoding and Format Support
-**REQ-SYS-010:** The system SHALL support professional audio encoding formats: L16 (16-bit linear) as defined in RFC 3551 clause 4.5.11 and L24 (24-bit linear) as defined in RFC 3190 clause 4.
+**REQ-SYS-AES67-:** The system SHALL support professional audio encoding formats: L16 (16-bit linear) as defined in RFC 3551 clause 4.5.11 and L24 (24-bit linear) as defined in RFC 3190 clause 4.
 
-**REQ-SYS-011:** The system SHALL implement mandatory support for 48 kHz sampling rate and SHOULD support 96 kHz and 44.1 kHz sampling rates for comprehensive compatibility.
+**REQ-SYS-AES67-:** The system SHALL implement mandatory support for 48 kHz sampling rate and SHOULD support 96 kHz and 44.1 kHz sampling rates for comprehensive compatibility.
 
-**REQ-SYS-012:** The system SHALL enforce maximum RTP payload size of 1440 bytes to prevent fragmentation over standard Ethernet infrastructure with 1500-byte MTU.
+**REQ-SYS-AES67-:** The system SHALL enforce maximum RTP payload size of 1440 bytes to prevent fragmentation over standard Ethernet infrastructure with 1500-byte MTU.
 
 ## 4. Functional Requirements
 
