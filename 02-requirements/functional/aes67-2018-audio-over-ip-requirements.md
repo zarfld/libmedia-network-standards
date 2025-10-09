@@ -1,11 +1,11 @@
 ---
 specType: requirements
-standard: 29148
-phase: 02-requirements
-version: 1.0.0
-author: Requirements Engineering Team
-date: 2025-10-10
-status: approved
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
 traceability:
   stakeholderRequirements:
     - REQ-STK-AES67-001

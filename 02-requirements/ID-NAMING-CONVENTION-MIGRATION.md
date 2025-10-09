@@ -1,3 +1,18 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-NAMING-001"
+    - "REQ-STK-NAMING-002"
+    - "REQ-STK-NAMING-003"
+---
+
 # Requirements ID Naming Convention and Migration Plan
 
 ## Overview
