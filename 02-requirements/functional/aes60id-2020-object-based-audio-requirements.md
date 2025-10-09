@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-AES60ID-001"
+    - "REQ-STK-AES60ID-002"
+    - "REQ-STK-AES60ID-003"
+    - "REQ-STK-AES60ID-004"
+    - "REQ-STK-AES60ID-005"
+---
 # AES60id-2020 Object-Based Audio Metadata Requirements Specification
 
 **Document Information:**

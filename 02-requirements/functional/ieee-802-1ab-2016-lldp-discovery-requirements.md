@@ -1,3 +1,20 @@
+---
+specType: requirements
+standard: "29148"
+phase: "02-requirements"
+version: "1.0.0"
+author: "Requirements Engineering Team"
+date: "2025-10-10"
+status: "approved"
+traceability:
+  stakeholderRequirements:
+    - "REQ-STK-IEEE8021AB-001"
+    - "REQ-STK-IEEE8021AB-002"
+    - "REQ-STK-IEEE8021AB-003"
+    - "REQ-STK-IEEE8021AB-004"
+    - "REQ-STK-IEEE8021AB-005"
+---
+
 # IEEE 802.1AB-2016 Link Layer Discovery Protocol Requirements Specification
 
 **Document Information:**
