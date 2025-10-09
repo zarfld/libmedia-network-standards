@@ -1,3 +1,19 @@
+---
+specType: requirements
+standard: 29148
+phase: 02-requirements
+version: 1.0.0
+author: Requirements Engineering Team
+date: 2025-10-10
+status: approved
+traceability:
+  stakeholderRequirements:
+    - REQ-STK-IEEE1722-001
+    - REQ-STK-IEEE1722-002
+    - REQ-STK-IEEE1722-003
+    - REQ-STK-IEEE1722-004
+    - REQ-STK-IEEE1722-005
+---
 # IEEE 1722-2016 AVTP Requirements Specification
 
 **Standards Compliance**: ISO/IEC/IEEE 29148:2018  
@@ -505,6 +521,7 @@ IEEE 1722-2016 AVTP serves as the media transport layer in the professional medi
 - IEEE Std 1722.1-2021: IEEE Standard for Device Discovery, Connection Management, and Control Protocol for Time-Sensitive Networking Systems
 - ISO/IEC/IEEE 29148:2018: Systems and software engineering - Life cycle processes - Requirements engineering
 - AES67-2018: AES standard for audio applications of networks - High-performance streaming audio-over-IP interoperability
+
 
 
 
