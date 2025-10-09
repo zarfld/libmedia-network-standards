@@ -985,5 +985,6 @@ The system shall provide interoperability testing tools including test suites, v
 - IEEE 802.1AS-2020 "IEEE Standard for Local and Metropolitan Area Networks - Timing and Synchronization for Time-Sensitive Applications"
 - IEEE 802.1Qbv "IEEE Standard for Local and metropolitan area networks - Bridges and Bridged Networks - Amendment: Enhancements for Scheduled Traffic"
 - RFC 8655 "Deterministic Networking Architecture"
-- ITU-T Y.3172 "Architectural framework for machine learning in future networks including IMT-2020" 
+- ITU-T Y.3172 "Architectural framework for machine learning in future networks including IMT-2020"
+ 
  

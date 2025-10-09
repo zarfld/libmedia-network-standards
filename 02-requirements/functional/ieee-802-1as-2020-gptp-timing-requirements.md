@@ -985,5 +985,6 @@ The system shall provide custom time services including application-specific tim
 - IEEE 1588-2019 "IEEE Standard for a Precision Clock Synchronization Protocol for Networked Measurement and Control Systems"
 - IEEE 802.1Qbv-2015 "IEEE Standard for Local and metropolitan area networks - Bridges and Bridged Networks - Amendment: Enhancements for Scheduled Traffic"
 - IEC 61588 "Precision clock synchronization protocol for networked measurement and control systems"
-- ITU-T G.8275.1/G.8275.2 "Precision time protocol telecom profiles for frequency and phase synchronization" 
+- ITU-T G.8275.1/G.8275.2 "Precision time protocol telecom profiles for frequency and phase synchronization"
+ 
  
