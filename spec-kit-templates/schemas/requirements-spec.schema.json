@@ -17,7 +17,7 @@
       "properties": {
         "stakeholderRequirements": {
           "type": "array",
-            "items": {"type": "string", "pattern": "^StR-\\d{3}$"},
+            "items": {"type": "string", "pattern": "^(StR-\\d{3}|REQ-STK-[A-Z0-9]+-\\d{3})$"},
             "minItems": 1
         }
       }
