@@ -17,8 +17,10 @@ if not MATRIX.exists() or not ORPHANS.exists():
 
 matrix = MATRIX.read_text(encoding='utf-8').splitlines()
 issues = []
+# Pattern to match all requirement types: REQ-*, AC-*, IR-*, VR-*, UC-*, US-*
+requirement_pattern = re.compile(r'^\| (REQ-|AC-|IR-|VR-|UC-|US-)')
 for line in matrix:
-    if not line.startswith('| REQ-'):  # skip header
+    if not requirement_pattern.match(line):  # skip header and non-requirement lines
         continue
     parts = [p.strip() for p in line.strip('|').split('|')]
     if len(parts) < 2:

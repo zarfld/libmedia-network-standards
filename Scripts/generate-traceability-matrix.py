@@ -28,8 +28,39 @@ REPORTS = ROOT / 'reports'
 REPORTS.mkdir(exist_ok=True)
 
 PATTERNS = {
-    'stakeholder': re.compile(r'StR-\d{3}'),
-    'requirement': re.compile(r'REQ-(?:F|NF)-\d{3}'),
+    # Legacy patterns (deprecated - to be migrated)
+    'stakeholder_legacy': re.compile(r'StR-\d{3}'),
+    'requirement_legacy': re.compile(r'REQ-(?:F|NF)-\d{3}'),
+    
+    # NEW NAMING CONVENTION PATTERNS (Standards-Specific)
+    # Stakeholder Requirements: REQ-STK-{STANDARD}-{NNN}
+    'stakeholder': re.compile(r'REQ-STK-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # System Requirements: REQ-SYS-{STANDARD}-{NNN}  
+    'system': re.compile(r'REQ-SYS-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Functional Requirements: REQ-FUN-{STANDARD}-{NNN}
+    'functional': re.compile(r'REQ-FUN-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Non-Functional Requirements: REQ-NFR-{STANDARD}-{NNN}
+    'nonfunctional': re.compile(r'REQ-NFR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Interface Requirements: IR-{STANDARD}-{NNN}
+    'interface': re.compile(r'IR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Verification Requirements: VR-{STANDARD}-{NNN}  
+    'verification': re.compile(r'VR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Acceptance Criteria: AC-{STANDARD}-{NNN}
+    'acceptance': re.compile(r'AC-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # Use Cases: UC-{STANDARD}-{NNN}
+    'usecase': re.compile(r'UC-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
+    
+    # User Stories: {STANDARD}-US-{NNN}
+    'userstory': re.compile(r'[A-Z0-9]+(?:[A-Z0-9]+)*-US-\d{3}'),
+    
+    # Architecture and other patterns (unchanged)
     'adr': re.compile(r'ADR-\d{3}'),
     'component': re.compile(r'ARC-C-\d{3}'),
     'scenario': re.compile(r'QA-SC-\d{3}'),
@@ -83,22 +114,30 @@ for path in files:
 
 # Simple linkage inference
 req_links = defaultdict(set)  # requirement -> linked identifiers (adr/component/scenario/test)
+
+# Collect all requirement IDs from both legacy and new patterns
+all_requirements = set()
+requirement_patterns = ['requirement_legacy', 'stakeholder', 'system', 'functional', 'nonfunctional', 'interface', 'verification', 'acceptance']
+for pattern in requirement_patterns:
+    if pattern in index:
+        all_requirements.update(index[pattern])
+
 for adr in index['adr']:
     # parse requirements referenced in ADR file names or contents
-    for req in index['requirement']:
+    for req in all_requirements:
         for path in occurrence['adr'][adr]:
             if req in path.read_text(encoding='utf-8', errors='ignore'):
                 req_links[req].add(adr)
 for scen in index['scenario']:
     scen_text_files = occurrence['scenario'][scen]
     text = '\n'.join(p.read_text(encoding='utf-8', errors='ignore') for p in scen_text_files)
-    for req in index['requirement']:
+    for req in all_requirements:
         if req in text:
             req_links[req].add(scen)
 for comp in index['component']:
     comp_in_files = occurrence['component'][comp]
     text = '\n'.join(p.read_text(encoding='utf-8', errors='ignore') for p in comp_in_files)
-    for req in index['requirement']:
+    for req in all_requirements:
         if req in text:
             req_links[req].add(comp)
 for test in index['test']:
@@ -107,7 +146,7 @@ for test in index['test']:
 
 # Orphan detection
 orphans = {
-    'requirements_no_links': sorted([r for r in index['requirement'] if not req_links.get(r)]),
+    'requirements_no_links': sorted([r for r in all_requirements if not req_links.get(r)]),
     'scenarios_no_req': sorted([
         s for s in index['scenario']
         if not any(s in links for links in req_links.values())
@@ -135,7 +174,7 @@ matrix_lines = [
     '| Requirement | Linked Elements (ADR / Component / Scenario / Test) |',
     '|-------------|----------------------------------------------------|',
 ]
-for req in sorted(index['requirement']):
+for req in sorted(all_requirements):
     linked = ', '.join(sorted(req_links.get(req, []))) or '(none)'
     matrix_lines.append(f'| {req} | {linked} |')
 
