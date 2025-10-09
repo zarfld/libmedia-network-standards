@@ -31,7 +31,7 @@ jobs:
         run: pip install pyyaml jsonschema
       - name: Validate spec structure
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/validate-spec-structure.py || {
+          ALLOW_EMPTY_SPECS=1 python Scripts/validate-spec-structure.py || {
             echo '❌ Spec structure validation failed.'
             exit 1
           }
@@ -48,13 +48,13 @@ jobs:
           python-version: "3.11"
       - name: Generate spec index
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/generators/spec_parser.py
+          ALLOW_EMPTY_SPECS=1 python Scripts/generators/spec_parser.py
       - name: Build traceability JSON
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/generators/build_trace_json.py
+          ALLOW_EMPTY_SPECS=1 python Scripts/generators/build_trace_json.py
       - name: Generate requirement test skeletons
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/generators/gen_tests.py
+          ALLOW_EMPTY_SPECS=1 python Scripts/generators/gen_tests.py
       - name: Upload generated artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -175,7 +175,7 @@ jobs:
           path: build
       - name: Enforce requirement linkage coverage
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/validate-trace-coverage.py --min-req ${{ env.MIN_REQ_LINKAGE_COVERAGE }}
+          ALLOW_EMPTY_SPECS=1 python Scripts/validate-trace-coverage.py --min-req ${{ env.MIN_REQ_LINKAGE_COVERAGE }}
 
   integrity-scan:
     name: Integrity Level Scan
@@ -190,7 +190,7 @@ jobs:
           python-version: "3.11"
       - name: Run integrity scan
         run: |
-          ALLOW_EMPTY_SPECS=1 python scripts/integrity_level_scan.py
+          ALLOW_EMPTY_SPECS=1 python Scripts/integrity_level_scan.py
       - name: Upload integrity scan artifact
         uses: actions/upload-artifact@v4
         with:
