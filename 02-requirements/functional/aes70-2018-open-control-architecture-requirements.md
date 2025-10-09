@@ -13,61 +13,61 @@ This specification defines the requirements for implementing AES70-2018 Open Con
 
 ## 1. Stakeholder Requirements (SR)
 
-### SR-001: Professional Audio System Integration
+### REQ-STK-AES70-001: Professional Audio System Integration
 **Description:** The system shall provide comprehensive device control and management capabilities for professional audio systems including broadcast, live sound, installed sound, and recording applications.
 **Priority:** Critical
 **Stakeholders:** System Integrators, Audio Engineers, Equipment Manufacturers
 **Rationale:** Professional audio systems require standardized control protocols for complex multi-vendor deployments
 
-### SR-002: Vendor-Neutral Control Protocol
+### REQ-STK-AES70-002: Vendor-Neutral Control Protocol
 **Description:** The system shall implement vendor-neutral control protocols enabling interoperability between devices from different manufacturers without proprietary control interfaces.
 **Priority:** Critical
 **Stakeholders:** Equipment Manufacturers, System Integrators
 **Rationale:** Reduces integration complexity and provides customer choice in multi-vendor systems
 
-### SR-003: Scalable Network Architecture
+### REQ-STK-AES70-003: Scalable Network Architecture
 **Description:** The system shall support scalable network architectures from small installations to large broadcast facilities with thousands of controllable parameters.
 **Priority:** High
 **Stakeholders:** System Integrators, Facility Operators
 **Rationale:** Professional audio systems range from small studios to large broadcast facilities requiring scalable solutions
 
-### SR-004: Real-Time Control Performance
+### REQ-STK-AES70-004: Real-Time Control Performance
 **Description:** The system shall provide real-time control performance suitable for live audio applications with deterministic response times and low latency.
 **Priority:** High
 **Stakeholders:** Live Sound Engineers, Broadcast Engineers
 **Rationale:** Live audio applications require immediate response to control changes without audible delays
 
-### SR-005: Standardized Object Model
+### REQ-STK-AES70-005: Standardized Object Model
 **Description:** The system shall implement standardized object models representing audio system components enabling consistent control interfaces across different implementations.
 **Priority:** High
 **Stakeholders:** Application Developers, Equipment Manufacturers
 **Rationale:** Standardized models reduce development complexity and enable common user interfaces
 
-### SR-006: Device Discovery and Configuration
+### REQ-STK-AES70-006: Device Discovery and Configuration
 **Description:** The system shall provide automatic device discovery and configuration capabilities enabling plug-and-play operation in professional audio networks.
 **Priority:** Medium
 **Stakeholders:** System Integrators, End Users
 **Rationale:** Simplifies system commissioning and reduces configuration errors
 
-### SR-007: Security and Access Control
+### REQ-STK-AES70-007: Security and Access Control
 **Description:** The system shall implement security mechanisms and access control features protecting critical system functions and preventing unauthorized access.
 **Priority:** High
 **Stakeholders:** Facility Operators, Security Officers
 **Rationale:** Professional audio systems in broadcast and commercial applications require security protection
 
-### SR-008: Management and Monitoring
+### REQ-STK-AES70-008: Management and Monitoring
 **Description:** The system shall provide comprehensive management and monitoring capabilities including system health, performance metrics, and diagnostic information.
 **Priority:** Medium
 **Stakeholders:** System Administrators, Maintenance Personnel
 **Rationale:** Professional systems require ongoing monitoring and maintenance for reliable operation
 
-### SR-009: Cross-Platform Compatibility
+### REQ-STK-AES70-009: Cross-Platform Compatibility
 **Description:** The system shall support cross-platform compatibility enabling operation on Windows, Linux, embedded systems, and other professional audio platforms.
 **Priority:** Medium
 **Stakeholders:** Equipment Manufacturers, Application Developers
 **Rationale:** Professional audio systems use diverse computing platforms requiring broad compatibility
 
-### SR-010: Protocol Extensibility
+### REQ-STK-AES70-010: Protocol Extensibility
 **Description:** The system shall provide protocol extensibility mechanisms enabling manufacturer-specific extensions while maintaining interoperability with standard implementations.
 **Priority:** Medium
 **Stakeholders:** Equipment Manufacturers, System Integrators
@@ -75,51 +75,51 @@ This specification defines the requirements for implementing AES70-2018 Open Con
 
 ## 2. System Requirements (SYS)
 
-### SYS-001: AES70-2018 Compliance Framework
+### REQ-SYS-AES70-001: AES70-2018 Compliance Framework
 **Description:** The system shall implement full compliance with AES70-2018 Open Control Architecture specification including all mandatory features and protocols.
-**Source:** SR-001, SR-002
+**Source:** REQ-STK-AES70-001, REQ-STK-AES70-002
 **Priority:** Critical
 **Verification:** Standards compliance testing
 
-### SYS-002: Multi-Layer Protocol Architecture
+### REQ-SYS-AES70-002: Multi-Layer Protocol Architecture
 **Description:** The system shall implement multi-layer protocol architecture separating application logic, object model, messaging protocol, and transport layers for maximum flexibility.
-**Source:** SR-003, SR-006
+**Source:** REQ-STK-AES70-003, REQ-STK-AES70-006
 **Priority:** High
 **Verification:** Architecture validation testing
 
-### SYS-003: Real-Time Communication Framework
+### REQ-SYS-AES70-003: Real-Time Communication Framework
 **Description:** The system shall provide real-time communication framework supporting deterministic message delivery and low-latency control operations.
-**Source:** SR-004
+**Source:** REQ-STK-AES70-004
 **Priority:** High
 **Verification:** Performance and timing testing
 
-### SYS-004: Standardized Class Library
+### REQ-SYS-AES70-004: Standardized Class Library
 **Description:** The system shall implement the complete AES70 standardized class library covering audio processing, routing, monitoring, and control functions.
-**Source:** SR-005
+**Source:** REQ-STK-AES70-005
 **Priority:** High
 **Verification:** Class library compliance testing
 
-### SYS-005: Device Management Infrastructure
+### REQ-SYS-AES70-005: Device Management Infrastructure
 **Description:** The system shall provide device management infrastructure supporting discovery, identification, capabilities negotiation, and configuration management.
-**Source:** SR-006, SR-008
+**Source:** REQ-STK-AES70-006, REQ-STK-AES70-008
 **Priority:** Medium
 **Verification:** Device management testing
 
-### SYS-006: Security Architecture
+### REQ-SYS-AES70-006: Security Architecture
 **Description:** The system shall implement security architecture with authentication, authorization, encryption, and secure communication mechanisms.
-**Source:** SR-007
+**Source:** REQ-STK-AES70-007
 **Priority:** High
 **Verification:** Security testing and penetration testing
 
-### SYS-007: Network Transport Abstraction
+### REQ-SYS-AES70-007: Network Transport Abstraction
 **Description:** The system shall provide network transport abstraction supporting TCP/IP, UDP, WebSocket, and other network protocols as defined in AES70 specification.
-**Source:** SR-003, SR-009
+**Source:** REQ-STK-AES70-003, REQ-STK-AES70-009
 **Priority:** Medium
 **Verification:** Multi-transport testing
 
-### SYS-008: Cross-Platform Implementation
+### REQ-SYS-AES70-008: Cross-Platform Implementation
 **Description:** The system shall provide cross-platform implementation supporting major operating systems and embedded platforms used in professional audio applications.
-**Source:** SR-009
+**Source:** REQ-STK-AES70-009
 **Priority:** Medium
 **Verification:** Multi-platform testing
 
