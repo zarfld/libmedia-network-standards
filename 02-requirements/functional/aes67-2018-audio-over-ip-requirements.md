@@ -1,6 +1,14 @@
 # AES67-2018 Professional Audio-over-IP Interoperability Requirements
 
-**D**REQ-SYS-AES67-001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol (PTP) as the primary synchronization mechanism for professional audio applications.
+**D**REQ-SYS-A**REQ-SYS-A**REQ-SYS-AES67-007:** The system SHALL implement DiffServ quality of service mechanisms as described in RFC 2474, supporting differentiated treatment for clock, media, and best-effort traffic classes.
+
+**REQ-SYS-AES67-008:** The system SHALL provide configurable DSCP marking with default values: EF (46) for clock traffic, AF41 (34) for media traffic, and DF (0) for best-effort traffic.
+
+**REQ-SYS-AES67-009:** The system SHALL support IGMP v2 (RFC 2236) as minimum requirement and MAY support IGMP v3 (RFC 3376) for multicast group management.004:** The system SHALL utilize IPv4 as the network layer protocol for media packet transport as defined in RFC 791, with consideration for future IPv6 compatibility.
+
+**REQ-SYS-AES67-005:** The system SHALL implement Real-time Transport Protocol (RTP) as defined in RFC 3550 for audio stream delivery, operating in accordance with RTP Profile for Audio and Video Conferences with Minimal Control (RFC 3551).
+
+**REQ-SYS-AES67-006:** The system SHALL support UDP transport layer protocol as defined in RFC 768 for RTP packet delivery, ensuring minimal protocol overhead for real-time applications.001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol (PTP) as the primary synchronization mechanism for professional audio applications.
 
 **REQ-SYS-AES67-002:** The system SHALL support the AES67 Media Profile for optimal audio performance on standard IP networks, providing enhanced timing accuracy compared to default IEEE 1588 profiles.
 
