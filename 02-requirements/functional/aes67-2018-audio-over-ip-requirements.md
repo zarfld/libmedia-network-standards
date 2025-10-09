@@ -122,13 +122,13 @@ This specification encompasses:
 ### 4.1 Precision Time Synchronization (F001)
 
 #### 4.1.1 IEEE 1588-2008 PTP Implementation
-**REQ-F001-001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol with support for both delay request-response and peer-to-peer delay measurement mechanisms.
+**REQ-FUN-AES67-001:** The system SHALL implement IEEE 1588-2008 Precision Time Protocol with support for both delay request-response and peer-to-peer delay measurement mechanisms.
 
-**REQ-F001-002:** The system SHALL support IEEE 1588-2008 default profiles as described in annex J for compatibility with existing PTP infrastructure.
+**REQ-FUN-AES67-002:** The system SHALL support IEEE 1588-2008 default profiles as described in annex J for compatibility with existing PTP infrastructure.
 
-**REQ-F001-003:** The system SHALL use IPv4 encapsulation for PTP messages as described in IEEE 1588-2008 annex D.
+**REQ-FUN-AES67-003:** The system SHALL use IPv4 encapsulation for PTP messages as described in IEEE 1588-2008 annex D.
 
-**REQ-F001-004:** The system SHALL implement the AES67 Media Profile (Annex A) with profile identifier 00-0B-5E-00-01-00 for enhanced audio performance.
+**REQ-FUN-AES67-004:** The system SHALL implement the AES67 Media Profile (Annex A) with profile identifier 00-0B-5E-00-01-00 for enhanced audio performance.
 
 #### 4.1.2 Clock Domain Management  
 **REQ-F001-005:** The system SHALL support PTP domain numbers in the range 0-127 with default domain 0 for media applications.
