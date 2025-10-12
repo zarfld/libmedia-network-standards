@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IEEE Standards Design Specification Schema",
+  "type": "object",
+  "required": ["title", "type", "standard", "phase", "component", "version", "date", "author", "status", "compliance", "traceability"],
+  "properties": {
+    "title": {"type": "string", "minLength": 1},
+    "type": {"const": "design_specification"},
+    "standard": {"type": "string", "pattern": "^IEEE\\s+\\d{3,4}(\\.\\d+)?-\\d{4}$"},
+    "phase": {"const": "04-design"},
+    "component": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+    "date": {"type": "string", "pattern": "^20[2-9]\\d-\\d{2}-\\d{2}$"},
+    "author": {"type": "string", "minLength": 1},
+    "status": {"enum": ["active", "draft", "review", "approved", "deprecated"]},
+    "compliance": {
+      "type": "object",
+      "required": ["standard", "section"],
+      "properties": {
+        "standard": {"enum": ["IEEE 1016-2009", "ISO/IEC/IEEE 42010:2011"]},
+        "section": {"type": "string", "minLength": 1}
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "required": ["requirements", "architecture"],
+      "properties": {
+        "requirements": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^REQ-[A-Z]+-\\d+-\\d{3}$"},
+          "minItems": 1
+        },
+        "architecture": {
+          "type": "array", 
+          "items": {"type": "string", "pattern": "^ARC-[A-Z]+-\\d{3}"},
+          "minItems": 1
+        },
+        "tests": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^TST-[A-Z]+-\\d{3}$"}
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

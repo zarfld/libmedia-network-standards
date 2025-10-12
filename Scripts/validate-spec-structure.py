@@ -29,6 +29,8 @@ SCHEMA_DIR = ROOT / 'spec-kit-templates' / 'schemas'
 SCHEMA_MAP = {
     'requirements': SCHEMA_DIR / 'requirements-spec.schema.json',
     'architecture': SCHEMA_DIR / 'architecture-spec.schema.json',
+    'design_specification': SCHEMA_DIR / 'ieee-design-spec.schema.json',
+    'phase_gate_validation': SCHEMA_DIR / 'phase-gate-validation.schema.json',
     # 'guidance' intentionally has no strict schema – treated leniently
 }
 
