@@ -1,5 +1,5 @@
 ---
-spec-type: architecture-spec
+specType: architecture-spec
 project: IEEE Media Networking Standards
 standard: IEEE 1588-2019
 phase: 03-architecture-design

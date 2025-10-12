@@ -1,5 +1,5 @@
 ---
-spec-type: requirements-spec
+specType: requirements-spec
 project: IEEE Media Networking Standards
 standard: IEEE 1588-2019
 phase: 02-requirements-analysis
