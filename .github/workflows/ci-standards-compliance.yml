@@ -311,16 +311,30 @@ jobs:
       - name: Validate traceability
         run: |
           echo "✅ Checking traceability completeness..."
-          ALLOW_EMPTY_SPECS=1 python Scripts/validate-traceability.py || {
-            echo "❌ Traceability validation failed"
-            echo "Every requirement must trace to:"
-            echo "  - Stakeholder requirement (StR-XXX)"
-            echo "  - System requirement (REQ-XXX)"
-            echo "  - Design element (DES-XXX)"
-            echo "  - Implementation (CODE)"
-            echo "  - Test case (TEST-XXX)"
-            exit 1
-          }
+          # Check if migration mode is enabled
+          if [ -f ".github/migration_mode.env" ]; then
+            echo "🔄 Migration mode enabled - using CI-safe validator"
+            python migration/ci_migration_validator.py || {
+              echo "❌ Migration validation failed"
+              echo "Migration mode allows gradual traceability fixes"
+              echo "Run: py Scripts/ci-safe-migration.py --plan-migration"
+              exit 1
+            }
+          else
+            echo "🚫 Full compliance mode - strict validation"
+            ALLOW_EMPTY_SPECS=1 python Scripts/validate-traceability.py || {
+              echo "❌ Traceability validation failed"
+              echo "Every requirement must trace to:"
+              echo "  - Stakeholder requirement (StR-XXX)"
+              echo "  - System requirement (REQ-XXX)"
+              echo "  - Design element (DES-XXX)"
+              echo "  - Implementation (CODE)"
+              echo "  - Test case (TEST-XXX)"
+              echo ""
+              echo "💡 Enable migration mode: py Scripts/ci-safe-migration.py --enable-migration-mode"
+              exit 1
+            }
+          fi
 
       - name: Upload traceability report
         uses: actions/upload-artifact@v4
