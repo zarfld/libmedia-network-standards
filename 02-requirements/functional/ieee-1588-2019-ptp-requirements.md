@@ -92,13 +92,25 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 ### 2.1 Enterprise Timing Infrastructure
 - **REQ-SYS-PTP-001**: System shall provide enterprise-grade timing synchronization with enhanced precision beyond IEEE 802.1AS gPTP
+  - **Traces to**: ARCH-1588-002-StateMachine, DES-1588-STATE-001, TEST-1588-STATE-001
+  - **Acceptance Criteria**: Sub-microsecond accuracy, deterministic state transitions
 - **REQ-SYS-PTP-002**: System shall support multi-domain timing architecture for network isolation and coordination
+  - **Traces to**: ARCH-1588-003-MultiDomain
+  - **Acceptance Criteria**: Support domains 0-127, domain isolation maintained
 - **REQ-SYS-PTP-003**: System shall implement enhanced security mechanisms including authentication and authorization
+  - **Traces to**: ARCH-1588-004-Security
+  - **Acceptance Criteria**: Authentication per IEEE 1588-2019 Annex K
 - **REQ-SYS-PTP-004**: System shall provide comprehensive management protocol for configuration and monitoring
+  - **Traces to**: ARCH-1588-005-Management
+  - **Acceptance Criteria**: Full TLV support, remote configuration capability
 
 ### 2.2 Real-Time Performance Framework
 - **REQ-SYS-PTP-005**: System shall implement deterministic design patterns suitable for time-sensitive applications
+  - **Traces to**: ARCH-1588-002-StateMachine, DES-1588-STATE-001, TEST-1588-STATE-001
+  - **Acceptance Criteria**: Bounded execution time <1ms, lock-free algorithms
 - **REQ-SYS-PTP-006**: System shall provide hardware abstraction layer for cross-platform deployment
+  - **Traces to**: ARCH-1588-001-HAL, DES-1588-HAL-001
+  - **Acceptance Criteria**: Intel/ARM/FPGA platform support, unified interface
 - **REQ-SYS-PTP-007**: System shall maintain bounded execution time for all critical timing operations
 - **REQ-SYS-PTP-008**: System shall provide predictable memory usage without dynamic allocation
 

@@ -5,15 +5,24 @@ version: 0.1.0
 status: draft
 author: AI Standards Implementation Agent
 date: 2024-12-10
+designId: DES-1588-STATE-001
 relatedArchitecture:
-  - ARC-C-001-CoreProtocol
-  - ARC-C-002-StateMachine
+  - ARCH-1588-001-CoreProtocol
+  - ARCH-1588-002-StateMachine
 relatedRequirements:
-  - REQ-F-1588-001-ClockSynchronization
-  - REQ-F-1588-002-BMCA
+  - REQ-SYS-PTP-001  # Enterprise timing infrastructure
+  - REQ-SYS-PTP-002  # Multi-domain support
+  - REQ-SYS-PTP-005  # Real-time performance
+  - REQ-SYS-PTP-006  # Deterministic behavior
+  - REQ-SYS-PTP-007  # Hardware abstraction
 traceability:
-  - from: ARC-C-002-StateMachine
-  - to: DES-C-001-PortStateMachine
+  upstreamFrom:
+    - ARCH-1588-002-StateMachine
+    - REQ-SYS-PTP-001
+    - REQ-SYS-PTP-005
+  downstreamTo:
+    - CODE-1588-STATE-001
+    - TEST-1588-STATE-001
 ---
 
 # IEEE 1588-2019 Port State Machine - Detailed Design
