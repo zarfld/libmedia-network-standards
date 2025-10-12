@@ -133,15 +133,156 @@ traceability:
 - Protocol compliance test suites
 - >80% test coverage achieved
 
-### REQ-SYS-ARCH-007: Build System Integration Framework
-**Description:** The system shall provide clean build system integration with proper dependency management and compilation independence.
-**Rationale:** Ensures reliable builds, proper dependency resolution, and development workflow efficiency.
+### REQ-SYS-ARCH-007: Complete Standards Folder Hierarchy Framework
+**Description:** The system shall implement mandatory hierarchical folder structure following the pattern Organization/Standard/Subpart/Version/ for all standards implementations in lib/Standards/.
+**Rationale:** Ensures consistent organization, version management, standards separation, and prevents architectural violations across all implemented protocols.
+**Priority:** Critical
+**Acceptance Criteria:**
+- **MANDATORY Generic Pattern**: `lib/Standards/<Organization>/<Standard>/<Subpart>/<Version>/`
+- **IEEE Standards Structure**: 
+  - `lib/Standards/IEEE/802.1/AS/2021/` (gPTP current)
+  - `lib/Standards/IEEE/802.1/AS/2020/` (gPTP legacy)
+  - `lib/Standards/IEEE/802.1/Q/2022/` (Bridging enhanced)
+  - `lib/Standards/IEEE/802.1/Q/2020/` (Bridging base)
+  - `lib/Standards/IEEE/1722/2016/` (AVTP current)
+  - `lib/Standards/IEEE/1722.1/2021/` (AVDECC current)
+  - `lib/Standards/IEEE/1722.1/2013/` (AVDECC legacy)
+  - `lib/Standards/IEEE/1588/2019/` (PTPv2)
+- **AVnu Alliance Structure**:
+  - `lib/Standards/AVnu/Milan/v1.2/` (Professional Audio current)
+  - `lib/Standards/AVnu/Milan/v1.1/` (Professional Audio legacy)
+- **AES Standards Structure**:
+  - `lib/Standards/AES/AES67/2018/` (Audio-over-IP)
+  - `lib/Standards/AES/AES70/2021/` (Device Control OCA)
+  - `lib/Standards/AES/AES3/2009/` (Digital Audio Interface)
+- **Common Utilities Structure**:
+  - `lib/Standards/Common/interfaces/` (Hardware abstraction)
+  - `lib/Standards/Common/utils/` (Cross-standard utilities)
+  - `lib/Standards/Common/testing/` (Testing frameworks)
+- **Functional Area Subdivision**: Each version folder contains functional areas (core/, messages/, descriptors/, etc.)
+- **No Vendor-Specific Folders**: Prohibited in lib/Standards/ hierarchy
+- **Version Coexistence**: Multiple standard versions SHALL coexist independently
+
+### REQ-SYS-ARCH-008: Hierarchical Namespace Structure Framework  
+**Description:** The system shall implement mandatory C++ namespace hierarchy that exactly matches folder structure following translation rules Organization::Standard::Subpart::Version.
+**Rationale:** Provides clear code organization, prevents naming conflicts, enables version coexistence, and maintains architectural integrity.
+**Priority:** Critical
+**Acceptance Criteria:**
+- **MANDATORY Translation Rules**:
+  - Dots become underscores: `802.1` → `_802_1`, `1722.1` → `_1722_1`
+  - Version numbers use underscores: `2021` → `_2021`, `v1.2` → `v1_2`
+  - Folder structure maps exactly to namespace hierarchy
+- **IEEE Namespace Patterns**:
+  - `IEEE::_802_1::AS::_2021` for IEEE/802.1/AS/2021/
+  - `IEEE::_1722_1::_2021` for IEEE/1722.1/2021/
+  - `IEEE::_1722::_2016` for IEEE/1722/2016/
+- **AVnu Namespace Patterns**:
+  - `AVnu::Milan::v1_2` for AVnu/Milan/v1.2/
+- **AES Namespace Patterns**:
+  - `AES::AES67::_2018` for AES/AES67/2018/
+  - `AES::AES70::_2021` for AES/AES70/2021/
+- **Common Namespace Pattern**:
+  - `Common::interfaces` for Common/interfaces/
+  - `Common::utils` for Common/utils/
+- **Functional Area Sub-namespaces**: Each functional area gets sub-namespace (core, messages, etc.)
+- **Cross-Standard Dependencies**: Higher layers can reference lower layers following IEEE hierarchy
+- **Namespace Enforcement**: Compilation SHALL fail on namespace violations
+
+### REQ-SYS-ARCH-009: File Naming Convention Framework
+**Description:** The system shall implement mandatory file naming conventions and header guard patterns following hierarchical organization structure.
+**Rationale:** Ensures consistent file organization, prevents naming conflicts, and maintains clear development patterns.
+**Priority:** High
+**Acceptance Criteria:**
+- **File Path Pattern**: `lib/Standards/<Organization>/<Standard>/<Subpart>/<Version>/<functional_area>/<file_name>.<ext>`
+- **Header Guard Pattern**: `<ORGANIZATION>_<STANDARD>_<SUBPART>_<VERSION>_<FUNCTIONAL_AREA>_<FILE_NAME>_H`
+- **Examples**:
+  - `IEEE_1722_1_2021_AEM_ENTITY_MODEL_H` for IEEE/1722.1/2021/aem/entity_model.hpp
+  - `AVnu_MILAN_V1_2_DISCOVERY_MILAN_DISCOVERY_H` for AVnu/Milan/v1.2/discovery/milan_discovery.hpp
+- **Include Path Conventions**: Relative paths from standard namespace root
+- **Extension Standards**: `.hpp/.cpp` for C++, `.h/.c` for C
+- **Functional Area Organization**: core/, messages/, descriptors/, control/, discovery/, etc.
+- **No Duplicate Filenames**: Across entire lib/Standards/ hierarchy
+
+### REQ-SYS-ARCH-010: CMake Build System Integration Framework
+**Description:** The system shall implement comprehensive CMake build system supporting hierarchical standards organization with proper dependency management and independent compilation.
+**Rationale:** Ensures reliable builds, proper dependency resolution, standards layer independence, and development workflow efficiency.
+**Priority:** Critical
+**Acceptance Criteria:**
+- **Standards Library Targets**: Independent CMake targets per standard version
+  - `ieee_802_1_as_2021` for IEEE 802.1AS-2021
+  - `ieee_1722_1_2021` for IEEE 1722.1-2021
+  - `avnu_milan_v12` for Milan v1.2
+  - `standards_common` for Common utilities
+- **Dependency Hierarchy Enforcement**:
+  - IEEE higher layers depend on lower layers only
+  - AVnu/Milan depends on IEEE standards
+  - AES standards depend on IEEE foundations
+  - No circular dependencies allowed
+- **Standards Layer Independence**: 
+  - No hardware library linking in Standards targets
+  - Hardware abstraction via interface injection only
+  - Compilation without vendor drivers required
+- **Target Organization**:
+  ```cmake
+  add_library(ieee_802_1_as_2021 STATIC
+    IEEE/802.1/AS/2021/core/gptp_state_machine.cpp
+    IEEE/802.1/AS/2021/messages/sync_message.cpp)
+  
+  target_link_libraries(ieee_1722_1_2021
+    ieee_1722_2016      # AVDECC depends on AVTP
+    ieee_802_1_as_2021  # AVDECC depends on gPTP
+    standards_common)   # Common utilities
+  ```
+- **Build System Features**: Cross-platform compilation, proper include paths, standards compliance checks
+- **Installation Support**: Header installation following hierarchy, library packaging per standard
+
+### REQ-SYS-ARCH-011: Cross-Standard Integration and Dependency Management Framework
+**Description:** The system shall implement comprehensive cross-standard integration with proper dependency management following IEEE layering hierarchy and reuse requirements.
+**Rationale:** Prevents architectural violations, ensures consistent behavior when standards reference each other, and maintains single source of truth for protocol features.
+**Priority:** Critical
+**Acceptance Criteria:**
+- **IEEE Layering Hierarchy** (higher layers depend on lower layers):
+  - Application Layer: IEEE 1722.1 (AVDECC)
+  - Transport Layer: IEEE 1722 (AVTP)
+  - Timing Layer: IEEE 802.1AS (gPTP)
+  - Network Layer: IEEE 802.1Q (VLAN/QoS)
+- **Mandatory Cross-Standard Reuse**:
+  - IEEE 1722.1 MUST reuse IEEE 1722 AVTP implementation
+  - IEEE 1722.1 MUST reuse IEEE 802.1AS gPTP time synchronization
+  - IEEE 1722 MUST reuse IEEE 802.1AS timing for presentation time
+  - Milan MUST extend IEEE 1722.1, not reimplement
+- **Dependency Direction Rules**:
+  - ✅ IEEE 1722.1 CAN depend on IEEE 1722 and IEEE 802.1AS
+  - ✅ IEEE 1722 CAN depend on IEEE 802.1AS  
+  - ❌ IEEE 802.1AS CANNOT depend on IEEE 1722 or IEEE 1722.1
+  - ✅ Milan CAN depend on any IEEE standard it extends
+  - ✅ Multiple standard versions CAN coexist
+- **Forbidden Redundant Implementations**: 
+  - No duplicate AVTP implementations across IEEE 1722 and 1722.1
+  - No duplicate gPTP implementations across standards
+  - No duplicate protocol features across versions
+- **Cross-Standard Include Patterns**:
+  ```cpp
+  // ✅ CORRECT - IEEE standards referencing each other
+  #include "../../1722/2016/avtp/avtp_packet.h"        // AVDECC using AVTP
+  #include "../../802.1/AS/2021/core/time_sync.h"      // AVDECC using gPTP
+  
+  // ✅ CORRECT - Common utilities accessible to all
+  #include "../../../Common/interfaces/network_interface.h"
+  
+  // ❌ WRONG - No hardware-specific includes in IEEE namespace
+  // #include "../../../../../intel_avb/include/intel_hal.h"
+  ```
+
+### REQ-SYS-ARCH-012: Build System Integration Framework
+**Description:** The system shall provide clean build system integration with proper dependency management and compilation independence following hierarchical structure.
+**Rationale:** Ensures reliable builds, proper dependency resolution, and development workflow efficiency while maintaining standards layer independence.
 **Priority:** Medium
 **Acceptance Criteria:**
-- Standards layer compiles independently
-- No hardware dependencies in Standards CMake
-- Proper target linking following IEEE hierarchy
-- Clean submit rules enforced
+- Standards layer compiles independently of hardware
+- No hardware dependencies in Standards CMake targets
+- Proper target linking following IEEE hierarchy enforcement
+- Clean submit rules enforced with architectural compliance checks
 
 ### REQ-SYS-ARCH-008: Documentation and Specification Compliance
 **Description:** The system shall provide comprehensive documentation with proper IEEE specification references and copyright compliance.
