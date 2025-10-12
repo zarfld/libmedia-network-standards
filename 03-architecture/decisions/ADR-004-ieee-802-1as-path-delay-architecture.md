@@ -8,9 +8,9 @@ date: "2025-10-12"
 status: "draft"
 traceability:
   requirements:
-    - "REQ-FUN-IEEE8021AS-003"
-    - "REQ-FUN-IEEE8021AS-004"
-    - "REQ-NFR-IEEE8021AS-001"
+    - "REQ-F-003"
+    - "REQ-F-004"
+    - "REQ-NF-001"
 ---
 
 # ADR-004: IEEE 802.1AS-2021 Enhanced Path Delay Architecture

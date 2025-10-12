@@ -8,8 +8,8 @@ date: "2025-10-12"
 status: "draft"
 traceability:
   requirements:
-    - "REQ-SYS-IEEE8021AS-001"
-    - "REQ-NFR-IEEE8021AS-001"
+    - "REQ-F-001"
+    - "REQ-NF-001"
 ---
 
 # ADR-003: IEEE 802.1AS-2021 Multi-Domain Architecture

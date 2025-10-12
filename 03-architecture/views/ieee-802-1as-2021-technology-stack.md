@@ -8,9 +8,9 @@ date: "2025-10-12"
 status: "draft"
 traceability:
   requirements:
-    - "REQ-NFR-IEEE8021AS-002"
-    - "REQ-NFR-IEEE8021AS-003"
-    - "REQ-NFR-IEEE8021AS-004"
+    - "REQ-NF-002"
+    - "REQ-NF-003"
+    - "REQ-NF-004"
 ---
 
 # IEEE 802.1AS-2021 gPTP Technology Stack Recommendations
