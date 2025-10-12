@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "🔍 Validating IEEE/ISO standards compliance..."
           echo "Standards Framework: ISO/IEC/IEEE 12207:2017, 29148:2018, 42010:2011"
-          
+
           if ! ALLOW_EMPTY_SPECS=1 python Scripts/validate-spec-structure.py; then
             echo ""
             echo "🚫 STANDARDS COMPLIANCE FAILURE"
