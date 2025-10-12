@@ -23,6 +23,21 @@ This technology stack implements:
 - **ADR-003**: Multi-Domain Architecture - Domain isolation and cross-domain sync
 - **ADR-004**: Enhanced Path Delay Architecture - Dual P2P/E2E mechanisms
 
+## Stakeholder Concerns
+
+- **Audio Engineers**: Require deterministic real-time performance with microsecond precision
+- **Video Engineers**: Need consistent timing across distributed video production systems  
+- **Network Engineers**: Must integrate with existing network infrastructure and management
+- **Hardware Vendors**: Need portable APIs that work across different timing hardware
+- **System Integrators**: Require predictable performance and diagnostic capabilities
+
+## Architectural Viewpoints
+
+- **Performance Viewpoint**: Real-time constraints and timing precision requirements
+- **Portability Viewpoint**: Hardware abstraction enabling multi-vendor support
+- **Safety Viewpoint**: Deterministic behavior and fault tolerance requirements
+- **Integration Viewpoint**: Compatibility with existing network and audio/video systems
+
 ## Core Technology Stack
 
 ### Programming Language: C/C++

@@ -32,6 +32,20 @@ IEEE 802.1AS-2021 introduces enhanced multi-domain support for complex network t
 - Cross-domain synchronization introduces timing complexity
 - Hardware must support per-domain timestamp capabilities
 
+## Stakeholder Concerns
+
+- **Media Engineers**: Need isolated timing domains for different media streams (audio, video, control)
+- **Network Architects**: Require scalable domain management across large installations
+- **Hardware Vendors**: Must support per-domain capabilities efficiently
+- **System Integrators**: Need simplified configuration and monitoring of multi-domain networks
+
+## Architectural Viewpoints
+
+- **Domain Isolation Viewpoint**: Each timing domain operates independently with separate BMCA
+- **Cross-Domain Coordination Viewpoint**: Relationships between domains for synchronized operations
+- **Scalability Viewpoint**: Support for 16+ domains with efficient resource utilization
+- **Management Viewpoint**: Unified configuration and monitoring across all domains
+
 ## Decision
 We will implement a **Domain-Centric Architecture** with the following components:
 

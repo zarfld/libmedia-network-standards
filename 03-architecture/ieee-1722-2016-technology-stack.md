@@ -1,3 +1,18 @@
+---
+specType: architecture
+standard: "42010"
+phase: "03-architecture"
+version: "1.0.0"
+author: "Architecture Technology Team"
+date: "2025-10-12"
+status: "approved"
+traceability:
+  requirements:
+    - "REQ-NF-001"
+    - "REQ-NF-002"
+    - "REQ-NF-003"
+---
+
 # IEEE 1722-2016 AVTP Technology Stack Recommendations
 
 **Standards Compliance**: IEEE Std 1722-2016 "IEEE Standard for a Transport Protocol for Time-Sensitive Applications in Bridged Local Area Networks"  

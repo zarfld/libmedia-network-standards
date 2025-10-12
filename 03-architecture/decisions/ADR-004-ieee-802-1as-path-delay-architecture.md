@@ -33,6 +33,20 @@ IEEE 802.1AS-2021 introduces enhanced path delay mechanisms including both peer-
 - Path delay mechanism selection impacts network performance
 - Legacy equipment may only support peer-to-peer mechanism
 
+## Stakeholder Concerns
+
+- **Audio Engineers**: Require sub-500ns timing accuracy for professional audio production
+- **Video Engineers**: Need consistent path delay measurement for synchronized video streams
+- **Network Engineers**: Must optimize path delay mechanism selection for network topology
+- **Hardware Vendors**: Need to support both P2P and E2E mechanisms efficiently
+
+## Architectural Viewpoints  
+
+- **Accuracy Viewpoint**: Path delay measurement precision affects overall timing quality
+- **Compatibility Viewpoint**: Support for both legacy P2P and new E2E mechanisms  
+- **Performance Viewpoint**: Mechanism selection impact on network bandwidth and processing
+- **Adaptive Viewpoint**: Automatic selection based on network topology and capabilities
+
 ## Decision
 We will implement a **Dual Path Delay Architecture** supporting both mechanisms with automatic selection:
 

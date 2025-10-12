@@ -1,3 +1,18 @@
+---
+specType: architecture
+standard: "42010"
+phase: "03-architecture"
+version: "1.0.0"
+author: "Architecture Team"
+date: "2025-10-12"
+status: "approved"
+traceability:
+  requirements:
+    - "REQ-F-001"
+    - "REQ-F-002"
+    - "REQ-NF-001"
+---
+
 # ADR-005: IEEE 1722-2016 AVTP Transport Architecture Pattern
 
 ## Status
