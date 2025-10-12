@@ -4,7 +4,7 @@ standard: "42010"
 phase: "03-architecture"
 version: "1.0.0"
 author: "Software Architecture Team"
-date: "2025-01-27"
+date: "2025-10-12"
 status: "approved"
 traceability:
   requirements:
