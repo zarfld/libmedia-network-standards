@@ -1,0 +1,190 @@
+name: 🚨 AUTOMATED SPEC COMPLIANCE ENFORCEMENT
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: 
+      - '02-requirements/**/*.md'
+      - '03-architecture/**/*.md' 
+      - '04-design/**/*.md'
+      - '**/*spec*.md'
+      - '**/*specification*.md'
+      - '**/*architecture*.md'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '02-requirements/**/*.md'
+      - '03-architecture/**/*.md'
+      - '04-design/**/*.md'
+      - '**/*spec*.md'
+      - '**/*specification*.md' 
+      - '**/*architecture*.md'
+
+jobs:
+  automated-compliance-enforcement:
+    name: 🤖 Automated Compliance Validation & Auto-Fix
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for comprehensive validation
+        
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml jsonschema
+        
+    - name: 🔍 Run Automated Compliance Validation
+      id: validation
+      run: |
+        echo "🚨 RUNNING AUTOMATED SPEC COMPLIANCE VALIDATION..."
+        python Scripts/autofix-spec-compliance.py --check-only --verbose
+      continue-on-error: true
+      
+    - name: 🛠️ Auto-Fix Non-Compliant Specifications
+      if: steps.validation.outcome == 'failure'
+      run: |
+        echo "🤖 AUTO-FIXING NON-COMPLIANT SPECIFICATIONS..."
+        python Scripts/autofix-spec-compliance.py --all --verbose
+        
+    - name: 📊 Generate Compliance Report
+      run: |
+        echo "📊 GENERATING COMPLIANCE REPORT..."
+        python Scripts/autofix-spec-compliance.py --check-only --all > compliance-report.txt || true
+        cat compliance-report.txt
+        
+    - name: 🏷️ Create Auto-Fix Commit (if needed)
+      if: steps.validation.outcome == 'failure'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action - Spec Compliance Bot"
+        
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "🤖 AUTO-FIXED SPECIFICATION COMPLIANCE ISSUES"
+          git add .
+          git commit -m "🤖 AUTO-FIX: Specification compliance violations
+          
+          - Fixed YAML front matter schema violations
+          - Corrected enumeration values and ID formatting  
+          - Added missing authoritative document references
+          - Enforced consistent traceability requirements
+          
+          Automated by: Scripts/autofix-spec-compliance.py"
+          
+          echo "auto_fixed=true" >> $GITHUB_OUTPUT
+        else
+          echo "✅ No auto-fixes needed"
+          echo "auto_fixed=false" >> $GITHUB_OUTPUT
+        fi
+      id: auto_fix
+        
+    - name: 🚀 Push Auto-Fixes (if needed)
+      if: steps.auto_fix.outputs.auto_fixed == 'true' && github.event_name == 'push'
+      run: |
+        git push origin ${{ github.ref_name }}
+        echo "🎉 AUTO-FIXES PUSHED SUCCESSFULLY"
+        
+    - name: 🔴 Fail CI if Auto-Fix Required on PR
+      if: steps.auto_fix.outputs.auto_fixed == 'true' && github.event_name == 'pull_request'
+      run: |
+        echo "❌ PULL REQUEST HAS SPECIFICATION COMPLIANCE VIOLATIONS!"
+        echo ""
+        echo "🛠️  REQUIRED ACTION:"
+        echo "   1. Run: python Scripts/autofix-spec-compliance.py --all"
+        echo "   2. Commit and push the auto-fixes"
+        echo "   3. Re-submit the pull request"
+        echo ""
+        echo "📋 COMPLIANCE VIOLATIONS:"
+        cat compliance-report.txt
+        exit 1
+        
+    - name: 📄 Upload Compliance Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: specification-compliance-report
+        path: compliance-report.txt
+        retention-days: 30
+        
+    - name: 💬 Comment on PR (if violations found)
+      if: steps.validation.outcome == 'failure' && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('compliance-report.txt', 'utf8');
+          
+          const comment = `## 🚨 Specification Compliance Violations Detected
+          
+          Your pull request contains specification files with compliance violations. 
+          
+          ### 🛠️ Required Action
+          
+          Please run the automated fix script and commit the changes:
+          
+          \`\`\`bash
+          python Scripts/autofix-spec-compliance.py --all
+          git add .
+          git commit -m "🤖 Fix specification compliance violations"
+          git push
+          \`\`\`
+          
+          ### 📋 Detailed Report
+          
+          \`\`\`
+          ${report}
+          \`\`\`
+          
+          ### ℹ️ What This Fixes
+          
+          - ✅ YAML front matter schema compliance
+          - ✅ Correct enumeration values and ID formatting
+          - ✅ Missing authoritative document references
+          - ✅ Consistent traceability requirements format
+          - ✅ Proper version numbering (semantic versioning)
+          
+          **This is automated quality enforcement - no manual editing required! 🤖**`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+          
+    - name: ✅ Final Validation
+      run: |
+        echo "🏁 RUNNING FINAL COMPLIANCE VALIDATION..."
+        python Scripts/autofix-spec-compliance.py --check-only --all
+        echo "🎉 ALL SPECIFICATIONS ARE COMPLIANT!"
+
+  legacy-validation-compatibility:
+    name: 🔄 Legacy Validation (Compatibility)
+    runs-on: ubuntu-latest
+    needs: automated-compliance-enforcement
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        pip install pyyaml jsonschema
+        
+    - name: 🔄 Run Legacy Validation (for comparison)
+      run: |
+        echo "🔄 Running legacy validation for comparison..."
+        python Scripts/validate-spec-structure.py 03-architecture/ieee-cross-standard-integration-comprehensive-architecture.md || true
+        echo "ℹ️  Legacy validation complete (informational only)"
