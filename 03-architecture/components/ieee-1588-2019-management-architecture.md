@@ -5,8 +5,8 @@ standard: IEEE 1588-2019
 phase: 03-architecture
 status: in-progress
 archId: ARCH-1588-005-Management
-created: 2024-12-10
-last-updated: 2024-12-10
+created: '2024-12-10'
+last-updated: '2024-12-10'
 author: AI Standards Implementation Agent
 review-status: draft
 traces-to: 02-requirements/functional/ieee-1588-2019-ptp-requirements.md
