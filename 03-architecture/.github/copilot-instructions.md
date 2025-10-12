@@ -34,6 +34,36 @@ applyTo:
   - "03-architecture/constraints/**"
 ```
 
+## ⚠️ MANDATORY: YAML Front Matter Schema Compliance
+
+**CRITICAL**: All architecture specification files MUST use EXACT YAML front matter format defined in authoritative schema:
+
+**Authoritative Schema**: `spec-kit-templates/schemas/architecture-spec.schema.json`
+
+**Required YAML Front Matter Format**:
+```yaml
+---
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: [Your Name]  
+date: 2025-MM-DD
+status: draft  # draft | review | approved | deprecated
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
+---
+```
+
+**ENFORCEMENT**:
+- Do NOT use full standard names like "ISO/IEC/IEEE 42010:2011" - use "42010" only
+- Do NOT modify schema patterns - match them exactly
+- MUST include ADR references and architectural viewpoints per ISO/IEC/IEEE 42010:2011
+- Reference authoritative schema file for any questions
+- Validation will FAIL if format deviates from schema
+
 ## 📋 ISO/IEC/IEEE 42010:2011 Compliance
 
 ### Architecture Description Framework

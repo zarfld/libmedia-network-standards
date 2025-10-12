@@ -1082,3 +1082,23 @@ target_link_libraries(ieee_1722_1_2021
 This structure ensures clear separation of IEEE standards versions, prevents architectural violations, and maintains the hardware-agnostic principle while following the actual implementation pattern used in the codebase.
 
 This architecture ensures the Standards layer remains pure, testable, reusable across different hardware platforms, and maintains strict IEEE compliance while following OpenAvnu's core development principles.
+
+## ⚠️ MANDATORY: YAML Front Matter Schema Compliance
+
+**CRITICAL ENFORCEMENT**: All specification files MUST use EXACT YAML front matter format per authoritative schemas.
+
+**Authoritative Schema Sources** (SINGLE SOURCE OF TRUTH):
+- Requirements: `spec-kit-templates/schemas/requirements-spec.schema.json`  
+- Architecture: `spec-kit-templates/schemas/architecture-spec.schema.json`
+- Design: `spec-kit-templates/schemas/ieee-design-spec.schema.json`
+- Phase Gates: `spec-kit-templates/schemas/phase-gate-validation.schema.json`
+
+**ZERO TOLERANCE POLICY**: 
+- ❌ DO NOT modify schemas to fit incorrect front matter
+- ❌ DO NOT use alternative YAML formats  
+- ❌ DO NOT use full standard names where schemas expect short patterns
+- ✅ ALWAYS reference authoritative schema files for format
+- ✅ ALWAYS validate against schemas before submitting
+- ✅ ALWAYS use phase-specific copilot-instructions for examples
+
+**CI ENFORCEMENT**: Validation failures will block CI pipeline and prevent merges. There are no exceptions to schema compliance.

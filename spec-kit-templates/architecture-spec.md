@@ -28,7 +28,7 @@ phase: 03-architecture
 
 ```yaml
 specType: architecture
-standard: ISO/IEC/IEEE 42010:2011
+standard: 42010
 phase: 03-architecture
 version: 1.0.0
 author: [Your Name]

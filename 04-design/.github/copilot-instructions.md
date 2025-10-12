@@ -22,6 +22,44 @@ applyTo:
   - "04-design/patterns/**"
 ```
 
+## ⚠️ MANDATORY: YAML Front Matter Schema Compliance
+
+**CRITICAL**: All design specification files MUST use EXACT YAML front matter format defined in authoritative schema:
+
+**Authoritative Schema**: `spec-kit-templates/schemas/ieee-design-spec.schema.json`
+
+**Required YAML Front Matter Format**:
+```yaml
+---
+title: "Component Design Specification Title"
+type: "design_specification"
+standard: "IEEE 1588-2019"  # Use specific IEEE standard 
+phase: "04-design"
+component: "component-name"
+version: "1.0"  # Use X.Y format (NOT semver)
+date: "2025-MM-DD"
+author: "Your Name"
+status: "draft"  # active | draft | review | approved | deprecated
+compliance:
+  standard: "IEEE 1016-2009"
+  section: "Software Design Description"
+traceability:
+  requirements:
+    - "REQ-F-XXX-001"  # Match pattern ^REQ-[A-Z]+-\\d+-\\d{3}$
+  architecture:
+    - "ARC-C-001"      # Match pattern ^ARC-[A-Z]+-\\d{3}
+  tests:
+    - "TST-XXX-001"    # Optional - Match pattern ^TST-[A-Z]+-\\d{3}$
+---
+```
+
+**ENFORCEMENT**:
+- Use "type: design_specification" NOT "specType: design" 
+- Version format is "X.Y" NOT semver "X.Y.Z"
+- Traceability IDs must match exact regex patterns
+- Reference authoritative schema file for any questions
+- Validation will FAIL if format deviates from schema
+
 ## 📋 IEEE 1016-2009 Compliance
 
 ### Software Design Description (SDD) Structure

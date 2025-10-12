@@ -1,24 +1,25 @@
 ---
-specType: design
-standard: IEEE 1016-2009
-phase: 04-design
-version: 1.0.0
+specType: design_specification
 title: "IEEE 1588-2019 Management Protocol Design Specification"
+type: "design_specification"
+standard: "IEEE 1588-2019"
+phase: "04-design"
 component: "management-protocol"
-author: "AI Agent"
+version: "1.0"
 date: "2024-12-10"
-status: draft
+author: "AI Agent"
+status: "draft"
+compliance:
+  standard: "IEEE 1016-2009"
+  section: "Software Design Description"
 traceability:
   requirements:
     - "REQ-F-1588-003"
-    - "REQ-NF-1588-004"
-    - "REQ-NF-1588-005"
+    - "REQ-NF-1588-004" 
   architecture:
-    - "ARC-C-004-Management"
-    - "ADR-004-ManagementAPI"
+    - "ARC-C-004"
   tests:
     - "TST-MGT-001"
-    - "TST-MGT-002"
 ---
 
 # IEEE 1588-2019 Management Protocol Component Design
