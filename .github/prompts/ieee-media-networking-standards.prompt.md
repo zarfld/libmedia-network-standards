@@ -50,6 +50,20 @@ Guide complete project lifecycle for IEEE media networking standards implementat
 
 ## � Complete Project Lifecycle for IEEE Standards
 
+### **Phase 00: Cross-Standard Architecture Foundation** 🏗️ 
+**Use**: `architecture-starter.prompt.md` + `ieee-media-networking-standards.prompt.md`
+```bash
+# FOUNDATIONAL ACTIVITIES (Before any individual standard implementation):
+- Design unified IEEE standards folder hierarchy: lib/Standards/<Org>/<Std>/<Sub>/<Ver>/
+- Define cross-standard namespace architecture with dependency rules
+- Create Common/ interfaces for hardware abstraction across all standards
+- Establish IEEE layering principles and dependency validation matrix
+- Design cross-standard integration patterns (timing, messaging, state sharing)
+- Create unified testing framework for multi-standard validation
+- Define traceability architecture across all IEEE standards lifecycle phases
+- Document Architecture Decision Records (ADRs) for cross-standard decisions
+```
+
 ### **Phase 01: Stakeholder Requirements** 
 **Use**: `project-kickoff.prompt.md` + `requirements-elicit.prompt.md`
 ```bash
@@ -71,15 +85,16 @@ Guide complete project lifecycle for IEEE media networking standards implementat
 - Establish traceability: Stakeholder → System requirements
 ```
 
-### **Phase 03: Architecture Design**  
+### **Phase 03: Standard-Specific Architecture Design**  
 **Use**: `architecture-starter.prompt.md` + `phase-gate-check.prompt.md`
 ```bash
-# Key Activities:  
-- Design hierarchical folder structure: lib/Standards/<Org>/<Std>/<Sub>/<Ver>/
-- Define namespace architecture following IEEE layering
-- Create hardware abstraction interfaces in Common/
-- Document Architecture Decision Records (ADRs)
-- Establish foundation dependencies (802.1Q → 1588 → 802.1AS → 1722 → 1722.1)
+# Key Activities (Building on Phase 00 cross-standard foundation):  
+- Apply cross-standard folder hierarchy to specific standard implementation
+- Implement standard-specific namespace within established IEEE layering
+- Create standard-specific interfaces using Common/ hardware abstraction
+- Document standard-specific Architecture Decision Records (ADRs)
+- Validate foundation dependencies for this specific standard
+- Design standard-specific state machines within cross-standard framework
 ```
 
 ### **Phase 04: Detailed Design**
@@ -158,19 +173,62 @@ namespace AVnu { namespace Milan { namespace v1_2 { /* Milan */ }}}
 namespace AES { namespace AES67 { namespace _2018 { /* AES67 */ }}}
 ```
 
-### **Hardware Abstraction Enforcement**
+### **Cross-Standard Architecture Foundation Requirements**
+
+**CRITICAL**: Before implementing ANY individual IEEE standard, complete Phase 00:
+
+#### **Unified Dependency Architecture**
 ```cpp
-// ✅ ALLOWED: Hardware abstraction interfaces in Common
+// Cross-standard dependency injection framework
 namespace Common {
     namespace interfaces {
-        class NetworkInterface; // Hardware abstraction
-        class TimerInterface;   // Hardware abstraction
+        // Hardware abstraction (ALL standards use these)
+        class NetworkInterface;   // Ethernet, packet I/O abstraction
+        class TimerInterface;     // Precision timing abstraction
+        class ClockInterface;     // System clock abstraction
+        
+        // Cross-standard protocol interfaces
+        class TimingSyncInterface;     // 802.1AS → 1722 timing coordination
+        class TransportInterface;      // 1722 → 1722.1 transport coordination
+        class ManagementInterface;     // Cross-standard configuration
+    }
+    
+    namespace integration {
+        // Cross-standard coordination services
+        class StandardsCoordinator;    // Manages inter-standard communication
+        class TimingCoordinator;       // Coordinates timing across standards
+        class ConfigurationManager;    // Unified configuration for all standards
     }
 }
+```
 
+#### **IEEE Layering Enforcement Architecture**
+```cpp
+// Dependency validation - higher layers depend on lower layers ONLY
+namespace IEEE {
+    // Layer 1: Network Foundation (no dependencies)
+    namespace _802_1 { namespace Q { namespace _2022 { /* VLAN/QoS */ }}}
+    
+    // Layer 2: Timing Foundation (depends on Layer 1 only)
+    namespace _1588 { namespace _2019 { /* PTPv2 - uses 802.1Q */ }}
+    
+    // Layer 3: Network Timing (depends on Layers 1-2)
+    namespace _802_1 { namespace AS { namespace _2021 { /* gPTP - uses PTPv2 */ }}}
+    
+    // Layer 4: Media Transport (depends on Layers 1-3) 
+    namespace _1722 { namespace _2016 { /* AVTP - uses gPTP timing */ }}
+    
+    // Layer 5: Device Control (depends on Layers 1-4)
+    namespace _1722_1 { namespace _2021 { /* AVDECC - uses AVTP transport */ }}
+}
+```
+
+### **Hardware Abstraction Enforcement**
+```cpp
 // ❌ FORBIDDEN: Hardware-specific code in IEEE namespaces  
 namespace IEEE { 
     // NO Intel HAL calls, NO Linux sockets, NO Windows APIs
+    // ALL hardware access via Common::interfaces only
 }
 ```
 
@@ -261,9 +319,38 @@ IEEE 1722.1-2021 Requirements → Milan/AES67/AES70 Dependencies
 
 ## �🔍 IEEE Standards Validation Process
 
+### **Phase 00 → Phase 01 MANDATORY Gate: Cross-Standard Architecture Complete**
+```markdown
+## Cross-Standard Architecture Foundation Exit Criteria
+
+**CRITICAL**: NO individual IEEE standard implementation may begin until ALL criteria are met:
+
+### Unified Architecture Foundation
+- [ ] lib/Standards/<Org>/<Std>/<Sub>/<Ver>/ hierarchy designed and documented
+- [ ] Cross-standard namespace architecture defined with IEEE layering rules  
+- [ ] Common/interfaces/ hardware abstraction framework designed
+- [ ] Cross-standard integration patterns documented (timing, messaging, coordination)
+- [ ] Unified testing framework architecture designed for multi-standard validation
+- [ ] Traceability architecture designed for cross-standard lifecycle management
+
+### IEEE Dependency Matrix Validation  
+- [ ] IEEE 802.1Q → IEEE 1588 → IEEE 802.1AS → IEEE 1722 → IEEE 1722.1 dependencies documented
+- [ ] Circular dependency prevention mechanisms designed
+- [ ] Cross-standard interface definitions complete
+- [ ] Hardware abstraction enforcement mechanisms designed
+
+### Integration Architecture Readiness
+- [ ] Cross-standard coordination services designed (StandardsCoordinator, TimingCoordinator)
+- [ ] Unified configuration management architecture designed  
+- [ ] Cross-standard state management patterns defined
+- [ ] Multi-standard testing and validation framework ready
+
+**BLOCKER**: If ANY criterion fails, ALL individual standard implementation work MUST STOP until resolved.
+```
+
 ### **Foundation Dependencies Validation**
 ```markdown
-## IEEE Layering Compliance Check
+## IEEE Layering Compliance Check (AFTER Phase 00 Complete)
 
 ### Layer 1: Network Foundation (MUST implement first)
 - [ ] IEEE 802.1Q-2022 VLAN/QoS implementation complete
@@ -363,11 +450,28 @@ SCHEMA_MAP = {
 
 ## 🎯 Prompt Orchestration Workflow
 
-### **Project Kickoff (Phase 01)**
+### **FOUNDATIONAL Phase 00: Cross-Standard Architecture (FIRST PRIORITY)**
 ```markdown
-1. Use `project-kickoff.prompt.md` for initial discovery
-2. Use `requirements-elicit.prompt.md` for stakeholder needs analysis  
-3. Use `traceability-builder.prompt.md` to establish initial traceability
+**CRITICAL**: Complete BEFORE any individual IEEE standard work begins
+
+1. Use `architecture-starter.prompt.md` to design unified IEEE standards architecture
+2. Use `ieee-media-networking-standards.prompt.md` for cross-standard integration patterns
+3. Create lib/Standards/<Org>/<Std>/<Sub>/<Ver>/ folder hierarchy specification
+4. Design Common/interfaces/ hardware abstraction framework
+5. Document IEEE layering dependency matrix and validation rules
+6. Create cross-standard coordination and integration architecture
+7. Use `phase-gate-check.prompt.md` to validate Phase 00 completion (MANDATORY GATE)
+
+**BLOCKER**: NO Phase 01 work allowed until Phase 00 gate criteria met
+```
+
+### **Project Kickoff (Phase 01) - Per Individual Standard**
+```markdown
+**REQUIRES**: Phase 00 cross-standard architecture complete
+
+1. Use `project-kickoff.prompt.md` for standard-specific discovery
+2. Use `requirements-elicit.prompt.md` for standard-specific stakeholder needs
+3. Use `traceability-builder.prompt.md` within cross-standard traceability framework
 4. Use `phase-gate-check.prompt.md` to validate Phase 01 completion
 ```
 
