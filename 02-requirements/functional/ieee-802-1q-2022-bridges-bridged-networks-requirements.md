@@ -71,6 +71,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-8021Q-001: Network Engineer VLAN Segmentation
+
+**As a** network engineer managing complex enterprise networks,  
+**I need** enhanced IEEE 802.1Q VLAN capabilities for flexible network segmentation,  
+**So that** I can isolate different traffic types and maintain security boundaries efficiently.
+
+### US-8021Q-002: Security Engineer Micro-Segmentation
+
+**As a** security engineer implementing zero-trust architecture,  
+**I need** advanced 802.1Q features for micro-segmentation and traffic isolation,  
+**So that** I can contain security threats and limit lateral movement within the network.
+
+### US-8021Q-003: Audio Engineer Professional Media VLANs
+
+**As an** audio engineer managing professional media networks,  
+**I need** 802.1Q priority tagging and QoS features for audio/video traffic,  
+**So that** media streams receive appropriate network treatment without interference.
+
+### US-8021Q-004: System Administrator Multi-Tenant Infrastructure
+
+**As a** system administrator managing multi-tenant environments,  
+**I need** robust VLAN isolation and bandwidth management capabilities,  
+**So that** different tenants' traffic remains completely separated and properly allocated.
+
+### US-8021Q-005: Data Center Engineer Virtualized Networks
+
+**As a** data center engineer managing virtualized infrastructure,  
+**I need** advanced bridging and switching features for complex virtual networks,  
+**So that** virtual machines and containers can communicate efficiently while maintaining isolation.
+
+### US-8021Q-006: Broadcast Engineer Production Network Design
+
+**As a** broadcast engineer designing production facilities,  
+**I need** deterministic bridging behavior and stream reservation capabilities,  
+**So that** critical broadcast traffic has guaranteed network resources and timing.
+
+### US-8021Q-007: Equipment Manufacturer Standards Compliance
+
+**As an** equipment manufacturer developing Ethernet switches,  
+**I need** comprehensive 802.1Q conformance requirements and test procedures,  
+**So that** my devices interoperate correctly with existing bridged network infrastructure.
+
+### US-8021Q-008: Operations Engineer Network Management
+
+**As an** operations engineer monitoring enterprise networks,  
+**I need** standardized bridge management and monitoring capabilities,  
+**So that** I can effectively oversee and troubleshoot bridged network segments.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Enhanced Network Segmentation and Isolation

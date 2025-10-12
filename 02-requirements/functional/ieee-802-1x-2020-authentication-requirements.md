@@ -71,6 +71,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-8021X-001: Security Engineer Network Access Control
+
+**As a** security engineer implementing enterprise security policies,  
+**I need** IEEE 802.1X port-based authentication to control device access to network resources,  
+**So that** only authorized devices and users can connect to sensitive network segments.
+
+### US-8021X-002: Network Administrator User Authentication
+
+**As a** network administrator managing user access,  
+**I need** 802.1X integration with corporate identity systems for seamless authentication,  
+**So that** users can access network resources using their existing corporate credentials.
+
+### US-8021X-003: Compliance Officer Audit Trail Management
+
+**As a** compliance officer ensuring regulatory adherence,  
+**I need** comprehensive 802.1X logging and audit capabilities for access tracking,  
+**So that** I can demonstrate compliance with security regulations and investigate incidents.
+
+### US-8021X-004: System Administrator BYOD Policy Enforcement
+
+**As a** system administrator managing bring-your-own-device policies,  
+**I need** 802.1X device authentication and policy enforcement capabilities,  
+**So that** personal devices receive appropriate network access based on security policies.
+
+### US-8021X-005: Audio Engineer Secure Media Infrastructure
+
+**As an** audio engineer working with sensitive content,  
+**I need** 802.1X authentication that doesn't interfere with real-time media streams,  
+**So that** security controls protect content while maintaining audio quality and timing.
+
+### US-8021X-006: Broadcast Engineer Production Security
+
+**As a** broadcast engineer managing live production networks,  
+**I need** 802.1X authentication with rapid re-authentication for mobile production devices,  
+**So that** security is maintained without disrupting live broadcast operations.
+
+### US-8021X-007: Equipment Manufacturer Device Certification
+
+**As an** equipment manufacturer developing network-attached devices,  
+**I need** standardized 802.1X implementation guidelines and certification procedures,  
+**So that** my devices integrate securely with existing enterprise authentication infrastructure.
+
+### US-8021X-008: Operations Engineer Security Monitoring
+
+**As an** operations engineer monitoring network security,  
+**I need** 802.1X status reporting and alerting for authentication anomalies,  
+**So that** I can quickly respond to potential security threats and access violations.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Comprehensive Network Security Framework

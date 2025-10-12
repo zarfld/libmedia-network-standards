@@ -62,6 +62,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-LAG-001: Network Engineer High Availability Design
+
+**As a** network engineer designing mission-critical infrastructure,  
+**I need** IEEE 802.1AX link aggregation for automatic failover and redundancy,  
+**So that** network connectivity remains stable even when individual links fail.
+
+### US-LAG-002: Broadcast Engineer Bandwidth Optimization
+
+**As a** broadcast engineer managing high-bandwidth video workflows,  
+**I need** link aggregation to combine multiple network connections for increased throughput,  
+**So that** I can reliably transport multiple 4K video streams without bottlenecks.
+
+### US-LAG-003: System Administrator Load Distribution
+
+**As a** system administrator managing enterprise networks with varying traffic loads,  
+**I need** intelligent load balancing across aggregated links,  
+**So that** network utilization remains optimal and no single link becomes overloaded.
+
+### US-LAG-004: Data Center Manager Server Connectivity
+
+**As a** data center manager provisioning high-performance server connections,  
+**I need** multi-gigabit link aggregation for server uplinks,  
+**So that** servers can achieve maximum throughput for demanding applications.
+
+### US-LAG-005: Live Production Engineer Redundant Streaming
+
+**As a** live production engineer managing critical live broadcasts,  
+**I need** link aggregation failover that's transparent to streaming applications,  
+**So that** live streams never drop even during network equipment maintenance.
+
+### US-LAG-006: Security Engineer Monitoring Integration
+
+**As a** security engineer implementing network monitoring,  
+**I need** link aggregation that maintains traffic visibility and security controls,  
+**So that** security policies remain effective across all aggregated connections.
+
+### US-LAG-007: Equipment Manufacturer Interoperability Testing
+
+**As an** equipment manufacturer developing network switches,  
+**I need** standardized link aggregation protocols that ensure interoperability,  
+**So that** my devices work reliably with existing infrastructure from other vendors.
+
+### US-LAG-008: Operations Engineer Simplified Management
+
+**As an** operations engineer maintaining complex network infrastructure,  
+**I need** automated link aggregation configuration and monitoring,  
+**So that** I can manage redundant connections efficiently without manual intervention.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: High-Availability Network Infrastructure
