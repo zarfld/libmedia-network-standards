@@ -10,27 +10,27 @@ status: "draft"
 description: "Complete C4 architecture specification for IEEE 1588-2019 Precision Time Protocol v2.1 implementation with enterprise timing capabilities"
 traceability:
   requirements:
-    - "REQ-SYS-PTP-001"
-    - "REQ-SYS-PTP-002"
-    - "REQ-SYS-PTP-003"
-    - "REQ-SYS-PTP-004"
-    - "REQ-SYS-PTP-005"
-    - "REQ-FUN-PTP-009"
-    - "REQ-FUN-PTP-013"
-    - "REQ-FUN-PTP-017"
-    - "REQ-FUN-PTP-021"
-    - "REQ-FUN-PTP-025"
-    - "REQ-FUN-PTP-033"
-    - "REQ-FUN-PTP-041"
+    - "REQ-F-001"
+    - "REQ-F-002"
+    - "REQ-F-003"
+    - "REQ-F-004"
+    - "REQ-F-005"
+    - "REQ-F-009"
+    - "REQ-F-013"
+    - "REQ-F-017"
+    - "REQ-F-021"
+    - "REQ-F-025"
+    - "REQ-F-033"
+    - "REQ-F-041"
   architectureComponents:
-    - "ARC-C-010"  # PTP Core Engine
-    - "ARC-C-011"  # Clock State Machine
-    - "ARC-C-012"  # Message Processing Layer
-    - "ARC-C-013"  # Best Master Clock Algorithm
-    - "ARC-C-014"  # Multi-Domain Manager
-    - "ARC-C-015"  # Security Framework
-    - "ARC-C-016"  # Management Protocol Engine
-    - "ARC-C-017"  # Hardware Abstraction Layer
+    - "ARC-C-010"
+    - "ARC-C-011"
+    - "ARC-C-012"
+    - "ARC-C-013"
+    - "ARC-C-014"
+    - "ARC-C-015"
+    - "ARC-C-016"
+    - "ARC-C-017"
   decisions:
     - "ADR-010"
     - "ADR-011"
@@ -103,7 +103,7 @@ Platform Layer (Intel/ARM/FPGA HAL)
 1. **Direct Hardware Integration**: Rejected due to portability limitations and testing complexity
 2. **Single Unified Layer**: Rejected due to mixing protocol and platform concerns
 
-**Compliance**: Addresses REQ-SYS-PTP-006 (Hardware Abstraction), REQ-FUN-PTP-041 (Platform Independence)
+**Compliance**: Addresses REQ-F-006 (Hardware Abstraction), REQ-F-041 (Platform Independence)
 
 ---
 
@@ -142,7 +142,7 @@ Implement event-driven state machine architecture using hierarchical state machi
 1. **Polling-Based Architecture**: Rejected due to timing unpredictability
 2. **Thread-Per-Clock Model**: Rejected due to synchronization complexity and overhead
 
-**Compliance**: Addresses REQ-SYS-PTP-001 (Enterprise Timing), REQ-SYS-PTP-005 (Deterministic Design), REQ-FUN-PTP-009 (Clock State Machines)
+**Compliance**: Addresses REQ-F-001 (Enterprise Timing), REQ-F-005 (Deterministic Design), REQ-F-009 (Clock State Machines)
 
 ---
 
@@ -189,7 +189,7 @@ Implement layered security and management framework with pluggable authenticatio
 1. **Basic Security Only**: Rejected due to enterprise requirements
 2. **Embedded Management**: Rejected due to scalability limitations
 
-**Compliance**: Addresses REQ-SYS-PTP-003 (Security), REQ-SYS-PTP-004 (Management), REQ-FUN-PTP-025 (Authentication), REQ-FUN-PTP-033 (Configuration Management)
+**Compliance**: Addresses REQ-F-003 (Security), REQ-F-004 (Management), REQ-F-025 (Authentication), REQ-F-033 (Configuration Management)
 
 ---
 
@@ -483,7 +483,7 @@ graph TB
 - Multi-domain isolation preventing cross-traffic interference
 - Real-time priority scheduling for PTP message processing
 
-**Compliance**: Addresses REQ-SYS-PTP-001 (Enterprise Timing), REQ-FUN-PTP-017 (Precision Algorithms)
+**Compliance**: Addresses REQ-F-001 (Enterprise Timing), REQ-F-017 (Precision Algorithms)
 
 ### QA-SC-011: Multi-Domain Scalability
 
@@ -500,7 +500,7 @@ graph TB
 - Optimized memory management avoiding dynamic allocation
 - Lock-free data structures for concurrent domain processing
 
-**Compliance**: Addresses REQ-SYS-PTP-002 (Multi-Domain), REQ-FUN-PTP-021 (Domain Support)
+**Compliance**: Addresses REQ-F-002 (Multi-Domain), REQ-F-021 (Domain Support)
 
 ### QA-SC-012: Security Framework Performance
 
@@ -517,7 +517,7 @@ graph TB
 - Pipelined authentication processing with timing isolation
 - Configurable security levels balancing performance and protection
 
-**Compliance**: Addresses REQ-SYS-PTP-003 (Security), REQ-FUN-PTP-025 (Authentication)
+**Compliance**: Addresses REQ-F-003 (Security), REQ-F-025 (Authentication)
 
 ---
 
@@ -647,11 +647,11 @@ graph TB
 
 | Architecture Component | Requirements Coverage | Design Elements |
 |----------------------|---------------------|----------------|
-| PTP Core Engine (ARC-C-010) | REQ-SYS-PTP-001, REQ-FUN-PTP-009 | Central protocol orchestration |
-| Clock State Machine (ARC-C-011) | REQ-SYS-PTP-005, REQ-FUN-PTP-009-012 | Deterministic state transitions |
-| Multi-Domain Manager (ARC-C-014) | REQ-SYS-PTP-002, REQ-FUN-PTP-021-024 | Domain isolation and coordination |
-| Security Framework (ARC-C-015) | REQ-SYS-PTP-003, REQ-FUN-PTP-025-032 | Authentication and authorization |
-| Hardware Abstraction (ARC-C-017) | REQ-SYS-PTP-006, REQ-FUN-PTP-041-044 | Cross-platform deployment |
+| PTP Core Engine (ARC-C-010) | REQ-F-001, REQ-F-009 | Central protocol orchestration |
+| Clock State Machine (ARC-C-011) | REQ-F-005, REQ-F-009 | Deterministic state transitions |
+| Multi-Domain Manager (ARC-C-014) | REQ-F-002, REQ-F-021 | Domain isolation and coordination |
+| Security Framework (ARC-C-015) | REQ-F-003, REQ-F-025 | Authentication and authorization |
+| Hardware Abstraction (ARC-C-017) | REQ-F-006, REQ-F-041 | Cross-platform deployment |
 
 ### B. Interface Specifications
 

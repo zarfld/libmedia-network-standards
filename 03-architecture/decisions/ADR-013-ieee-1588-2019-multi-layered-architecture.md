@@ -10,17 +10,17 @@ status: "accepted"
 description: "Architecture decision for IEEE 1588-2019 PTP v2.1 implementation using multi-layered architecture with strict hardware abstraction"
 traceability:
   requirements:
-    - "REQ-SYS-PTP-006"
-    - "REQ-FUN-PTP-041"
-    - "REQ-FUN-PTP-042"
-    - "REQ-FUN-PTP-043"
-    - "REQ-FUN-PTP-044"
+    - "REQ-F-006"
+    - "REQ-F-041"
+    - "REQ-F-042"
+    - "REQ-F-043"
+    - "REQ-F-044"
   architectureComponents:
     - "ARC-C-010"
     - "ARC-C-017"
   relatedADRs:
-    - "ADR-001"  # OpenAvnu hardware abstraction
-    - "ADR-007"  # AVDECC layered architecture
+    - "ADR-001"
+    - "ADR-007"
 ---
 
 # ADR-013: IEEE 1588-2019 PTPv2 Multi-Layered Architecture with Hardware Abstraction
