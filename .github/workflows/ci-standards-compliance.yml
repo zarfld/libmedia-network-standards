@@ -31,10 +31,35 @@ jobs:
         run: pip install pyyaml jsonschema
       - name: Validate spec structure
         run: |
-          ALLOW_EMPTY_SPECS=1 python Scripts/validate-spec-structure.py || {
-            echo '❌ Spec structure validation failed.'
+          echo "🔍 Validating IEEE/ISO standards compliance..."
+          echo "Standards Framework: ISO/IEC/IEEE 12207:2017, 29148:2018, 42010:2011"
+          
+          if ! ALLOW_EMPTY_SPECS=1 python Scripts/validate-spec-structure.py; then
+            echo ""
+            echo "🚫 STANDARDS COMPLIANCE FAILURE"
+            echo "================================"
+            echo ""
+            echo "The following standards are being enforced:"
+            echo "• ISO/IEC/IEEE 12207:2017 - Software lifecycle processes"
+            echo "• ISO/IEC/IEEE 29148:2018 - Requirements engineering"
+            echo "• IEEE 1016-2009 - Software design descriptions"  
+            echo "• ISO/IEC/IEEE 42010:2011 - Architecture descriptions"
+            echo "• IEEE 1012-2016 - Verification and validation"
+            echo "• XP Practices - TDD, User Stories, Continuous Integration"
+            echo ""
+            echo "💡 COMMON FIXES:"
+            echo "1. Fix specType: Use 'requirements' or 'architecture' (not variants)"
+            echo "2. Add standard: Use 'ISO/IEC/IEEE 29148:2018' or 'ISO/IEC/IEEE 42010:2011'"
+            echo "3. Fix phase: Use '02-requirements' or '03-architecture'"
+            echo "4. Add version: Use semver format like '1.0.0'"
+            echo "5. Add date: Use YYYY-MM-DD format like '2025-10-12'"
+            echo "6. Add traceability: Link to stakeholder requirements"
+            echo ""
+            echo "📖 See spec-kit-templates/schemas/ for complete requirements"
             exit 1
-          }
+          else
+            echo "✅ All specifications comply with ISO/IEC/IEEE standards"
+          fi
   spec-generation:
     needs: [spec-validation]
     name: Spec Artifact Generation (Index, Trace JSON, Test Skeletons)

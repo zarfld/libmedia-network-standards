@@ -1,0 +1,274 @@
+{
+  "timestamp": "2025-10-12T12:44:51.498281",
+  "checks": [
+    {
+      "check": "Specification Validation",
+      "standard": "ISO/IEC/IEEE 29148:2018, 42010:2011",
+      "passed": false,
+      "details": [
+        {
+          "file": "02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 80: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\.github\\copilot-instructions.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\aes3-2009-digital-audio-interface-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 107: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\aes5-2018-preferred-sampling-frequencies-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 114: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\aes60id-2020-object-based-audio-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 105: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 98: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\aes70-2018-open-control-architecture-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 110: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\cross-standards-architecture-integration-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 114: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-1588-2019-requirements-analysis.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 97: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-802-1ab-2016-lldp-discovery-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 106: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-802-1as-2020-gptp-timing-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 103: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-802-1ax-2020-link-aggregation-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 108: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-802-1q-2022-bridges-bridged-networks-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 115: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\functional\\ieee-802-1x-2020-authentication-requirements.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 105: character maps to <undefined>\n"
+        },
+        {
+          "file": "02-requirements\\non-functional\\cross-standard-dependency-analysis.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 99: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\architecture-quality-scenarios.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 101: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\phase00-cross-standard-architecture-foundation.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 98: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\phase00-gate-validation-report.md",
+          "passed": false,
+          "output": "[FAIL] 03-architecture\\phase00-gate-validation-report.md: Missing specType in front matter\n\n[SUMMARY] Failed: 1 validation issues across 1 files.\n"
+        },
+        {
+          "file": "03-architecture\\.github\\copilot-instructions.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\components\\ieee-1588-2019-hal-architecture.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\components\\ieee-1588-2019-management-architecture.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\components\\ieee-1588-2019-multi-domain-architecture.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\components\\ieee-1588-2019-security-architecture.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md",
+          "passed": false,
+          "output": "[FAIL] 03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md: Schema violation: status: 'accepted' is not one of ['draft', 'review', 'approved', 'deprecated']\nTraceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 188: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\decisions\\ADR-002-ieee-standards-layering.md",
+          "passed": false,
+          "output": "[FAIL] 03-architecture\\decisions\\ADR-002-ieee-standards-layering.md: Schema violation: status: 'accepted' is not one of ['draft', 'review', 'approved', 'deprecated']\nTraceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 186: character maps to <undefined>\n"
+        },
+        {
+          "file": "03-architecture\\views\\cross-standard-architecture-views.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 188, in main\n    print(f\"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2192' in position 174: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-bmca-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-bmca-traceability-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-hal-interface-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-management-design.md",
+          "passed": false,
+          "output": "[FAIL] 04-design\\components\\ieee-1588-2019-management-design.md: Missing specType in front matter\n\n[SUMMARY] Failed: 1 validation issues across 1 files.\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-message-processing-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-multi-domain-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-state-machine-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "04-design\\components\\ieee-1588-2019-transport-design.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\architecture-vv-plan.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\ieee-1588-2019-bmca-traceability-tests.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\ieee-1588-2019-hal-tests.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\ieee-1588-2019-message-processing-tests.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\ieee-1588-2019-multi-domain-tests.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        },
+        {
+          "file": "07-verification-validation\\test-plans\\ieee-1588-2019-state-machine-tests.md",
+          "passed": false,
+          "output": "Traceback (most recent call last):\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 209, in <module>\n    sys.exit(main(sys.argv))\n             ~~~~^^^^^^^^^^\n  File \"D:\\Repos\\libmedia-network-standards\\Scripts\\validate-spec-structure.py\", line 185, in main\n    print(w)\n    ~~~~~^^^\n  File \"C:\\Users\\zarfld\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>\n"
+        }
+      ],
+      "fixes": [
+        "Run: py Scripts/validate-spec-structure.py <file> for detailed errors",
+        "Check YAML front matter matches schema requirements",
+        "Ensure specType matches allowed values: requirements, architecture, design",
+        "Verify standard references are correct (ISO/IEC/IEEE format)",
+        "Add missing required fields: version, date, traceability"
+      ]
+    },
+    {
+      "check": "TDD Compliance",
+      "standard": "XP Test-Driven Development",
+      "passed": true,
+      "details": {
+        "unit_tests": 1,
+        "integration_tests": 0,
+        "coverage_percent": 100,
+        "missing_tests": []
+      },
+      "fixes": null
+    },
+    {
+      "check": "Architecture Compliance",
+      "standard": "IEEE 1016-2009",
+      "passed": false,
+      "details": {
+        "missing_documentation": [
+          "03-architecture/views/context-view.md",
+          "03-architecture/views/logical-view.md",
+          "03-architecture/views/process-view.md"
+        ],
+        "adr_compliance": {
+          "compliant": true,
+          "total_adrs": 3,
+          "compliant_adrs": 3,
+          "missing_adr_directory": false
+        }
+      },
+      "fixes": [
+        "Create missing architecture documentation per IEEE 1016-2009:",
+        "  \u2022 03-architecture/views/context-view.md",
+        "  \u2022 03-architecture/views/logical-view.md",
+        "  \u2022 03-architecture/views/process-view.md"
+      ]
+    },
+    {
+      "check": "CI Integration",
+      "standard": "XP Continuous Integration",
+      "passed": true,
+      "details": {
+        "missing_ci_files": [],
+        "precommit_configured": true
+      },
+      "fixes": [
+        "Integrate with development workflow:",
+        "  \u2022 Configure IDE to run validation on save",
+        "  \u2022 Set up commit hooks for automatic compliance checking"
+      ]
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 2,
+    "warnings": 0
+  }
+}

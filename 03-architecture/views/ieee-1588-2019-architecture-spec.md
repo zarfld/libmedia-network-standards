@@ -1,13 +1,15 @@
 ---
-specType: architecture-spec
-project: IEEE Media Networking Standards
-standard: IEEE 1588-2019
-phase: 03-architecture-design
-status: in-progress
-created: 2024-12-10
-last-updated: 2024-12-10
+specType: architecture
+standard: ISO/IEC/IEEE 42010:2011
+phase: 03-architecture
+version: 1.0.0
 author: AI Standards Implementation Agent
-review-status: draft
+date: "2025-10-12"
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 traces-to: 02-requirements/functional/ieee-1588-2019-requirements-analysis.md
 ---
 

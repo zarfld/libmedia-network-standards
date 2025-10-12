@@ -112,20 +112,49 @@ def validate_spec(path: pathlib.Path) -> tuple[list[ValidationIssue], list[str]]
         return issues, warnings
     validator = jsonschema.Draft7Validator(schema)
     for err in validator.iter_errors(meta):
-        issues.append(ValidationIssue(path, f"Schema violation: {'/'.join(map(str, err.path)) or '<root>'}: {err.message}"))
+        # Enhanced error messages with fix suggestions
+        field_path = '/'.join(map(str, err.path)) or '<root>'
+        error_msg = f"Schema violation: {field_path}: {err.message}"
+        
+        # Add specific fix suggestions for common issues
+        if 'specType' in field_path and 'const' in str(err.validator):
+            if spec_type == 'requirements-spec':
+                error_msg += " → FIX: Change 'specType: requirements-spec' to 'specType: requirements'"
+            elif spec_type == 'architecture-specification':
+                error_msg += " → FIX: Change 'specType: architecture-specification' to 'specType: architecture'"
+        elif 'standard' in field_path:
+            error_msg += " → FIX: Use 'ISO/IEC/IEEE 29148:2018' for requirements or 'ISO/IEC/IEEE 42010:2011' for architecture"
+        elif 'phase' in field_path:
+            error_msg += " → FIX: Use '02-requirements' for requirements or '03-architecture' for architecture"
+        elif 'version' in field_path:
+            error_msg += " → FIX: Use semver format like '1.0.0'"
+        elif 'date' in field_path:
+            error_msg += " → FIX: Use YYYY-MM-DD format like '2025-10-12'"
+        elif 'traceability' in field_path:
+            error_msg += " → FIX: Add traceability section with stakeholderRequirements or requirements array"
+            
+        issues.append(ValidationIssue(path, error_msg))
 
-    # Additional cross-field custom checks
+    # Enhanced cross-field validation with ISO/IEC/IEEE compliance
     if spec_type == 'requirements':
-        # Ensure at least one requirement identifier present in body
-        # Support multiple formats: REQ-*, SR-*, SYS-*, F[0-9], NFR-*, etc.
+        # ISO/IEC/IEEE 29148:2018 compliance - requirement identifiers
         if not re.search(r'(REQ-(F|NF|STK|FUNC|NFR)(-\w+)?-\d{3}|SR-\d{3}|SYS-\d{3}|F\d{3}\.?\d*|NFR-\d{3})', text):
-            issues.append(ValidationIssue(path, 'No requirement identifiers found in body'))
+            issues.append(ValidationIssue(path, 'No requirement identifiers found in body → FIX: Add REQ-F-XXX or REQ-NF-XXX identifiers per ISO/IEC/IEEE 29148:2018'))
+            
+        # XP User Story validation
+        if 'As a' not in text and 'As an' not in text:
+            issues.append(ValidationIssue(path, 'No user stories found → FIX: Add "As a [user], I need [functionality], So that [benefit]" per XP practices'))
+            
     if spec_type == 'architecture':
-        # Ensure at least one ARC-C- or ADR reference
+        # ISO/IEC/IEEE 42010:2011 compliance - architecture decisions
         if not re.search(r'ADR-\d{3}', text):
-            # treat placeholder ADR-XXX as not sufficient
-            if 'ADR-XXX' not in text:
-                issues.append(ValidationIssue(path, 'No ADR-XXX references found in architecture spec'))
+            if 'ADR-XXX' not in text:  # Allow template placeholder
+                issues.append(ValidationIssue(path, 'No ADR references found → FIX: Add ADR-XXX references per ISO/IEC/IEEE 42010:2011'))
+                
+        # Architecture viewpoints validation
+        if 'viewpoint' not in text.lower() and 'concern' not in text.lower():
+            issues.append(ValidationIssue(path, 'No architectural viewpoints/concerns found → FIX: Add stakeholder concerns and viewpoints per ISO/IEC/IEEE 42010:2011'))
+            
     return issues, warnings
 
 
@@ -156,7 +185,7 @@ def main(argv: list[str]) -> int:
             print(w)
         if issues:
             for issue in issues:
-                print(f"❌ {issue.file.relative_to(ROOT)}: {issue.message}")
+                print(f"[FAIL] {issue.file.relative_to(ROOT)}: {issue.message}")
             all_issues.extend(issues)
         else:
             # Count only governed spec types (requirements / architecture)
@@ -165,15 +194,15 @@ def main(argv: list[str]) -> int:
             meta = parse_yaml_block(fm) if fm else {}
             if meta and meta.get('specType') in ('requirements','architecture'):
                 governed_specs += 1
-            print(f"✅ {path.relative_to(ROOT)} valid")
+            print(f"[PASS] {path.relative_to(ROOT)} valid")
     allow_empty = bool(os.environ.get('ALLOW_EMPTY_SPECS'))
     if governed_specs == 0 and allow_empty and not all_issues:
-        print('ℹ️ No governed specs found; ALLOW_EMPTY_SPECS set -> passing without enforcement.')
+        print('[INFO] No governed specs found; ALLOW_EMPTY_SPECS set -> passing without enforcement.')
         return 0
     if all_issues:
-        print(f"\nFailed: {len(all_issues)} validation issues across {len(set(i.file for i in all_issues))} files.")
+        print(f"\n[SUMMARY] Failed: {len(all_issues)} validation issues across {len(set(i.file for i in all_issues))} files.")
         return 1
-    print("All specs validated successfully.")
+    print("[SUCCESS] All specs validated successfully.")
     return 0
 
 if __name__ == '__main__':  # pragma: no cover

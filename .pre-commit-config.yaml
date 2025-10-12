@@ -1,0 +1,141 @@
+# Standards Compliance Pre-commit Configuration
+# Integrates ISO/IEC/IEEE standards and XP practices into development workflow
+# See https://pre-commit.com for framework documentation
+
+repos:
+  # Standards structure validation
+  - repo: local
+    hooks:
+      - id: validate-spec-structure
+        name: Validate Specification Structure (ISO/IEC/IEEE Standards)
+        entry: py Scripts/validate-spec-structure.py
+        language: system
+        files: '^(01-stakeholder-requirements|02-requirements|03-architecture|04-design|05-implementation/docs|07-verification-validation)/.*\.md$'
+        pass_filenames: true
+        description: 'Validates YAML front matter and structure per ISO/IEC/IEEE standards'
+
+  # Comprehensive compliance check
+  - repo: local
+    hooks:
+      - id: standards-compliance-check
+        name: Standards Compliance Check (ISO/IEC/IEEE + XP)
+        entry: py Scripts/pre-commit-standards-check.py
+        language: system
+        files: '.*\.(md|cpp|c|h|hpp|cmake|txt|yml|yaml)$'
+        pass_filenames: false
+        description: 'Comprehensive standards compliance validation'
+
+  # TDD compliance for source files
+  - repo: local
+    hooks:
+      - id: tdd-test-check
+        name: TDD Test Coverage Check (XP Practice)
+        entry: py Scripts/check-tdd-compliance.py
+        language: system
+        files: '^05-implementation/src/.*\.(cpp|c)$'
+        pass_filenames: true
+        description: 'Ensures implementation files have corresponding tests (TDD)'
+
+  # Architecture decision documentation
+  - repo: local
+    hooks:
+      - id: adr-format-check
+        name: ADR Format Validation (IEEE 42010:2011)
+        entry: py Scripts/validate-adr-format.py
+        language: system
+        files: '^03-architecture/decisions/.*\.md$'
+        pass_filenames: true
+        description: 'Validates Architecture Decision Record format per IEEE standards'
+
+  # Standard code formatting
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove Trailing Whitespace
+        exclude: '\.md$'
+      - id: end-of-file-fixer
+        name: Fix End of Files
+      - id: check-yaml
+        name: Check YAML Syntax
+        files: '\.(yml|yaml)$'
+      - id: check-json
+        name: Check JSON Syntax
+        files: '\.json$'
+      - id: check-merge-conflict
+        name: Check for Merge Conflicts
+      - id: check-case-conflict
+        name: Check for Case Conflicts
+      - id: mixed-line-ending
+        name: Mixed Line Ending Check
+
+  # C++ specific checks
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: clang-format
+        name: C++ Code Formatting (clang-format)
+        files: '\.(cpp|c|h|hpp)$'
+        args: ['-i', '--style=Google']
+        description: 'Auto-format C++ code per Google style guide'
+
+  # CMake formatting
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+      - id: cmake-format
+        name: CMake Formatting
+        files: 'CMakeLists\.txt$|\.cmake$'
+
+  # Documentation checks
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint
+        name: Markdown Linting
+        files: '\.md$'
+        args: ['--fix']
+        exclude: '^(spec-kit-templates/|Documentation/examples/)'
+
+  # Security and compliance
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect Secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: '\.lock$|\.min\.(js|css)$'
+
+# Global configuration
+default_language_version:
+  python: python3
+
+# Execution stages
+default_stages: [commit]
+
+# Fail fast on first error
+fail_fast: false
+
+# Exclude patterns
+exclude: |
+  (?x)^(
+    .*\.min\.(js|css)$|
+    .*\.lock$|
+    .*/node_modules/.*|
+    .*/build/.*|
+    .*/dist/.*|
+    .*\.log$
+  )$
+
+# CI integration
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+    
+    For more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

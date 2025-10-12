@@ -1,13 +1,15 @@
 ---
-specType: requirements-spec
-project: IEEE Media Networking Standards
-standard: IEEE 1588-2019
-phase: 02-requirements-analysis
-status: in-progress
-created: 2024-12-10
-last-updated: 2024-12-10
+specType: requirements
+standard: ISO/IEC/IEEE 29148:2018
+phase: 02-requirements
+version: 1.0.0
 author: AI Standards Implementation Agent
-review-status: draft
+date: "2025-10-12"
+status: draft
+traceability:
+  stakeholderRequirements:
+    - REQ-STK-TIMING-001
+    - REQ-STK-SYNC-001
 ---
 
 # IEEE 1588-2019 Requirements Completeness Analysis
