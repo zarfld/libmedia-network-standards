@@ -28,6 +28,49 @@ traceability:
 
 This specification defines the requirements for implementing IEEE 802.1X-2020 Port-Based Network Access Control, the fundamental network security standard that provides authentication, authorization, and access control for network devices and users. IEEE 802.1X-2020 establishes the security foundation for professional networks, TSN deployments, and mission-critical systems by ensuring only authenticated and authorized devices can access network resources, while providing comprehensive security policy enforcement and certificate-based authentication frameworks.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1X-2020-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks--Port-Based Network Access Control
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1X-2020-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1X-2020 port-based authentication compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 802.1X-2020 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 802.1Q-2020-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks--Bridges and Bridged Networks
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1Q-2020-en.pdf`
+  - **AUTHORITY**: BINDING foundation for bridging and VLAN integration with port-based authentication
+  - **BINDING SECTIONS**: Bridge behavior and VLAN handling requirements for authenticated ports
+  - **COMPLIANCE TESTING**: Bridge implementation SHALL conform to IEEE 802.1Q as integrated with 802.1X-2020
+
+- **RFC 3748** - Extensible Authentication Protocol (EAP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/RFC_3748-EAP.pdf`
+  - **AUTHORITY**: BINDING foundation for authentication protocol framework
+  - **BINDING SECTIONS**: EAP methods and authentication framework required by 802.1X-2020
+  - **COMPLIANCE TESTING**: EAP implementation SHALL conform to RFC 3748 as required by 802.1X-2020
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1X-2020 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1X-2020-en.pdf"
+
+# Access foundation IEEE 802.1Q bridging specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1Q-2020-en.pdf"
+
+# Access foundation RFC 3748 EAP specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/RFC_3748-EAP.pdf"
+```
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Comprehensive Network Security Framework

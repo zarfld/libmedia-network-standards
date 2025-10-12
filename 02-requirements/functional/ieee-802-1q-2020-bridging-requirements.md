@@ -26,6 +26,40 @@ traceability:
 
 This document specifies comprehensive requirements for IEEE 802.1Q-2020 Bridges and Bridged Networks implementation providing the fundamental networking infrastructure for professional media networking, Time-Sensitive Networking (TSN), and Audio Video Bridging (AVB) applications.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1Q-2020-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks--Bridges and Bridged Networks
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1Q-2020-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1Q-2020 bridging compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 802.1Q-2020 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 802.3-2022-en.pdf** - IEEE Standard for Ethernet
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_3-2022-en.pdf`
+  - **AUTHORITY**: BINDING foundation for Ethernet layer specifications
+  - **BINDING SECTIONS**: Physical and data link layer requirements for bridging operation
+  - **COMPLIANCE TESTING**: Ethernet implementation SHALL conform to IEEE 802.3 as required by 802.1Q-2020
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1Q-2020 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1Q-2020-en.pdf"
+
+# Access foundation IEEE 802.3 Ethernet specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_3-2022-en.pdf"
+```
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements
 
 ### 1.1 Network Infrastructure Engineers

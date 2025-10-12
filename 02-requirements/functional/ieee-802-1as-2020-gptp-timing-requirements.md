@@ -29,6 +29,42 @@ traceability:
 
 This specification defines the requirements for implementing IEEE 802.1AS-2020 Generalized Precision Time Protocol (gPTP), the foundational timing synchronization standard for Time-Sensitive Networks (TSN). IEEE 802.1AS-2020 provides network-wide time synchronization with sub-microsecond accuracy, enabling deterministic networking behaviors essential for professional audio, video, industrial automation, and real-time applications. This standard serves as the timing foundation for the entire TSN ecosystem and professional media networks.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1AS-2020-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks - Timing and Synchronization for Time-Sensitive Applications (2020 Legacy Version)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AS-2020-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1AS-2020 gPTP compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 802.1AS-2020 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 1588-2019-en.pdf** - IEEE Standard for Precision Time Protocol (PTPv2)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf`
+  - **AUTHORITY**: BINDING foundation for IEEE 802.1AS-2020 PTP profile specifications
+  - **BINDING SECTIONS**: PTP protocol specifications as profiled by IEEE 802.1AS-2020
+  - **COMPLIANCE TESTING**: PTP implementation SHALL conform to IEEE 1588-2019 as profiled by 802.1AS-2020
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1AS-2020 legacy authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AS-2020-en.pdf"
+
+# Access foundation IEEE 1588-2019 PTP for timing fundamentals
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf"
+```
+
+**CRITICAL**: IEEE 802.1AS-2020 is LEGACY gPTP version. Focus ONLY on 2020 specifications for backward compatibility.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Network-Wide Time Synchronization Infrastructure

@@ -28,6 +28,40 @@ traceability:
 
 This specification defines the requirements for implementing IEEE 802.1AX-2020 Link Aggregation Control Protocol (LACP), the essential network redundancy and load balancing standard that enables dynamic link bundling, high-availability networking, and bandwidth aggregation. IEEE 802.1AX-2020 provides the foundation for resilient network infrastructure supporting professional audio/video applications, Time-Sensitive Networks (TSN), and mission-critical systems requiring redundant connectivity and optimized bandwidth utilization.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1AX-2020-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks - Link Aggregation
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AX-2020-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1AX-2020 LACP compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 802.1AX-2020 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 802.3-2022-en.pdf** - IEEE Standard for Ethernet
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_3-2022-en.pdf`
+  - **AUTHORITY**: BINDING foundation for Ethernet layer specifications
+  - **BINDING SECTIONS**: Physical and data link layer requirements for LACP operation
+  - **COMPLIANCE TESTING**: Ethernet implementation SHALL conform to IEEE 802.3 as required by 802.1AX-2020
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1AX-2020 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AX-2020-en.pdf"
+
+# Access foundation IEEE 802.3 Ethernet specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_3-2022-en.pdf"
+```
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: High-Availability Network Infrastructure
@@ -1001,5 +1035,6 @@ The system shall protect privacy including data confidentiality, information pro
 - IEEE 802.3ad-2000 "IEEE Standard for Local and Metropolitan Area Networks - Link Aggregation (Legacy)"
 - RFC 3619 "Algorithms for Assignment of Link-State Database Identifiers in Multi-Area OSPF"
 - ITU-T Y.1731 "Operations, administration and maintenance (OAM) functions and mechanisms for Ethernet-based networks"
-- IEC 62439-3 "Industrial communication networks - High availability automation networks - Part 3: Parallel Redundancy Protocol (PRP) and High-availability Seamless Redundancy (HSR)" 
+- IEC 62439-3 "Industrial communication networks - High availability automation networks - Part 3: Parallel Redundancy Protocol (PRP) and High-availability Seamless Redundancy (HSR)"
+ 
  

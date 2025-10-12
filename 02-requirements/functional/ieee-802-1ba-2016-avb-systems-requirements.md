@@ -26,6 +26,58 @@ traceability:
 
 This document specifies comprehensive requirements for IEEE 802.1BA-2016 Audio Video Bridging (AVB) Systems implementation providing standardized profiles for professional audio and video networking applications with Quality of Service guarantees and deterministic behavior.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1BA-2016-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks - Audio Video Bridging (AVB) Systems
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1BA-2016-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1BA-2016 AVB Systems compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 802.1BA-2016 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 802.1AS-2020-en.pdf** - IEEE Standard for Timing and Synchronization for Time-Sensitive Applications
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AS-2020-en.pdf`
+  - **AUTHORITY**: BINDING foundation for AVB timing synchronization
+  - **BINDING SECTIONS**: gPTP timing requirements for AVB systems
+  - **COMPLIANCE TESTING**: gPTP implementation SHALL conform to IEEE 802.1AS as required by 802.1BA-2016
+
+- **IEEE 802.1Q-2018-en.pdf** - IEEE Standard for Bridges and Bridged Networks
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1Q-2018-en.pdf`
+  - **AUTHORITY**: BINDING foundation for VLAN and QoS specifications
+  - **BINDING SECTIONS**: Traffic shaping, priority handling, and VLAN requirements
+  - **COMPLIANCE TESTING**: Bridge implementation SHALL conform to IEEE 802.1Q as required by 802.1BA-2016
+
+- **IEEE 1722-2016-en.pdf** - IEEE Standard for Layer 2 Transport Protocol for Time-Sensitive Applications
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf`
+  - **AUTHORITY**: BINDING foundation for AVTP stream format specifications
+  - **BINDING SECTIONS**: Audio/video stream format requirements for AVB systems
+  - **COMPLIANCE TESTING**: AVTP implementation SHALL conform to IEEE 1722-2016 as required by 802.1BA-2016
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1BA-2016 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1BA-2016-en.pdf"
+
+# Access foundation IEEE 802.1AS timing specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AS-2020-en.pdf"
+
+# Access foundation IEEE 802.1Q bridging specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1Q-2018-en.pdf"
+
+# Access foundation IEEE 1722 AVTP specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf"
+```
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements
 
 ### 1.1 Professional Audio System Integrators
