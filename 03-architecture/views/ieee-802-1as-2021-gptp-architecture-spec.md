@@ -1,6 +1,6 @@
 ---
 specType: architecture
-standard: "ISO/IEC/IEEE 42010:2011"
+standard: "42010"
 phase: "03-architecture"
 version: "1.0.0"
 author: "Architecture Team"
@@ -8,14 +8,11 @@ date: "2025-10-12"
 status: "draft"
 traceability:
   requirements:
-    - "REQ-SYS-IEEE8021AS-001"
-    - "REQ-SYS-IEEE8021AS-002"
-    - "REQ-SYS-IEEE8021AS-003"
-    - "REQ-NFR-IEEE8021AS-001"
-    - "REQ-NFR-IEEE8021AS-002"
-  decisions:
-    - "ADR-001"
-    - "ADR-002"
+    - "REQ-F-001"
+    - "REQ-F-002"
+    - "REQ-F-003"
+    - "REQ-NF-001"
+    - "REQ-NF-002"
 ---
 
 # IEEE 802.1AS-2021 gPTP Architecture Specification
