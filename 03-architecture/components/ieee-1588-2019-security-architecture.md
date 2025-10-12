@@ -1,15 +1,21 @@
 ---
-specType: architecture-component
-project: IEEE Media Networking Standards
-standard: IEEE 1588-2019
+title: IEEE 1588-2019 Security Architecture Component
+specType: architecture
+standard: '42010'
 phase: 03-architecture
-status: in-progress
-archId: ARCH-1588-004-Security
-created: '2024-12-10'
-last-updated: '2024-12-10'
+version: 1.0.0
 author: AI Standards Implementation Agent
-review-status: draft
-traces-to: 02-requirements/functional/ieee-1588-2019-ptp-requirements.md
+date: '2024-12-10'
+status: draft
+description: Security architecture component for IEEE 1588-2019 authentication and authorization
+archId: ARCH-1588-004-Security
+traceability:
+  requirements:
+  - REQ-F-003
+  - REQ-F-018
+  - REQ-F-019
+  decisions:
+  - ADR-001
 ---
 
 # IEEE 1588-2019 Security Architecture
