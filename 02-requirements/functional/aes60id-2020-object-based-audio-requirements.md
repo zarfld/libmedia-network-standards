@@ -28,6 +28,45 @@ traceability:
 
 This specification defines the requirements for implementing AES60id-2020 Object-Based Audio Metadata standard, the next-generation audio technology framework that enables immersive audio experiences through spatial audio processing, dynamic content adaptation, and intelligent audio object management. AES60id-2020 provides the foundation for advanced audio production workflows, immersive broadcast applications, and interactive audio experiences by defining standardized metadata structures, object-based audio rendering, and adaptive audio delivery systems.
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation:
+
+#### Primary Standards (THIS SPECIFICATION)
+
+- **aes60id-2020-i.pdf** - AES60id-2020 Object-based Audio Metadata 
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/aes60id-2020-i.pdf`
+  - **Usage**: PRIMARY specification for object-based audio metadata framework
+  - **Key Sections**: Metadata structures, object definitions, spatial audio parameters
+
+#### Foundation Standards (OPTIONAL - for specific audio format implementations)
+
+- **AES_67-2018-en.pdf** - AES67-2018 Audio-over-IP Interoperability
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_67-2018-en.pdf`
+  - **Usage**: OPTIONAL for networked object-based audio implementations
+  - **Key Sections**: Network audio transport when implementing distributed object-based systems
+
+- **AES_70-1-2018-en.pdf** - AES70-1-2018 OCA Framework and Architecture
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-1-2018-en.pdf`
+  - **Usage**: OPTIONAL for object-based audio control system implementations
+  - **Key Sections**: Control frameworks when implementing automated object-based systems
+
+#### MCP Usage Instructions
+
+To access AES60id specifications during development:
+
+```bash
+# Access AES60id-2020 object-based audio specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/aes60id-2020-i.pdf"
+
+# Access AES67 for networked implementations (if needed)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_67-2018-en.pdf"
+```
+
+**CRITICAL**: AES60id is standalone object-based audio metadata specification. Reference AES67/AES70 only for specific networked/control implementations.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Immersive Audio Experience and Spatial Processing

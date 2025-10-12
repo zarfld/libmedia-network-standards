@@ -25,6 +25,37 @@ traceability:
 
 This document specifies comprehensive requirements for IEEE 1588-2019 Precision Time Protocol (PTP) version 2.1 implementation providing enhanced enterprise-grade timing synchronization capabilities for professional media networking, industrial automation, and time-sensitive applications.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 1588-2019-en.pdf** - IEEE Standard for a Precision Clock Synchronization Protocol for Networked Measurement and Control Systems
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 1588-2019 PTP v2.1 compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative requirements
+
+#### Foundation Standards (OPTIONAL - for specific transport implementations)
+
+- **IEEE 802.3-2022** - Ethernet Physical Layer (when using Ethernet transport)
+  - **Usage**: OPTIONAL foundation when implementing PTP over Ethernet networks
+  - **Key Sections**: Physical layer specifications for PTP transport timing accuracy
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 1588-2019 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf"
+```
+
+**CRITICAL**: IEEE 1588-2019 is foundation timing protocol. Focus ONLY on PTP v2.1 specifications.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements
 
 ### 1.1 Professional Audio System Integrators

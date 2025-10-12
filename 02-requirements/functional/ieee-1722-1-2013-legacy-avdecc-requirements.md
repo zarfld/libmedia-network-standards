@@ -25,6 +25,46 @@ traceability:
 
 This document specifies comprehensive requirements for IEEE 1722.1-2013 Audio Video Device Discovery, Enumeration, Connection Management, and Control Protocol (AVDECC) implementation providing legacy protocol support for backward compatibility with existing professional audio and video installations while enabling migration to newer standards.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 1722.1-2013-en.pdf** - IEEE Standard for Device Discovery, Connection Management, and Control Protocol for IEEE 1722 (2013 Legacy Version)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2013-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 1722.1-2013 legacy AVDECC compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative IEEE 1722.1-2013 requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 1722-2011-en.pdf** - IEEE Standard for Audio Video Transport Protocol (AVTP) - Original Version
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2011-en.pdf`
+  - **AUTHORITY**: BINDING foundation for IEEE 1722.1-2013 AVTP transport (2013 uses 2011 AVTP)
+  - **BINDING SECTIONS**: AVTP protocol specifications as referenced by IEEE 1722.1-2013
+  - **COMPLIANCE TESTING**: AVTP implementation SHALL conform to IEEE 1722-2011 as used by 1722.1-2013
+
+- **IEEE 802.1AS-2011** - Generalized Precision Time Protocol (Original gPTP)
+  - **AUTHORITY**: BINDING foundation for IEEE 1722.1-2013 timing synchronization
+  - **Key Sections**: gPTP protocol as required by IEEE 1722.1-2013 specification
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 1722.1-2013 legacy authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2013-en.pdf"
+
+# Access foundation IEEE 1722-2011 AVTP for transport layer
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2011-en.pdf"
+```
+
+**CRITICAL**: IEEE 1722.1-2013 is LEGACY version. Focus ONLY on 2013 specifications for backward compatibility.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements
 
 ### 1.1 Legacy System Operators

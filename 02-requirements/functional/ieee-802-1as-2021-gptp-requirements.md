@@ -51,6 +51,37 @@ The requirements cover the complete IEEE 802.1AS-2021 specification including:
 - YANG model support for network management integration
 - Backward compatibility with 802.1AS-2020/2011
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation. Only the current standard version and its direct foundational dependencies are included:
+
+#### Primary Standard (THIS SPECIFICATION)
+
+- **ISO-IEC-IEEE 8802-1AS-2021-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks - Timing and Synchronization for Time-Sensitive Applications in Bridged Local Area Networks
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1AS-2021-en.pdf`
+  - **Usage**: PRIMARY and ONLY specification for IEEE 802.1AS-2021 gPTP implementation
+  - **Key Sections**: All protocol state machines, multi-domain support, path delay mechanisms
+
+#### Direct Foundation Dependencies (REQUIRED)
+
+- **IEEE 1588-2019-en.pdf** - IEEE Standard for Precision Time Protocol (PTPv2)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf`
+  - **Usage**: Foundation PTP concepts that gPTP extends and profiles
+  - **Key Sections**: Basic PTP concepts, clock types, message formats
+
+#### MCP Usage Instructions
+
+To access the primary standard during development:
+
+```bash
+# Access IEEE 802.1AS-2021 specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1AS-2021-en.pdf"
+```
+
+**CRITICAL**: Only use IEEE 802.1AS-2021 for gPTP implementation. Do NOT mix with other gPTP versions (2020, 2011) to prevent standard conflicts.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ### Context
 
 IEEE 802.1AS-2021 gPTP serves as the timing synchronization foundation in the professional media networking protocol stack:

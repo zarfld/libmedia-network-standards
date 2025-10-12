@@ -29,6 +29,37 @@ traceability:
 
 This specification defines the requirements for implementing IEEE 802.1AB-2016 Link Layer Discovery Protocol (LLDP), the essential network topology discovery standard that enables automatic device discovery, capability advertisement, and network management integration. IEEE 802.1AB-2016 provides the foundation for network topology awareness, enabling intelligent network management, automated configuration, and seamless integration of Time-Sensitive Networking (TSN) and professional media systems through systematic device and capability discovery.
 
+### Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **IEEE 802.1AB-2016-en.pdf** - IEEE Standard for Local and Metropolitan Area Networks - Station and Media Access Control Connectivity Discovery
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AB-2016-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for IEEE 802.1AB-2016 LLDP compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 802-2014** - IEEE Standard for Local and Metropolitan Area Network Architecture
+  - **AUTHORITY**: BINDING foundation for IEEE 802.1AB-2016 LAN architecture framework
+  - **Key Sections**: MAC addressing, frame formats that LLDP uses
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access IEEE 802.1AB-2016 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_802_1AB-2016-en.pdf"
+```
+
+**CRITICAL**: IEEE 802.1AB-2016 is foundation network discovery protocol. Focus ONLY on LLDP specifications.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Automatic Network Topology Discovery

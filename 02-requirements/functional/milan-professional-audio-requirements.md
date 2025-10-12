@@ -50,6 +50,55 @@ The requirements cover the complete Milan specification including:
 - Professional audio device certification requirements
 - Interoperability testing and validation procedures
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation. Milan extends IEEE standards, so both Milan specifications and foundation IEEE standards are required:
+
+#### Primary Standards (THIS SPECIFICATION)
+
+- **Milan_Specification_Consolidated_v1.2_Final_Approved-20231130.pdf** - Milan v1.2 Professional Audio Profile
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/Milan_Specification_Consolidated_v1.2_Final_Approved-20231130.pdf`
+  - **Usage**: PRIMARY specification for Milan professional audio profile implementation
+  - **Key Sections**: PAAD entity model, Milan discovery extensions, redundant stream pairs
+
+- **Milan-Baseline-Interoperability-Specification-2.0a.pdf** - Milan Baseline Interoperability 2.0a
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/Milan-Baseline-Interoperability-Specification-2.0a.pdf`
+  - **Usage**: Milan baseline interoperability requirements and certification criteria
+  - **Key Sections**: Compliance requirements, interoperability test procedures
+
+#### Foundation IEEE Standards (REQUIRED - Milan extends these)
+
+- **IEEE 1722.1-2021-en.pdf** - IEEE Standard for Device Discovery, Connection Management, and Control Protocol
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2021-en.pdf`
+  - **Usage**: Foundation AVDECC protocol that Milan extends with professional audio features
+  - **Key Sections**: Entity model that Milan PAAD extends, command framework Milan uses
+
+- **IEEE 1722-2016-en.pdf** - IEEE Standard for Audio Video Transport Protocol (AVTP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf`
+  - **Usage**: Transport protocol for Milan audio streams, including redundant stream support
+  - **Key Sections**: Stream formats, timing mechanisms Milan relies on
+
+- **ISO-IEC-IEEE 8802-1AS-2021-en.pdf** - Generalized Precision Time Protocol (gPTP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1AS-2021-en.pdf`
+  - **Usage**: Timing synchronization foundation for Milan professional audio timing
+  - **Key Sections**: Multi-domain support, precision timing that Milan requires
+
+#### MCP Usage Instructions
+
+To access Milan specifications during development:
+
+```bash
+# Access Milan v1.2 specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/Milan_Specification_Consolidated_v1.2_Final_Approved-20231130.pdf"
+
+# Access foundation IEEE 1722.1 that Milan extends
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2021-en.pdf"
+```
+
+**CRITICAL**: Milan extends IEEE standards. Always reference both Milan specifications AND the IEEE standards they extend. Use Milan v1.2 only.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ### Context
 
 Milan Professional Audio Extensions serve as the application layer in the professional media networking protocol stack:

@@ -51,6 +51,37 @@ The requirements cover the complete IEEE 1722-2016 specification including:
 - Stream reservation and bandwidth management
 - Integration with IEEE 802.1AS timing synchronization
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation. Only the current standard version and its direct foundational dependencies are included:
+
+#### Primary Standard (THIS SPECIFICATION)
+
+- **IEEE 1722-2016-en.pdf** - IEEE Standard for Audio Video Transport Protocol (AVTP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf`
+  - **Usage**: PRIMARY and ONLY specification for IEEE 1722-2016 AVTP implementation
+  - **Key Sections**: All transport formats, stream data headers, timing mechanisms
+
+#### Direct Foundation Dependencies (REQUIRED)
+
+- **ISO-IEC-IEEE 8802-1AS-2021-en.pdf** - Generalized Precision Time Protocol (gPTP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1AS-2021-en.pdf`
+  - **Usage**: Required for AVTP timestamp synchronization and presentation time calculation
+  - **Key Sections**: gPTP epoch, time domains, synchronization mechanisms
+
+#### MCP Usage Instructions
+
+To access the primary standard during development:
+
+```bash
+# Access IEEE 1722-2016 specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf"
+```
+
+**CRITICAL**: Only use IEEE 1722-2016 for AVTP implementation. Do NOT mix with other AVTP versions (2011) to prevent standard conflicts.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ### Context
 
 IEEE 1722-2016 AVTP serves as the media transport layer in the professional media networking protocol stack:

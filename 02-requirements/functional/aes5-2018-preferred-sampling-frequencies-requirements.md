@@ -28,6 +28,45 @@ traceability:
 
 This specification defines the requirements for implementing AES5-2018 Preferred Sampling Frequencies, which establishes standardized sampling rates for digital audio systems to ensure interoperability, audio quality, and system compatibility across professional and consumer audio applications. The standard defines preferred frequencies, conversion requirements, and system design guidelines for digital audio equipment.
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation:
+
+#### Primary Standards (THIS SPECIFICATION)
+
+- **AES_5-2018-en.pdf** - AES5-2018 Preferred Sampling Frequencies for Digital Audio
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_5-2018-en.pdf`
+  - **Usage**: PRIMARY specification for preferred digital audio sampling frequencies
+  - **Key Sections**: Preferred frequency tables, conversion ratios, interoperability guidelines
+
+#### Foundation Standards (REFERENCE - related audio interface standards)
+
+- **AES_3-1-2009_(R2014)-en.pdf** - AES3-1-2009 Digital Audio Interface Part 1: Basic Format
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-1-2009_(R2014)-en.pdf`
+  - **Usage**: REFERENCE for digital audio interface that uses AES5 sampling frequencies
+  - **Key Sections**: Sample rate clock recovery, interface timing requirements
+
+- **AES_11-2009_(R2014)-en.pdf** - AES11-2009 Digital Audio Reference Signals
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_11-2009_(R2014)-en.pdf`
+  - **Usage**: REFERENCE for reference signal generation at AES5 frequencies
+  - **Key Sections**: Reference signal characteristics, frequency accuracy requirements
+
+#### MCP Usage Instructions
+
+To access AES5 specifications during development:
+
+```bash
+# Access AES5-2018 sampling frequency specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_5-2018-en.pdf"
+
+# Access AES3 interface specification for implementation context
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-1-2009_(R2014)-en.pdf"
+```
+
+**CRITICAL**: AES5 is standalone sampling frequency specification. Reference AES3/AES11 only for implementation context.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Professional Audio System Interoperability

@@ -28,6 +28,55 @@ traceability:
 
 This specification defines the requirements for implementing AES3-2009 Digital Audio Interface standard, which establishes the fundamental protocol for serial transmission of two-channel linearly represented digital audio data. The standard defines the physical layer, data format, channel coding, electrical characteristics, and interface requirements for professional digital audio equipment, forming the foundation for digital audio interconnection in professional applications.
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation:
+
+#### Primary Standards (THIS SPECIFICATION)
+
+- **AES_3-1-2009_(R2014)-en.pdf** - AES3-1-2009 Digital Audio Interface Part 1: Basic Format
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-1-2009_(R2014)-en.pdf`
+  - **Usage**: PRIMARY specification for AES3 digital audio interface basic format
+  - **Key Sections**: Frame structure, channel coding, subframe format
+
+- **AES_3-2-2009_(R2014)-en.pdf** - AES3-2-2009 Digital Audio Interface Part 2: Preferred Sampling Frequencies
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-2-2009_(R2014)-en.pdf`
+  - **Usage**: Sampling frequency specifications for AES3 interface
+  - **Key Sections**: Preferred sampling rates, frequency tolerance specifications
+
+- **AES_3-3-2009_(R2014)-en.pdf** - AES3-3-2009 Digital Audio Interface Part 3: User Data Channel
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-3-2009_(R2014)-en.pdf`
+  - **Usage**: User data channel specifications and applications
+  - **Key Sections**: User data bit definitions, auxiliary data transport
+
+- **AES_3-4-2009_(R2014)-en.pdf** - AES3-4-2009 Digital Audio Interface Part 4: Professional Applications
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-4-2009_(R2014)-en.pdf`
+  - **Usage**: Professional application requirements and implementation guidance
+  - **Key Sections**: Professional interface requirements, connector specifications
+
+#### Foundation Standards (OPTIONAL - for reference frequency)
+
+- **AES_5-2018-en.pdf** - AES5-2018 Preferred Sampling Frequencies for Digital Audio
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_5-2018-en.pdf`
+  - **Usage**: OPTIONAL reference for preferred digital audio sampling frequencies
+  - **Key Sections**: Standard sampling frequencies, compatibility considerations
+
+#### MCP Usage Instructions
+
+To access AES3 specifications during development:
+
+```bash
+# Access AES3-1 basic format specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-1-2009_(R2014)-en.pdf"
+
+# Access AES3-2 sampling frequency specifications
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_3-2-2009_(R2014)-en.pdf"
+```
+
+**CRITICAL**: AES3 is standalone digital audio interface specification. Focus on AES3-2009 series only.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Professional Digital Audio Interconnection

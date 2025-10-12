@@ -33,6 +33,50 @@ traceability:
 
 This specification defines the requirements for implementing AES70-2018 Open Control Architecture (OCA), an application layer protocol framework designed for monitoring, control, and management of professional audio systems. OCA provides vendor-neutral device control, standardized object models, and network-agnostic communication protocols for professional audio applications.
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation:
+
+#### Primary Standards (THIS SPECIFICATION)
+
+- **AES_70-1-2018-en.pdf** - AES70-1-2018 OCA Framework and Architecture
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-1-2018-en.pdf`
+  - **Usage**: PRIMARY framework specification for OCA architecture and communication protocols
+  - **Key Sections**: OCA framework, protocol binding, control class hierarchy
+
+- **AES_70-2-2018-en.pdf** - AES70-2-2018 OCA Class Structure
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-2-2018-en.pdf`  
+  - **Usage**: Class structure and object model definitions for OCA control objects
+  - **Key Sections**: Control classes, property definitions, method specifications
+
+- **AES_70-3-2018-en.pdf** - AES70-3-2018 OCA Protocol and Data Types
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-3-2018-en.pdf`
+  - **Usage**: Protocol implementation and data type specifications
+  - **Key Sections**: Protocol messages, data encoding, transport bindings
+
+#### Foundation Standards (OPTIONAL - for specific transport implementations)
+
+- **IEEE 1588-2019-en.pdf** - Precision Time Protocol (PTPv2) 
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf`
+  - **Usage**: OPTIONAL for OCA applications requiring precise timing synchronization
+  - **Key Sections**: Master/slave synchronization when used with OCA time-sensitive applications
+
+#### MCP Usage Instructions
+
+To access AES70 specifications during development:
+
+```bash
+# Access AES70-1 framework specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-1-2018-en.pdf"
+
+# Access AES70-2 class structure (CONTROL CLASSES)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_70-2-2018-en.pdf"
+```
+
+**CRITICAL**: AES70 is standalone specification. Reference IEEE 1588 only if implementing time-synchronized OCA applications.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### REQ-STK-AES70-001: Professional Audio System Integration

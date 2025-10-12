@@ -58,6 +58,39 @@ This specification encompasses:
 - Session Description Protocol (SDP) for stream negotiation
 - Session Initiation Protocol (SIP) for connection management
 - Multicast and unicast audio distribution
+
+### 1.3 Authoritative Standards Documents for Compliance
+
+**MANDATORY COMPLIANCE**: All implementations SHALL strictly adhere to the authoritative standards documents listed below. These documents define the ABSOLUTE requirements for architecture, design, implementation, and testing. Deviation from authoritative specifications is PROHIBITED.
+
+#### Primary Authoritative Standard (BINDING SPECIFICATION)
+
+- **AES 67-2018-en.pdf** - AES67-2018 High-performance streaming audio-over-IP interoperability standard
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_67-2018-en.pdf`
+  - **AUTHORITY**: SOLE and COMPLETE specification for AES67-2018 compliance
+  - **BINDING SECTIONS**: ALL clauses, requirements, and specifications are MANDATORY
+  - **COMPLIANCE TESTING**: Implementation SHALL be verified against ALL authoritative requirements
+
+#### Foundation Authoritative Standards (BINDING DEPENDENCIES)
+
+- **IEEE 1588-2019-en.pdf** - IEEE Standard for Precision Time Protocol (PTPv2)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1588-2019-en.pdf`
+  - **AUTHORITY**: BINDING foundation for AES67 Media Profile PTP synchronization
+  - **BINDING SECTIONS**: All PTP protocol specifications referenced by AES67-2018
+  - **COMPLIANCE TESTING**: PTP implementation SHALL conform to IEEE 1588-2019 as profiled by AES67
+
+#### Authoritative Document Access for Standards Compliance
+
+**CRITICAL**: Reference authoritative documents for ALL implementation decisions:
+
+```bash
+# Access AES67-2018 authoritative specification (BINDING AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/AES_67-2018-en.pdf"
+```
+
+**CRITICAL**: Only use AES67-2018 for audio-over-IP implementation. AES67 is standalone and does not depend on IEEE 1722/802.1AS protocols.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 - AVB network integration and compatibility
 - Protocol Implementation Conformance Statement (PICS)
 
@@ -346,9 +379,7 @@ This specification encompasses:
 #### 5.1.1 Latency and Timing
 **REQ-NF-001:** The system SHALL achieve end-to-end audio latency ≤ 10 milliseconds for live sound applications.
 
-**REQ-NF-002:** The system SHALL maintain synchronization accuracy within ±80 nanoseconds for Milan compliance.
-
-**REQ-NF-003:** The system SHALL support audio sample rates with accuracy ±1 ppm (Grade 1 DARS) or ±10 ppm (Grade 2 DARS) per AES11.
+**REQ-NF-002:** The system SHALL support audio sample rates with accuracy ±1 ppm (Grade 1 DARS) or ±10 ppm (Grade 2 DARS) per AES11.
 
 #### 5.1.2 Throughput and Capacity
 **REQ-NF-004:** The system SHALL support minimum 8 audio channels per stream at 1ms packet time with L24 encoding.
@@ -484,16 +515,18 @@ This specification encompasses:
 
 **REQ-INT-022:** The system SHALL provide API for capability negotiation and compatibility checking.
 
-## 7. Verification and Validation Criteria
+## 7. Authoritative Standards Compliance Verification and Validation
 
-### 7.1 Synchronization Verification
+**BINDING VERIFICATION**: ALL verification SHALL strictly test implementation against authoritative AES67-2018 specification requirements. Testing SHALL validate exact conformance to authoritative standards clauses, not derived or interpreted requirements.
 
-#### 7.1.1 PTP Compliance Testing
-**VER-001:** Verify IEEE 1588-2008 PTP implementation using official test suites and timing measurement equipment.
+### 7.1 AES67-2018 Synchronization Compliance Verification
 
-**VER-002:** Validate AES67 Media Profile conformance including clock class behavior and timing accuracy requirements.
+#### 7.1.1 IEEE 1588-2008 Authoritative Compliance Testing
+**VER-001:** SHALL verify IEEE 1588-2008 PTP implementation against authoritative IEEE 1588-2008 specification clauses using certified test suites and calibrated timing measurement equipment.
 
-**VER-003:** Test synchronization accuracy under various network conditions including load, jitter, and topology changes.
+**VER-002:** SHALL validate AES67 Media Profile conformance against authoritative AES67-2018 Annex A specifications including ALL clock class behaviors and timing accuracy requirements as specified.
+
+**VER-003:** SHALL test synchronization accuracy against authoritative AES67-2018 performance specifications under ALL network conditions specified in authoritative standard.
 
 #### 7.1.2 Media Clock Verification
 **VER-004:** Verify media clock relationship to network clock using precision measurement equipment.
@@ -566,16 +599,18 @@ This specification encompasses:
 
 **VER-030:** Maintain compliance documentation and certification records for audit and verification purposes.
 
-## 8. Acceptance Criteria
+## 8. Authoritative Standards Compliance Acceptance Criteria
 
-### 8.1 Functional Acceptance
+**MANDATORY COMPLIANCE**: ALL acceptance criteria SHALL be verified against authoritative AES67-2018 specifications. Implementation testing SHALL demonstrate strict adherence to authoritative standards requirements.
 
-#### 8.1.1 Basic Operation Criteria
-**ACC-001:** Device successfully establishes PTP synchronization and maintains ±80ns accuracy in controlled network environment.
+### 8.1 AES67-2018 Functional Compliance Acceptance
 
-**ACC-002:** Device successfully streams audio with measured end-to-end latency ≤ 10ms for 1ms packet time configuration.
+#### 8.1.1 Authoritative Standards Compliance Verification
+**ACC-001:** Device SHALL establish PTP synchronization per IEEE 1588-2008 as profiled by AES67-2018 and maintain timing accuracy as specified in authoritative AES67-2018 clauses.
 
-**ACC-003:** Device demonstrates bit-perfect audio transport with 0% dropout rate during 24-hour continuous operation test.
+**ACC-002:** Device SHALL achieve end-to-end audio latency ≤ 10ms per AES67-2018 authoritative latency specifications for professional audio applications.
+
+**ACC-003:** Device SHALL demonstrate bit-perfect audio transport with 0% dropout rate as required by AES67-2018 authoritative quality specifications during continuous operation testing.
 
 #### 8.1.2 Interoperability Acceptance
 **ACC-004:** Device successfully connects and streams audio with at least one reference implementation from different manufacturer.
@@ -660,12 +695,15 @@ This specification encompasses:
 - Technical Reviewer: [To be assigned]  
 - Standards Compliance: [To be assigned]
 
-**References:**
-- AES67-2018: AES standard for audio applications of networks - High-performance streaming audio-over-IP interoperability
-- IEEE 1588-2008: IEEE Standard for a Precision Clock Synchronization Protocol for Networked Measurement and Control Systems
-- RFC 3550: RTP: A Transport Protocol for Real-Time Applications
-- RFC 7273: RTP Clock Source Signalling
-- Related AES and IEEE standards as referenced in AES67-2018 specification
+**Authoritative References (BINDING SPECIFICATIONS):**
+- **AES67-2018**: AES standard for audio applications of networks - High-performance streaming audio-over-IP interoperability (PRIMARY AUTHORITY)
+- **IEEE 1588-2008**: IEEE Standard for a Precision Clock Synchronization Protocol for Networked Measurement and Control Systems (FOUNDATION AUTHORITY)
+- **RFC 3550**: RTP: A Transport Protocol for Real-Time Applications (PROTOCOL AUTHORITY)
+- **RFC 7273**: RTP Clock Source Signalling (PROTOCOL AUTHORITY)
+- All standards referenced within AES67-2018 specification (TRANSITIVELY AUTHORITATIVE)
+
+**COMPLIANCE MANDATE:** 
+All implementation, testing, and acceptance SHALL strictly adhere to authoritative specifications. NO deviations from authoritative standards requirements are permitted. Implementation SHALL be verified against authoritative documents using official test procedures.
 
 **Next Phase:**
 Proceed to architectural design phase incorporating these requirements into the lib/Standards/AES/AES67/2018/ implementation structure with appropriate cross-references to IEEE 802.1AS and IEEE 1722 dependencies.

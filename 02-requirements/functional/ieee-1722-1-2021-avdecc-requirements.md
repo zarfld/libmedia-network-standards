@@ -50,6 +50,42 @@ The requirements cover the complete IEEE 1722.1-2021 specification including:
 - ACMP (AVDECC Connection Management Protocol) for stream connection management
 - AEM (AVDECC Entity Model) for device representation and descriptor management
 
+### External Authority Documents
+
+The following authoritative standards documents SHALL be used as additional reference for architecture and implementation. Only the current standard version and its direct foundational dependencies are included to prevent standard version conflicts:
+
+#### Primary Standard (THIS SPECIFICATION)
+
+- **IEEE 1722.1-2021-en.pdf** - IEEE Standard for Device Discovery, Connection Management, and Control Protocol for IEEE 802 Based Networks
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2021-en.pdf`
+  - **Usage**: PRIMARY and ONLY specification for IEEE 1722.1-2021 AVDECC protocol implementation
+  - **Key Sections**: All protocol state machines, message formats, entity model definitions
+
+#### Direct Foundation Dependencies (REQUIRED)
+
+- **IEEE 1722-2016-en.pdf** - IEEE Standard for Audio Video Transport Protocol (AVTP)
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722-2016-en.pdf`
+  - **Usage**: Required for ACMP stream connection management (AVDECC depends on AVTP)
+  - **Key Sections**: Stream format specifications, stream ID definitions
+
+- **ISO-IEC-IEEE 8802-1AS-2021-en.pdf** - Generalized Precision Time Protocol (gPTP) 
+  - **MCP Path**: `file://D:/SyncDrive/SynologyDrive/MCP/Standards/ISO-IEC-IEEE_8802-1AS-2021-en.pdf`
+  - **Usage**: Required for timing synchronization mechanisms in AVDECC entities
+  - **Key Sections**: gPTP domain support, grandmaster clock identification
+
+#### MCP Usage Instructions
+
+To access the primary standard during development:
+
+```bash
+# Access IEEE 1722.1-2021 specification (PRIMARY AUTHORITY)
+mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standards/IEEE_1722_1-2021-en.pdf"
+```
+
+**CRITICAL**: Only use IEEE 1722.1-2021 for AVDECC implementation. Do NOT mix with other AVDECC versions (2013, 2011) to prevent standard conflicts.
+
+**COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
 ### Context
 
 IEEE 1722.1-2021 AVDECC serves as the core device control protocol in the professional media networking protocol stack:
