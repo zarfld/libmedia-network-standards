@@ -1,0 +1,1922 @@
+{
+  "functional_ids": {
+    "1": {
+      "id": "REQ-F-001",
+      "type": "F",
+      "number": 1,
+      "file_path": "DEVELOPER_SETUP_GUIDE.md",
+      "line_number": 217,
+      "standard": null,
+      "description": "- REQ-F-001"
+    },
+    "2": {
+      "id": "REQ-F-002",
+      "type": "F",
+      "number": 2,
+      "file_path": "02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md",
+      "line_number": 26,
+      "standard": null,
+      "description": "- `REQ-F-001`, `REQ-F-002`, etc."
+    },
+    "43": {
+      "id": "REQ-F-043",
+      "type": "F",
+      "number": 43,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 14,
+      "standard": null,
+      "description": "- REQ-F-043"
+    },
+    "44": {
+      "id": "REQ-F-044",
+      "type": "F",
+      "number": 44,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 15,
+      "standard": null,
+      "description": "- REQ-F-044"
+    },
+    "45": {
+      "id": "REQ-F-045",
+      "type": "F",
+      "number": 45,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 16,
+      "standard": null,
+      "description": "- REQ-F-045"
+    },
+    "46": {
+      "id": "REQ-F-046",
+      "type": "F",
+      "number": 46,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 17,
+      "standard": null,
+      "description": "- REQ-F-046"
+    },
+    "47": {
+      "id": "REQ-F-047",
+      "type": "F",
+      "number": 47,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 18,
+      "standard": null,
+      "description": "- REQ-F-047"
+    },
+    "48": {
+      "id": "REQ-F-048",
+      "type": "F",
+      "number": 48,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 19,
+      "standard": null,
+      "description": "- REQ-F-048"
+    },
+    "49": {
+      "id": "REQ-F-049",
+      "type": "F",
+      "number": 49,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 20,
+      "standard": null,
+      "description": "- REQ-F-049"
+    },
+    "50": {
+      "id": "REQ-F-050",
+      "type": "F",
+      "number": 50,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 21,
+      "standard": null,
+      "description": "- REQ-F-050"
+    },
+    "51": {
+      "id": "REQ-F-051",
+      "type": "F",
+      "number": 51,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 22,
+      "standard": null,
+      "description": "- REQ-F-051"
+    },
+    "52": {
+      "id": "REQ-F-052",
+      "type": "F",
+      "number": 52,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 23,
+      "standard": null,
+      "description": "- REQ-F-052"
+    },
+    "53": {
+      "id": "REQ-F-053",
+      "type": "F",
+      "number": 53,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 24,
+      "standard": null,
+      "description": "- REQ-F-053"
+    },
+    "54": {
+      "id": "REQ-F-054",
+      "type": "F",
+      "number": 54,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 25,
+      "standard": null,
+      "description": "- REQ-F-054"
+    },
+    "55": {
+      "id": "REQ-F-055",
+      "type": "F",
+      "number": 55,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 26,
+      "standard": null,
+      "description": "- REQ-F-055"
+    },
+    "56": {
+      "id": "REQ-F-056",
+      "type": "F",
+      "number": 56,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 27,
+      "standard": null,
+      "description": "- REQ-F-056"
+    },
+    "57": {
+      "id": "REQ-F-057",
+      "type": "F",
+      "number": 57,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 28,
+      "standard": null,
+      "description": "- REQ-F-057"
+    },
+    "58": {
+      "id": "REQ-F-058",
+      "type": "F",
+      "number": 58,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 29,
+      "standard": null,
+      "description": "- REQ-F-058"
+    },
+    "59": {
+      "id": "REQ-F-059",
+      "type": "F",
+      "number": 59,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 30,
+      "standard": null,
+      "description": "- REQ-F-059"
+    },
+    "60": {
+      "id": "REQ-F-060",
+      "type": "F",
+      "number": 60,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 31,
+      "standard": null,
+      "description": "- REQ-F-060"
+    },
+    "61": {
+      "id": "REQ-F-061",
+      "type": "F",
+      "number": 61,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 32,
+      "standard": null,
+      "description": "- REQ-F-061"
+    },
+    "62": {
+      "id": "REQ-F-062",
+      "type": "F",
+      "number": 62,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 33,
+      "standard": null,
+      "description": "- REQ-F-062"
+    },
+    "63": {
+      "id": "REQ-F-063",
+      "type": "F",
+      "number": 63,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 34,
+      "standard": null,
+      "description": "- REQ-F-063"
+    },
+    "64": {
+      "id": "REQ-F-064",
+      "type": "F",
+      "number": 64,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 35,
+      "standard": null,
+      "description": "- REQ-F-064"
+    },
+    "65": {
+      "id": "REQ-F-065",
+      "type": "F",
+      "number": 65,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 36,
+      "standard": null,
+      "description": "- REQ-F-065"
+    },
+    "66": {
+      "id": "REQ-F-066",
+      "type": "F",
+      "number": 66,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 37,
+      "standard": null,
+      "description": "- REQ-F-066"
+    },
+    "67": {
+      "id": "REQ-F-067",
+      "type": "F",
+      "number": 67,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 38,
+      "standard": null,
+      "description": "- REQ-F-067"
+    },
+    "68": {
+      "id": "REQ-F-068",
+      "type": "F",
+      "number": 68,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 39,
+      "standard": null,
+      "description": "- REQ-F-068"
+    },
+    "69": {
+      "id": "REQ-F-069",
+      "type": "F",
+      "number": 69,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 40,
+      "standard": null,
+      "description": "- REQ-F-069"
+    },
+    "70": {
+      "id": "REQ-F-070",
+      "type": "F",
+      "number": 70,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 41,
+      "standard": null,
+      "description": "- REQ-F-070"
+    },
+    "71": {
+      "id": "REQ-F-071",
+      "type": "F",
+      "number": 71,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 42,
+      "standard": null,
+      "description": "- REQ-F-071"
+    },
+    "72": {
+      "id": "REQ-F-072",
+      "type": "F",
+      "number": 72,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 43,
+      "standard": null,
+      "description": "- REQ-F-072"
+    },
+    "73": {
+      "id": "REQ-F-073",
+      "type": "F",
+      "number": 73,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 44,
+      "standard": null,
+      "description": "- REQ-F-073"
+    },
+    "74": {
+      "id": "REQ-F-074",
+      "type": "F",
+      "number": 74,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 45,
+      "standard": null,
+      "description": "- REQ-F-074"
+    },
+    "75": {
+      "id": "REQ-F-075",
+      "type": "F",
+      "number": 75,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 46,
+      "standard": null,
+      "description": "- REQ-F-075"
+    },
+    "76": {
+      "id": "REQ-F-076",
+      "type": "F",
+      "number": 76,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 47,
+      "standard": null,
+      "description": "- REQ-F-076"
+    },
+    "77": {
+      "id": "REQ-F-077",
+      "type": "F",
+      "number": 77,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 48,
+      "standard": null,
+      "description": "- REQ-F-077"
+    },
+    "78": {
+      "id": "REQ-F-078",
+      "type": "F",
+      "number": 78,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 49,
+      "standard": null,
+      "description": "- REQ-F-078"
+    },
+    "79": {
+      "id": "REQ-F-079",
+      "type": "F",
+      "number": 79,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 50,
+      "standard": null,
+      "description": "- REQ-F-079"
+    },
+    "80": {
+      "id": "REQ-F-080",
+      "type": "F",
+      "number": 80,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 51,
+      "standard": null,
+      "description": "- REQ-F-080"
+    },
+    "81": {
+      "id": "REQ-F-081",
+      "type": "F",
+      "number": 81,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 52,
+      "standard": null,
+      "description": "- REQ-F-081"
+    },
+    "82": {
+      "id": "REQ-F-082",
+      "type": "F",
+      "number": 82,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 53,
+      "standard": null,
+      "description": "- REQ-F-082"
+    },
+    "83": {
+      "id": "REQ-F-083",
+      "type": "F",
+      "number": 83,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 54,
+      "standard": null,
+      "description": "- REQ-F-083"
+    },
+    "84": {
+      "id": "REQ-F-084",
+      "type": "F",
+      "number": 84,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 55,
+      "standard": null,
+      "description": "- REQ-F-084"
+    },
+    "85": {
+      "id": "REQ-F-085",
+      "type": "F",
+      "number": 85,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 56,
+      "standard": null,
+      "description": "- REQ-F-085"
+    },
+    "86": {
+      "id": "REQ-F-086",
+      "type": "F",
+      "number": 86,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 57,
+      "standard": null,
+      "description": "- REQ-F-086"
+    },
+    "87": {
+      "id": "REQ-F-087",
+      "type": "F",
+      "number": 87,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 58,
+      "standard": null,
+      "description": "- REQ-F-087"
+    },
+    "88": {
+      "id": "REQ-F-088",
+      "type": "F",
+      "number": 88,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 59,
+      "standard": null,
+      "description": "- REQ-F-088"
+    },
+    "89": {
+      "id": "REQ-F-089",
+      "type": "F",
+      "number": 89,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 60,
+      "standard": null,
+      "description": "- REQ-F-089"
+    },
+    "90": {
+      "id": "REQ-F-090",
+      "type": "F",
+      "number": 90,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 61,
+      "standard": null,
+      "description": "- REQ-F-090"
+    },
+    "91": {
+      "id": "REQ-F-091",
+      "type": "F",
+      "number": 91,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 62,
+      "standard": null,
+      "description": "- REQ-F-091"
+    },
+    "92": {
+      "id": "REQ-F-092",
+      "type": "F",
+      "number": 92,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 63,
+      "standard": null,
+      "description": "- REQ-F-092"
+    },
+    "1589": {
+      "id": "REQ-F-1589",
+      "type": "F",
+      "number": 1589,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 78,
+      "standard": null,
+      "description": "- REQ-F-1589"
+    },
+    "1590": {
+      "id": "REQ-F-1590",
+      "type": "F",
+      "number": 1590,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 79,
+      "standard": null,
+      "description": "- REQ-F-1590"
+    },
+    "1591": {
+      "id": "REQ-F-1591",
+      "type": "F",
+      "number": 1591,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 80,
+      "standard": null,
+      "description": "- REQ-F-1591"
+    },
+    "1592": {
+      "id": "REQ-F-1592",
+      "type": "F",
+      "number": 1592,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 81,
+      "standard": null,
+      "description": "- REQ-F-1592"
+    },
+    "1593": {
+      "id": "REQ-F-1593",
+      "type": "F",
+      "number": 1593,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 82,
+      "standard": null,
+      "description": "- REQ-F-1593"
+    },
+    "1594": {
+      "id": "REQ-F-1594",
+      "type": "F",
+      "number": 1594,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 83,
+      "standard": null,
+      "description": "- REQ-F-1594"
+    },
+    "1595": {
+      "id": "REQ-F-1595",
+      "type": "F",
+      "number": 1595,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 84,
+      "standard": null,
+      "description": "- REQ-F-1595"
+    },
+    "1596": {
+      "id": "REQ-F-1596",
+      "type": "F",
+      "number": 1596,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 85,
+      "standard": null,
+      "description": "- REQ-F-1596"
+    },
+    "1597": {
+      "id": "REQ-F-1597",
+      "type": "F",
+      "number": 1597,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 86,
+      "standard": null,
+      "description": "- REQ-F-1597"
+    },
+    "1598": {
+      "id": "REQ-F-1598",
+      "type": "F",
+      "number": 1598,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 87,
+      "standard": null,
+      "description": "- REQ-F-1598"
+    },
+    "1599": {
+      "id": "REQ-F-1599",
+      "type": "F",
+      "number": 1599,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 88,
+      "standard": null,
+      "description": "- REQ-F-1599"
+    },
+    "1600": {
+      "id": "REQ-F-1600",
+      "type": "F",
+      "number": 1600,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 89,
+      "standard": null,
+      "description": "- REQ-F-1600"
+    },
+    "1601": {
+      "id": "REQ-F-1601",
+      "type": "F",
+      "number": 1601,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 90,
+      "standard": null,
+      "description": "- REQ-F-1601"
+    },
+    "1602": {
+      "id": "REQ-F-1602",
+      "type": "F",
+      "number": 1602,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 91,
+      "standard": null,
+      "description": "- REQ-F-1602"
+    },
+    "1603": {
+      "id": "REQ-F-1603",
+      "type": "F",
+      "number": 1603,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 92,
+      "standard": null,
+      "description": "- REQ-F-1603"
+    },
+    "1604": {
+      "id": "REQ-F-1604",
+      "type": "F",
+      "number": 1604,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 93,
+      "standard": null,
+      "description": "- REQ-F-1604"
+    },
+    "1605": {
+      "id": "REQ-F-1605",
+      "type": "F",
+      "number": 1605,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 94,
+      "standard": null,
+      "description": "- REQ-F-1605"
+    },
+    "1606": {
+      "id": "REQ-F-1606",
+      "type": "F",
+      "number": 1606,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 95,
+      "standard": null,
+      "description": "- REQ-F-1606"
+    },
+    "1607": {
+      "id": "REQ-F-1607",
+      "type": "F",
+      "number": 1607,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 96,
+      "standard": null,
+      "description": "- REQ-F-1607"
+    },
+    "1608": {
+      "id": "REQ-F-1608",
+      "type": "F",
+      "number": 1608,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 97,
+      "standard": null,
+      "description": "- REQ-F-1608"
+    },
+    "1609": {
+      "id": "REQ-F-1609",
+      "type": "F",
+      "number": 1609,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 98,
+      "standard": null,
+      "description": "- REQ-F-1609"
+    },
+    "1610": {
+      "id": "REQ-F-1610",
+      "type": "F",
+      "number": 1610,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 99,
+      "standard": null,
+      "description": "- REQ-F-1610"
+    },
+    "1611": {
+      "id": "REQ-F-1611",
+      "type": "F",
+      "number": 1611,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 100,
+      "standard": null,
+      "description": "- REQ-F-1611"
+    },
+    "1612": {
+      "id": "REQ-F-1612",
+      "type": "F",
+      "number": 1612,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 101,
+      "standard": null,
+      "description": "- REQ-F-1612"
+    },
+    "1613": {
+      "id": "REQ-F-1613",
+      "type": "F",
+      "number": 1613,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 102,
+      "standard": null,
+      "description": "- REQ-F-1613"
+    },
+    "1614": {
+      "id": "REQ-F-1614",
+      "type": "F",
+      "number": 1614,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 103,
+      "standard": null,
+      "description": "- REQ-F-1614"
+    },
+    "1615": {
+      "id": "REQ-F-1615",
+      "type": "F",
+      "number": 1615,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 104,
+      "standard": null,
+      "description": "- REQ-F-1615"
+    },
+    "1616": {
+      "id": "REQ-F-1616",
+      "type": "F",
+      "number": 1616,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 105,
+      "standard": null,
+      "description": "- REQ-F-1616"
+    },
+    "1617": {
+      "id": "REQ-F-1617",
+      "type": "F",
+      "number": 1617,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 106,
+      "standard": null,
+      "description": "- REQ-F-1617"
+    },
+    "1618": {
+      "id": "REQ-F-1618",
+      "type": "F",
+      "number": 1618,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 107,
+      "standard": null,
+      "description": "- REQ-F-1618"
+    },
+    "1619": {
+      "id": "REQ-F-1619",
+      "type": "F",
+      "number": 1619,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 108,
+      "standard": null,
+      "description": "- REQ-F-1619"
+    },
+    "1620": {
+      "id": "REQ-F-1620",
+      "type": "F",
+      "number": 1620,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 109,
+      "standard": null,
+      "description": "- REQ-F-1620"
+    },
+    "1621": {
+      "id": "REQ-F-1621",
+      "type": "F",
+      "number": 1621,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 110,
+      "standard": null,
+      "description": "- REQ-F-1621"
+    },
+    "1622": {
+      "id": "REQ-F-1622",
+      "type": "F",
+      "number": 1622,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 111,
+      "standard": null,
+      "description": "- REQ-F-1622"
+    },
+    "1623": {
+      "id": "REQ-F-1623",
+      "type": "F",
+      "number": 1623,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 112,
+      "standard": null,
+      "description": "- REQ-F-1623"
+    },
+    "1624": {
+      "id": "REQ-F-1624",
+      "type": "F",
+      "number": 1624,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 113,
+      "standard": null,
+      "description": "- REQ-F-1624"
+    },
+    "1625": {
+      "id": "REQ-F-1625",
+      "type": "F",
+      "number": 1625,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 114,
+      "standard": null,
+      "description": "- REQ-F-1625"
+    },
+    "1626": {
+      "id": "REQ-F-1626",
+      "type": "F",
+      "number": 1626,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 115,
+      "standard": null,
+      "description": "- REQ-F-1626"
+    },
+    "1627": {
+      "id": "REQ-F-1627",
+      "type": "F",
+      "number": 1627,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 116,
+      "standard": null,
+      "description": "- REQ-F-1627"
+    },
+    "1628": {
+      "id": "REQ-F-1628",
+      "type": "F",
+      "number": 1628,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 117,
+      "standard": null,
+      "description": "- REQ-F-1628"
+    },
+    "1629": {
+      "id": "REQ-F-1629",
+      "type": "F",
+      "number": 1629,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 118,
+      "standard": null,
+      "description": "- REQ-F-1629"
+    },
+    "1630": {
+      "id": "REQ-F-1630",
+      "type": "F",
+      "number": 1630,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 119,
+      "standard": null,
+      "description": "- REQ-F-1630"
+    },
+    "1631": {
+      "id": "REQ-F-1631",
+      "type": "F",
+      "number": 1631,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 120,
+      "standard": null,
+      "description": "- REQ-F-1631"
+    },
+    "1632": {
+      "id": "REQ-F-1632",
+      "type": "F",
+      "number": 1632,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 121,
+      "standard": null,
+      "description": "- REQ-F-1632"
+    },
+    "1633": {
+      "id": "REQ-F-1633",
+      "type": "F",
+      "number": 1633,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 122,
+      "standard": null,
+      "description": "- REQ-F-1633"
+    },
+    "1634": {
+      "id": "REQ-F-1634",
+      "type": "F",
+      "number": 1634,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 123,
+      "standard": null,
+      "description": "- REQ-F-1634"
+    },
+    "1635": {
+      "id": "REQ-F-1635",
+      "type": "F",
+      "number": 1635,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 124,
+      "standard": null,
+      "description": "- REQ-F-1635"
+    },
+    "1636": {
+      "id": "REQ-F-1636",
+      "type": "F",
+      "number": 1636,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 125,
+      "standard": null,
+      "description": "- REQ-F-1636"
+    },
+    "1637": {
+      "id": "REQ-F-1637",
+      "type": "F",
+      "number": 1637,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 126,
+      "standard": null,
+      "description": "- REQ-F-1637"
+    },
+    "1638": {
+      "id": "REQ-F-1638",
+      "type": "F",
+      "number": 1638,
+      "file_path": "03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md",
+      "line_number": 127,
+      "standard": null,
+      "description": "- REQ-F-1638"
+    },
+    "3": {
+      "id": "REQ-F-003",
+      "type": "F",
+      "number": 3,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 13,
+      "standard": null,
+      "description": "- REQ-F-003"
+    },
+    "4": {
+      "id": "REQ-F-004",
+      "type": "F",
+      "number": 4,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 14,
+      "standard": null,
+      "description": "- REQ-F-004"
+    },
+    "5": {
+      "id": "REQ-F-005",
+      "type": "F",
+      "number": 5,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 15,
+      "standard": null,
+      "description": "- REQ-F-005"
+    },
+    "6": {
+      "id": "REQ-F-006",
+      "type": "F",
+      "number": 6,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 16,
+      "standard": null,
+      "description": "- REQ-F-006"
+    },
+    "7": {
+      "id": "REQ-F-007",
+      "type": "F",
+      "number": 7,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 17,
+      "standard": null,
+      "description": "- REQ-F-007"
+    },
+    "8": {
+      "id": "REQ-F-008",
+      "type": "F",
+      "number": 8,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 18,
+      "standard": null,
+      "description": "- REQ-F-008"
+    },
+    "9": {
+      "id": "REQ-F-009",
+      "type": "F",
+      "number": 9,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 19,
+      "standard": null,
+      "description": "- REQ-F-009"
+    },
+    "10": {
+      "id": "REQ-F-010",
+      "type": "F",
+      "number": 10,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 20,
+      "standard": null,
+      "description": "- REQ-F-010"
+    },
+    "1639": {
+      "id": "REQ-F-1639",
+      "type": "F",
+      "number": 1639,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 26,
+      "standard": null,
+      "description": "- REQ-F-1639"
+    },
+    "1640": {
+      "id": "REQ-F-1640",
+      "type": "F",
+      "number": 1640,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 27,
+      "standard": null,
+      "description": "- REQ-F-1640"
+    },
+    "1641": {
+      "id": "REQ-F-1641",
+      "type": "F",
+      "number": 1641,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 28,
+      "standard": null,
+      "description": "- REQ-F-1641"
+    },
+    "1642": {
+      "id": "REQ-F-1642",
+      "type": "F",
+      "number": 1642,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 29,
+      "standard": null,
+      "description": "- REQ-F-1642"
+    },
+    "1643": {
+      "id": "REQ-F-1643",
+      "type": "F",
+      "number": 1643,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 30,
+      "standard": null,
+      "description": "- REQ-F-1643"
+    },
+    "1644": {
+      "id": "REQ-F-1644",
+      "type": "F",
+      "number": 1644,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 31,
+      "standard": null,
+      "description": "- REQ-F-1644"
+    },
+    "1645": {
+      "id": "REQ-F-1645",
+      "type": "F",
+      "number": 1645,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 32,
+      "standard": null,
+      "description": "- REQ-F-1645"
+    },
+    "1646": {
+      "id": "REQ-F-1646",
+      "type": "F",
+      "number": 1646,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 33,
+      "standard": null,
+      "description": "- REQ-F-1646"
+    },
+    "1647": {
+      "id": "REQ-F-1647",
+      "type": "F",
+      "number": 1647,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 34,
+      "standard": null,
+      "description": "- REQ-F-1647"
+    },
+    "1648": {
+      "id": "REQ-F-1648",
+      "type": "F",
+      "number": 1648,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 35,
+      "standard": null,
+      "description": "- REQ-F-1648"
+    },
+    "1649": {
+      "id": "REQ-F-1649",
+      "type": "F",
+      "number": 1649,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 36,
+      "standard": null,
+      "description": "- REQ-F-1649"
+    },
+    "1650": {
+      "id": "REQ-F-1650",
+      "type": "F",
+      "number": 1650,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 37,
+      "standard": null,
+      "description": "- REQ-F-1650"
+    },
+    "1651": {
+      "id": "REQ-F-1651",
+      "type": "F",
+      "number": 1651,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 38,
+      "standard": null,
+      "description": "- REQ-F-1651"
+    },
+    "1652": {
+      "id": "REQ-F-1652",
+      "type": "F",
+      "number": 1652,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 39,
+      "standard": null,
+      "description": "- REQ-F-1652"
+    },
+    "1653": {
+      "id": "REQ-F-1653",
+      "type": "F",
+      "number": 1653,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 40,
+      "standard": null,
+      "description": "- REQ-F-1653"
+    },
+    "1654": {
+      "id": "REQ-F-1654",
+      "type": "F",
+      "number": 1654,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 41,
+      "standard": null,
+      "description": "- REQ-F-1654"
+    },
+    "1655": {
+      "id": "REQ-F-1655",
+      "type": "F",
+      "number": 1655,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 42,
+      "standard": null,
+      "description": "- REQ-F-1655"
+    },
+    "1656": {
+      "id": "REQ-F-1656",
+      "type": "F",
+      "number": 1656,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 43,
+      "standard": null,
+      "description": "- REQ-F-1656"
+    },
+    "1657": {
+      "id": "REQ-F-1657",
+      "type": "F",
+      "number": 1657,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 44,
+      "standard": null,
+      "description": "- REQ-F-1657"
+    },
+    "1658": {
+      "id": "REQ-F-1658",
+      "type": "F",
+      "number": 1658,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 45,
+      "standard": null,
+      "description": "- REQ-F-1658"
+    },
+    "1659": {
+      "id": "REQ-F-1659",
+      "type": "F",
+      "number": 1659,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 46,
+      "standard": null,
+      "description": "- REQ-F-1659"
+    },
+    "1660": {
+      "id": "REQ-F-1660",
+      "type": "F",
+      "number": 1660,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 47,
+      "standard": null,
+      "description": "- REQ-F-1660"
+    },
+    "1661": {
+      "id": "REQ-F-1661",
+      "type": "F",
+      "number": 1661,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 48,
+      "standard": null,
+      "description": "- REQ-F-1661"
+    },
+    "1662": {
+      "id": "REQ-F-1662",
+      "type": "F",
+      "number": 1662,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 49,
+      "standard": null,
+      "description": "- REQ-F-1662"
+    },
+    "1663": {
+      "id": "REQ-F-1663",
+      "type": "F",
+      "number": 1663,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 50,
+      "standard": null,
+      "description": "- REQ-F-1663"
+    },
+    "1664": {
+      "id": "REQ-F-1664",
+      "type": "F",
+      "number": 1664,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 51,
+      "standard": null,
+      "description": "- REQ-F-1664"
+    },
+    "1665": {
+      "id": "REQ-F-1665",
+      "type": "F",
+      "number": 1665,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 52,
+      "standard": null,
+      "description": "- REQ-F-1665"
+    },
+    "1666": {
+      "id": "REQ-F-1666",
+      "type": "F",
+      "number": 1666,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 53,
+      "standard": null,
+      "description": "- REQ-F-1666"
+    },
+    "1667": {
+      "id": "REQ-F-1667",
+      "type": "F",
+      "number": 1667,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 54,
+      "standard": null,
+      "description": "- REQ-F-1667"
+    },
+    "1668": {
+      "id": "REQ-F-1668",
+      "type": "F",
+      "number": 1668,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 55,
+      "standard": null,
+      "description": "- REQ-F-1668"
+    },
+    "1669": {
+      "id": "REQ-F-1669",
+      "type": "F",
+      "number": 1669,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 56,
+      "standard": null,
+      "description": "- REQ-F-1669"
+    },
+    "1670": {
+      "id": "REQ-F-1670",
+      "type": "F",
+      "number": 1670,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 57,
+      "standard": null,
+      "description": "- REQ-F-1670"
+    },
+    "1671": {
+      "id": "REQ-F-1671",
+      "type": "F",
+      "number": 1671,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 58,
+      "standard": null,
+      "description": "- REQ-F-1671"
+    },
+    "1672": {
+      "id": "REQ-F-1672",
+      "type": "F",
+      "number": 1672,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 59,
+      "standard": null,
+      "description": "- REQ-F-1672"
+    },
+    "1673": {
+      "id": "REQ-F-1673",
+      "type": "F",
+      "number": 1673,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 60,
+      "standard": null,
+      "description": "- REQ-F-1673"
+    },
+    "1674": {
+      "id": "REQ-F-1674",
+      "type": "F",
+      "number": 1674,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 61,
+      "standard": null,
+      "description": "- REQ-F-1674"
+    },
+    "1675": {
+      "id": "REQ-F-1675",
+      "type": "F",
+      "number": 1675,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 62,
+      "standard": null,
+      "description": "- REQ-F-1675"
+    },
+    "1676": {
+      "id": "REQ-F-1676",
+      "type": "F",
+      "number": 1676,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 63,
+      "standard": null,
+      "description": "- REQ-F-1676"
+    },
+    "1677": {
+      "id": "REQ-F-1677",
+      "type": "F",
+      "number": 1677,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 64,
+      "standard": null,
+      "description": "- REQ-F-1677"
+    },
+    "1678": {
+      "id": "REQ-F-1678",
+      "type": "F",
+      "number": 1678,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 65,
+      "standard": null,
+      "description": "- REQ-F-1678"
+    },
+    "1588": {
+      "id": "REQ-F-1588",
+      "type": "F",
+      "number": 1588,
+      "file_path": "04-design\\components\\ieee-1588-2019-bmca-design.md",
+      "line_number": 12,
+      "standard": null,
+      "description": "- REQ-F-1588-002-BMCA"
+    }
+  },
+  "non_functional_ids": {
+    "1": {
+      "id": "REQ-NF-001",
+      "type": "NF",
+      "number": 1,
+      "file_path": "03-architecture\\architecture-evaluation.md",
+      "line_number": 12,
+      "standard": null,
+      "description": "- REQ-NF-001"
+    },
+    "2": {
+      "id": "REQ-NF-002",
+      "type": "NF",
+      "number": 2,
+      "file_path": "03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md",
+      "line_number": 12,
+      "standard": null,
+      "description": "- \"REQ-NF-002\""
+    },
+    "3": {
+      "id": "REQ-NF-003",
+      "type": "NF",
+      "number": 3,
+      "file_path": "03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md",
+      "line_number": 13,
+      "standard": null,
+      "description": "- \"REQ-NF-003\""
+    },
+    "4": {
+      "id": "REQ-NF-004",
+      "type": "NF",
+      "number": 4,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 24,
+      "standard": null,
+      "description": "- REQ-NF-004"
+    },
+    "1589": {
+      "id": "REQ-NF-1589",
+      "type": "NF",
+      "number": 1589,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 66,
+      "standard": null,
+      "description": "- REQ-NF-1589"
+    },
+    "1590": {
+      "id": "REQ-NF-1590",
+      "type": "NF",
+      "number": 1590,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 67,
+      "standard": null,
+      "description": "- REQ-NF-1590"
+    },
+    "1591": {
+      "id": "REQ-NF-1591",
+      "type": "NF",
+      "number": 1591,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 68,
+      "standard": null,
+      "description": "- REQ-NF-1591"
+    },
+    "1592": {
+      "id": "REQ-NF-1592",
+      "type": "NF",
+      "number": 1592,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 69,
+      "standard": null,
+      "description": "- REQ-NF-1592"
+    },
+    "1593": {
+      "id": "REQ-NF-1593",
+      "type": "NF",
+      "number": 1593,
+      "file_path": "03-architecture\\ieee-1722-2016-avtp-architecture-spec.md",
+      "line_number": 70,
+      "standard": null,
+      "description": "- REQ-NF-1593"
+    },
+    "5": {
+      "id": "REQ-NF-005",
+      "type": "NF",
+      "number": 5,
+      "file_path": "reports\\orphans.md",
+      "line_number": 246,
+      "standard": null,
+      "description": "- REQ-NF-005"
+    },
+    "6": {
+      "id": "REQ-NF-006",
+      "type": "NF",
+      "number": 6,
+      "file_path": "reports\\orphans.md",
+      "line_number": 247,
+      "standard": null,
+      "description": "- REQ-NF-006"
+    },
+    "7": {
+      "id": "REQ-NF-007",
+      "type": "NF",
+      "number": 7,
+      "file_path": "reports\\orphans.md",
+      "line_number": 248,
+      "standard": null,
+      "description": "- REQ-NF-007"
+    },
+    "8": {
+      "id": "REQ-NF-008",
+      "type": "NF",
+      "number": 8,
+      "file_path": "reports\\orphans.md",
+      "line_number": 249,
+      "standard": null,
+      "description": "- REQ-NF-008"
+    },
+    "9": {
+      "id": "REQ-NF-009",
+      "type": "NF",
+      "number": 9,
+      "file_path": "reports\\orphans.md",
+      "line_number": 250,
+      "standard": null,
+      "description": "- REQ-NF-009"
+    },
+    "10": {
+      "id": "REQ-NF-010",
+      "type": "NF",
+      "number": 10,
+      "file_path": "reports\\orphans.md",
+      "line_number": 251,
+      "standard": null,
+      "description": "- REQ-NF-010"
+    },
+    "11": {
+      "id": "REQ-NF-011",
+      "type": "NF",
+      "number": 11,
+      "file_path": "reports\\orphans.md",
+      "line_number": 252,
+      "standard": null,
+      "description": "- REQ-NF-011"
+    },
+    "12": {
+      "id": "REQ-NF-012",
+      "type": "NF",
+      "number": 12,
+      "file_path": "reports\\orphans.md",
+      "line_number": 253,
+      "standard": null,
+      "description": "- REQ-NF-012"
+    },
+    "13": {
+      "id": "REQ-NF-013",
+      "type": "NF",
+      "number": 13,
+      "file_path": "reports\\orphans.md",
+      "line_number": 254,
+      "standard": null,
+      "description": "- REQ-NF-013"
+    },
+    "14": {
+      "id": "REQ-NF-014",
+      "type": "NF",
+      "number": 14,
+      "file_path": "reports\\orphans.md",
+      "line_number": 255,
+      "standard": null,
+      "description": "- REQ-NF-014"
+    },
+    "15": {
+      "id": "REQ-NF-015",
+      "type": "NF",
+      "number": 15,
+      "file_path": "reports\\orphans.md",
+      "line_number": 256,
+      "standard": null,
+      "description": "- REQ-NF-015"
+    },
+    "16": {
+      "id": "REQ-NF-016",
+      "type": "NF",
+      "number": 16,
+      "file_path": "reports\\orphans.md",
+      "line_number": 257,
+      "standard": null,
+      "description": "- REQ-NF-016"
+    },
+    "17": {
+      "id": "REQ-NF-017",
+      "type": "NF",
+      "number": 17,
+      "file_path": "reports\\orphans.md",
+      "line_number": 258,
+      "standard": null,
+      "description": "- REQ-NF-017"
+    },
+    "18": {
+      "id": "REQ-NF-018",
+      "type": "NF",
+      "number": 18,
+      "file_path": "reports\\orphans.md",
+      "line_number": 259,
+      "standard": null,
+      "description": "- REQ-NF-018"
+    },
+    "19": {
+      "id": "REQ-NF-019",
+      "type": "NF",
+      "number": 19,
+      "file_path": "reports\\orphans.md",
+      "line_number": 260,
+      "standard": null,
+      "description": "- REQ-NF-019"
+    },
+    "20": {
+      "id": "REQ-NF-020",
+      "type": "NF",
+      "number": 20,
+      "file_path": "reports\\orphans.md",
+      "line_number": 261,
+      "standard": null,
+      "description": "- REQ-NF-020"
+    },
+    "21": {
+      "id": "REQ-NF-021",
+      "type": "NF",
+      "number": 21,
+      "file_path": "reports\\orphans.md",
+      "line_number": 262,
+      "standard": null,
+      "description": "- REQ-NF-021"
+    },
+    "22": {
+      "id": "REQ-NF-022",
+      "type": "NF",
+      "number": 22,
+      "file_path": "reports\\orphans.md",
+      "line_number": 263,
+      "standard": null,
+      "description": "- REQ-NF-022"
+    },
+    "23": {
+      "id": "REQ-NF-023",
+      "type": "NF",
+      "number": 23,
+      "file_path": "reports\\orphans.md",
+      "line_number": 264,
+      "standard": null,
+      "description": "- REQ-NF-023"
+    },
+    "24": {
+      "id": "REQ-NF-024",
+      "type": "NF",
+      "number": 24,
+      "file_path": "reports\\orphans.md",
+      "line_number": 265,
+      "standard": null,
+      "description": "- REQ-NF-024"
+    },
+    "25": {
+      "id": "REQ-NF-025",
+      "type": "NF",
+      "number": 25,
+      "file_path": "reports\\orphans.md",
+      "line_number": 266,
+      "standard": null,
+      "description": "- REQ-NF-025"
+    },
+    "26": {
+      "id": "REQ-NF-026",
+      "type": "NF",
+      "number": 26,
+      "file_path": "reports\\orphans.md",
+      "line_number": 267,
+      "standard": null,
+      "description": "- REQ-NF-026"
+    },
+    "27": {
+      "id": "REQ-NF-027",
+      "type": "NF",
+      "number": 27,
+      "file_path": "reports\\orphans.md",
+      "line_number": 268,
+      "standard": null,
+      "description": "- REQ-NF-027"
+    },
+    "28": {
+      "id": "REQ-NF-028",
+      "type": "NF",
+      "number": 28,
+      "file_path": "reports\\orphans.md",
+      "line_number": 269,
+      "standard": null,
+      "description": "- REQ-NF-028"
+    },
+    "29": {
+      "id": "REQ-NF-029",
+      "type": "NF",
+      "number": 29,
+      "file_path": "reports\\orphans.md",
+      "line_number": 270,
+      "standard": null,
+      "description": "- REQ-NF-029"
+    },
+    "30": {
+      "id": "REQ-NF-030",
+      "type": "NF",
+      "number": 30,
+      "file_path": "reports\\orphans.md",
+      "line_number": 271,
+      "standard": null,
+      "description": "- REQ-NF-030"
+    },
+    "1588": {
+      "id": "REQ-NF-1588",
+      "type": "NF",
+      "number": 1588,
+      "file_path": "04-design\\components\\ieee-1588-2019-management-design.md",
+      "line_number": 18,
+      "standard": null,
+      "description": "- \"REQ-NF-1588-004\""
+    }
+  },
+  "next_functional": 1729,
+  "next_non_functional": 1594,
+  "last_updated": "2025-10-12T17:08:12.032495",
+  "conflicts": [
+    "Duplicate REQ-F-001 in 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:72 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:138 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in 03-architecture\\architecture-evaluation.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in 03-architecture\\architecture-quality-scenarios.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\architecture-quality-scenarios.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-048 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:195 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:19",
+    "Duplicate REQ-F-092 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:195 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:63",
+    "Duplicate REQ-F-043 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:234 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:14",
+    "Duplicate REQ-F-047 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:234 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:18",
+    "Duplicate REQ-F-051 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:234 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:22",
+    "Duplicate REQ-F-053 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:234 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:24",
+    "Duplicate REQ-F-054 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:234 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:25",
+    "Duplicate REQ-F-045 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:281 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:16",
+    "Duplicate REQ-F-046 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:281 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:17",
+    "Duplicate REQ-F-067 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:281 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:38",
+    "Duplicate REQ-F-092 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:281 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:63",
+    "Duplicate REQ-F-043 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:575 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:14",
+    "Duplicate REQ-F-049 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:575 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:20",
+    "Duplicate REQ-F-044 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:592 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:15",
+    "Duplicate REQ-F-050 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:592 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:21",
+    "Duplicate REQ-F-045 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:609 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:16",
+    "Duplicate REQ-F-052 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:609 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:23",
+    "Duplicate REQ-F-043 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:739 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:14",
+    "Duplicate REQ-F-051 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:739 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:22",
+    "Duplicate REQ-F-047 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:740 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:18",
+    "Duplicate REQ-F-051 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:740 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:22",
+    "Duplicate REQ-F-044 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:741 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:15",
+    "Duplicate REQ-F-050 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:741 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:21",
+    "Duplicate REQ-F-045 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:742 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:16",
+    "Duplicate REQ-F-052 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:742 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:23",
+    "Duplicate REQ-F-048 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:743 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:19",
+    "Duplicate REQ-F-054 in 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:743 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:25",
+    "Duplicate REQ-F-047 in 03-architecture\\ieee-1588-2019-ptpv2-technology-stack.md:13 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:18",
+    "Duplicate REQ-F-048 in 03-architecture\\ieee-1588-2019-ptpv2-technology-stack.md:14 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:19",
+    "Duplicate REQ-F-058 in 03-architecture\\ieee-1588-2019-ptpv2-technology-stack.md:15 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:29",
+    "Duplicate REQ-F-059 in 03-architecture\\ieee-1588-2019-ptpv2-technology-stack.md:16 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:30",
+    "Duplicate REQ-NF-001 in 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:11 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-001 in 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:21 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:22 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:23 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-NF-001 in 03-architecture\\ieee-1722-2016-technology-stack.md:11 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in 03-architecture\\ieee-1722-2016-technology-stack.md:12 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in 03-architecture\\ieee-1722-2016-technology-stack.md:13 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-F-001 in 03-architecture\\phase00-cross-standard-architecture-foundation.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\phase00-cross-standard-architecture-foundation.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-003 in 03-architecture\\phase00-gate-validation-report.md:14 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-003 in 03-architecture\\phase00-gate-validation-report.md:15 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-F-002 in reports\\orphans.md:51 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in reports\\orphans.md:52 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-004 in reports\\orphans.md:245 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:24",
+    "Duplicate REQ-F-001 in reports\\traceability-matrix.md:52 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in reports\\traceability-matrix.md:53 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in reports\\traceability-matrix.md:54 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-F-010 in reports\\traceability-matrix.md:55 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:20",
+    "Duplicate REQ-NF-001 in reports\\traceability-matrix.md:248 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in reports\\traceability-matrix.md:249 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in reports\\traceability-matrix.md:250 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-NF-004 in reports\\traceability-matrix.md:251 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:24",
+    "Duplicate REQ-NF-005 in reports\\traceability-matrix.md:252 and reports\\orphans.md:246",
+    "Duplicate REQ-NF-006 in reports\\traceability-matrix.md:253 and reports\\orphans.md:247",
+    "Duplicate REQ-NF-007 in reports\\traceability-matrix.md:254 and reports\\orphans.md:248",
+    "Duplicate REQ-NF-008 in reports\\traceability-matrix.md:255 and reports\\orphans.md:249",
+    "Duplicate REQ-NF-009 in reports\\traceability-matrix.md:256 and reports\\orphans.md:250",
+    "Duplicate REQ-NF-010 in reports\\traceability-matrix.md:257 and reports\\orphans.md:251",
+    "Duplicate REQ-NF-011 in reports\\traceability-matrix.md:258 and reports\\orphans.md:252",
+    "Duplicate REQ-NF-012 in reports\\traceability-matrix.md:259 and reports\\orphans.md:253",
+    "Duplicate REQ-NF-013 in reports\\traceability-matrix.md:260 and reports\\orphans.md:254",
+    "Duplicate REQ-NF-014 in reports\\traceability-matrix.md:261 and reports\\orphans.md:255",
+    "Duplicate REQ-NF-015 in reports\\traceability-matrix.md:262 and reports\\orphans.md:256",
+    "Duplicate REQ-NF-016 in reports\\traceability-matrix.md:263 and reports\\orphans.md:257",
+    "Duplicate REQ-NF-017 in reports\\traceability-matrix.md:264 and reports\\orphans.md:258",
+    "Duplicate REQ-NF-018 in reports\\traceability-matrix.md:265 and reports\\orphans.md:259",
+    "Duplicate REQ-NF-019 in reports\\traceability-matrix.md:266 and reports\\orphans.md:260",
+    "Duplicate REQ-NF-020 in reports\\traceability-matrix.md:267 and reports\\orphans.md:261",
+    "Duplicate REQ-NF-021 in reports\\traceability-matrix.md:268 and reports\\orphans.md:262",
+    "Duplicate REQ-NF-022 in reports\\traceability-matrix.md:269 and reports\\orphans.md:263",
+    "Duplicate REQ-NF-023 in reports\\traceability-matrix.md:270 and reports\\orphans.md:264",
+    "Duplicate REQ-NF-024 in reports\\traceability-matrix.md:271 and reports\\orphans.md:265",
+    "Duplicate REQ-NF-025 in reports\\traceability-matrix.md:272 and reports\\orphans.md:266",
+    "Duplicate REQ-NF-026 in reports\\traceability-matrix.md:273 and reports\\orphans.md:267",
+    "Duplicate REQ-NF-027 in reports\\traceability-matrix.md:274 and reports\\orphans.md:268",
+    "Duplicate REQ-NF-028 in reports\\traceability-matrix.md:275 and reports\\orphans.md:269",
+    "Duplicate REQ-NF-029 in reports\\traceability-matrix.md:276 and reports\\orphans.md:270",
+    "Duplicate REQ-NF-030 in reports\\traceability-matrix.md:277 and reports\\orphans.md:271",
+    "Duplicate REQ-F-001 in spec-kit-templates\\architecture-spec.md:39 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in spec-kit-templates\\architecture-spec.md:40 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-001 in spec-kit-templates\\architecture-spec.md:72 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-001 in spec-kit-templates\\architecture-spec.md:548 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in spec-kit-templates\\architecture-spec.md:548 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in spec-kit-templates\\architecture-spec.md:549 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-F-010 in spec-kit-templates\\architecture-spec.md:550 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:20",
+    "Duplicate REQ-F-001 in spec-kit-templates\\requirements-spec.md:63 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in spec-kit-templates\\requirements-spec.md:94 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-002 in spec-kit-templates\\requirements-spec.md:106 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-001 in spec-kit-templates\\requirements-spec.md:303 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in spec-kit-templates\\requirements-spec.md:311 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in spec-kit-templates\\requirements-spec.md:311 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in spec-kit-templates\\requirements-spec.md:312 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-F-001 in spec-kit-templates\\user-story-template.md:21 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-010 in 07-verification-validation\\traceability\\architecture-traceability-matrix.md:21 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:20",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:46 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:68 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:165 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:258 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:328 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:427 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:428 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:429 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-bmca-design.md:430 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-management-design.md:17 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-management-design.md:606 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-NF-1588 in 04-design\\components\\ieee-1588-2019-management-design.md:607 and 04-design\\components\\ieee-1588-2019-management-design.md:18",
+    "Duplicate REQ-NF-1588 in 04-design\\components\\ieee-1588-2019-management-design.md:608 and 04-design\\components\\ieee-1588-2019-management-design.md:18",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:70 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:150 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:233 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:354 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:355 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:356 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-state-machine-design.md:357 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:12 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:147 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:230 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:474 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:475 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:476 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-F-1588 in 04-design\\components\\ieee-1588-2019-transport-design.md:477 and 04-design\\components\\ieee-1588-2019-bmca-design.md:12",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md:11 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md:12 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md:24 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-001-hardware-abstraction-interfaces.md:25 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-002-ieee-standards-layering.md:11 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-002 in 03-architecture\\decisions\\ADR-002-ieee-standards-layering.md:12 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-002-ieee-standards-layering.md:25 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-002-ieee-standards-layering.md:26 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:24 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:25 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:26 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-003-ieee-802-1as-multi-domain-architecture.md:27 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-003 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:11 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-F-004 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:12 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:14",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:13 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-004 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:25 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:14",
+    "Duplicate REQ-F-005 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:26 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:15",
+    "Duplicate REQ-NF-002 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:27 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-F-006 in 03-architecture\\decisions\\ADR-004-ieee-802-1as-path-delay-architecture.md:28 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:16",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-005-ieee-1722-avtp-transport-architecture.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-005-ieee-1722-avtp-transport-architecture.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-005-ieee-1722-avtp-transport-architecture.md:13 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-006-ieee-1722-hardware-abstraction-pattern.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-006-ieee-1722-hardware-abstraction-pattern.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-006-ieee-1722-hardware-abstraction-pattern.md:13 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-007-ieee-1722-1-avdecc-entity-model-architecture.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-007-ieee-1722-1-avdecc-entity-model-architecture.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-007-ieee-1722-1-avdecc-entity-model-architecture.md:13 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-008-ieee-1722-1-protocol-state-machine-architecture.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-003 in 03-architecture\\decisions\\ADR-008-ieee-1722-1-protocol-state-machine-architecture.md:12 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-008-ieee-1722-1-protocol-state-machine-architecture.md:13 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-002 in 03-architecture\\decisions\\ADR-009-milan-professional-audio-integration.md:11 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in 03-architecture\\decisions\\ADR-009-milan-professional-audio-integration.md:12 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-002 in 03-architecture\\decisions\\ADR-009-milan-professional-audio-integration.md:13 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-F-048 in 03-architecture\\decisions\\ADR-013-ieee-1588-2019-multi-layered-architecture.md:13 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:19",
+    "Duplicate REQ-F-054 in 03-architecture\\decisions\\ADR-013-ieee-1588-2019-multi-layered-architecture.md:14 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:25",
+    "Duplicate REQ-F-055 in 03-architecture\\decisions\\ADR-013-ieee-1588-2019-multi-layered-architecture.md:15 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:26",
+    "Duplicate REQ-F-056 in 03-architecture\\decisions\\ADR-013-ieee-1588-2019-multi-layered-architecture.md:16 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:27",
+    "Duplicate REQ-F-057 in 03-architecture\\decisions\\ADR-013-ieee-1588-2019-multi-layered-architecture.md:17 and 03-architecture\\ieee-1588-2019-ptpv2-architecture-spec.md:28",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-template.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\decisions\\ADR-template.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\decisions\\ADR-template.md:24 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\cross-standard-architecture-views.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\cross-standard-architecture-views.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\ieee-1588-2019-architecture-spec.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\ieee-1588-2019-architecture-spec.md:12 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:13 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:14 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:15 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in 03-architecture\\views\\ieee-1722-1-2021-avdecc-architecture-spec.md:16 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\ieee-802-1as-2021-gptp-architecture-spec.md:11 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-F-002 in 03-architecture\\views\\ieee-802-1as-2021-gptp-architecture-spec.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-F-003 in 03-architecture\\views\\ieee-802-1as-2021-gptp-architecture-spec.md:13 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:13",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\ieee-802-1as-2021-gptp-architecture-spec.md:14 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in 03-architecture\\views\\ieee-802-1as-2021-gptp-architecture-spec.md:15 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-002 in 03-architecture\\views\\ieee-802-1as-2021-technology-stack.md:11 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-003 in 03-architecture\\views\\ieee-802-1as-2021-technology-stack.md:12 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-NF-004 in 03-architecture\\views\\ieee-802-1as-2021-technology-stack.md:13 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:24",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\README.md:45 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\data\\hardware-agnostic-data-architecture.md:11 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-002 in 03-architecture\\views\\data\\hardware-agnostic-data-architecture.md:12 and 02-requirements\\ID-NAMING-CONVENTION-MIGRATION.md:26",
+    "Duplicate REQ-NF-001 in 03-architecture\\views\\logical\\hardware-abstraction-logical-view.md:11 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-F-001 in 03-architecture\\views\\logical\\hardware-abstraction-logical-view.md:12 and DEVELOPER_SETUP_GUIDE.md:217",
+    "Duplicate REQ-NF-003 in 03-architecture\\views\\physical\\hardware-agnostic-deployment-view.md:11 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:13",
+    "Duplicate REQ-F-004 in 03-architecture\\views\\physical\\hardware-agnostic-deployment-view.md:12 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:14",
+    "Duplicate REQ-NF-001 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:433 and 03-architecture\\architecture-evaluation.md:12",
+    "Duplicate REQ-NF-002 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:435 and 03-architecture\\ieee-1722-1-2021-avdecc-technology-stack.md:12",
+    "Duplicate REQ-NF-004 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:438 and 03-architecture\\ieee-1722-2016-avtp-architecture-spec.md:24",
+    "Duplicate REQ-NF-005 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:440 and reports\\orphans.md:246",
+    "Duplicate REQ-NF-006 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:442 and reports\\orphans.md:247",
+    "Duplicate REQ-NF-007 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:445 and reports\\orphans.md:248",
+    "Duplicate REQ-NF-008 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:447 and reports\\orphans.md:249",
+    "Duplicate REQ-NF-009 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:449 and reports\\orphans.md:250",
+    "Duplicate REQ-NF-010 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:454 and reports\\orphans.md:251",
+    "Duplicate REQ-NF-011 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:456 and reports\\orphans.md:252",
+    "Duplicate REQ-NF-012 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:458 and reports\\orphans.md:253",
+    "Duplicate REQ-NF-013 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:461 and reports\\orphans.md:254",
+    "Duplicate REQ-NF-014 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:463 and reports\\orphans.md:255",
+    "Duplicate REQ-NF-015 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:468 and reports\\orphans.md:256",
+    "Duplicate REQ-NF-016 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:470 and reports\\orphans.md:257",
+    "Duplicate REQ-NF-017 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:472 and reports\\orphans.md:258",
+    "Duplicate REQ-NF-018 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:475 and reports\\orphans.md:259",
+    "Duplicate REQ-NF-019 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:477 and reports\\orphans.md:260",
+    "Duplicate REQ-NF-020 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:479 and reports\\orphans.md:261",
+    "Duplicate REQ-NF-021 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:484 and reports\\orphans.md:262",
+    "Duplicate REQ-NF-022 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:486 and reports\\orphans.md:263",
+    "Duplicate REQ-NF-023 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:488 and reports\\orphans.md:264",
+    "Duplicate REQ-NF-024 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:491 and reports\\orphans.md:265",
+    "Duplicate REQ-NF-025 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:493 and reports\\orphans.md:266",
+    "Duplicate REQ-NF-026 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:498 and reports\\orphans.md:267",
+    "Duplicate REQ-NF-027 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:500 and reports\\orphans.md:268",
+    "Duplicate REQ-NF-028 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:502 and reports\\orphans.md:269",
+    "Duplicate REQ-NF-029 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:505 and reports\\orphans.md:270",
+    "Duplicate REQ-NF-030 in 02-requirements\\functional\\aes67-2018-audio-over-ip-requirements.md:507 and reports\\orphans.md:271"
+  ]
+}

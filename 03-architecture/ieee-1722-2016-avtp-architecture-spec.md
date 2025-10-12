@@ -1,29 +1,74 @@
 ---
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Software Architecture Team"
-date: "2025-10-12"
-status: "approved"
+standard: '42010'
+phase: 03-architecture
+version: 1.0.0
+author: Software Architecture Team
+date: '2025-10-12'
+status: approved
 traceability:
   requirements:
-    - "REQ-F-001"
-    - "REQ-F-002"
-    - "REQ-F-003"
-    - "REQ-F-004"
-    - "REQ-F-005"
-    - "REQ-F-006"
-    - "REQ-F-007"
-    - "REQ-F-008"
-    - "REQ-F-009"
-    - "REQ-F-010"
-    - "REQ-NF-001"
-    - "REQ-NF-002"
-    - "REQ-NF-003"
-    - "REQ-NF-004"
+  - REQ-F-001
+  - REQ-F-002
+  - REQ-F-003
+  - REQ-F-004
+  - REQ-F-005
+  - REQ-F-006
+  - REQ-F-007
+  - REQ-F-008
+  - REQ-F-009
+  - REQ-F-010
+  - REQ-NF-001
+  - REQ-NF-002
+  - REQ-NF-003
+  - REQ-NF-004
+requirements:
+- REQ-F-1639
+- REQ-F-1640
+- REQ-F-1641
+- REQ-F-1642
+- REQ-F-1643
+- REQ-F-1644
+- REQ-F-1645
+- REQ-F-1646
+- REQ-F-1647
+- REQ-F-1648
+- REQ-F-1649
+- REQ-F-1650
+- REQ-F-1651
+- REQ-F-1652
+- REQ-F-1653
+- REQ-F-1654
+- REQ-F-1655
+- REQ-F-1656
+- REQ-F-1657
+- REQ-F-1658
+- REQ-F-1659
+- REQ-F-1660
+- REQ-F-1661
+- REQ-F-1662
+- REQ-F-1663
+- REQ-F-1664
+- REQ-F-1665
+- REQ-F-1666
+- REQ-F-1667
+- REQ-F-1668
+- REQ-F-1669
+- REQ-F-1670
+- REQ-F-1671
+- REQ-F-1672
+- REQ-F-1673
+- REQ-F-1674
+- REQ-F-1675
+- REQ-F-1676
+- REQ-F-1677
+- REQ-F-1678
+- REQ-NF-1589
+- REQ-NF-1590
+- REQ-NF-1591
+- REQ-NF-1592
+- REQ-NF-1593
 ---
-
 # IEEE 1722-2016 AVTP Transport Architecture Specification
 
 **Standards Compliance**: ISO/IEC/IEEE 42010:2011 - Architecture Description  
