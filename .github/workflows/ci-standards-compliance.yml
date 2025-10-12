@@ -79,11 +79,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm install
           npm install -g eslint prettier markdownlint-cli
 
       - name: Run linting (Coding Standards)
@@ -127,10 +126,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run unit tests
         run: |
@@ -235,10 +233,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run database migrations
         run: |
@@ -320,10 +317,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright
         run: npx playwright install --with-deps
@@ -594,7 +590,7 @@ jobs:
       - name: Build application
         run: |
           echo "🏗️ Building application..."
-          npm ci
+          npm install
           npm run build
 
       - name: Deploy to staging
