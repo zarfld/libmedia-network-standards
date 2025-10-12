@@ -8,8 +8,8 @@ date: "2025-10-12"
 status: "approved"
 traceability:
   requirements:
-    - "REQ-NF-PORTABILITY-001"
-    - "REQ-F-CROSS-STANDARD-001"
+    - "REQ-NF-001"
+    - "REQ-F-001"
   decisions:
     - "ADR-001"
     - "ADR-002"
