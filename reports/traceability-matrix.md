@@ -414,14 +414,14 @@
 | REQ-NF-005 | (none) |
 | REQ-NF-006 | (none) |
 | REQ-NF-007 | (none) |
-| REQ-NF-008 | (none) |
-| REQ-NF-009 | (none) |
+| REQ-NF-008 | ADR-001, ADR-002, ADR-003 |
+| REQ-NF-009 | ADR-001, ADR-002, ADR-003 |
 | REQ-NF-010 | (none) |
 | REQ-NF-011 | (none) |
 | REQ-NF-012 | (none) |
 | REQ-NF-013 | (none) |
 | REQ-NF-014 | (none) |
-| REQ-NF-015 | (none) |
+| REQ-NF-015 | ADR-001, ADR-002, ADR-003 |
 | REQ-NF-016 | (none) |
 | REQ-NF-017 | (none) |
 | REQ-NF-018 | (none) |
@@ -831,11 +831,11 @@
 | REQ-STK-PTP-005 | (none) |
 | REQ-STK-PTP-006 | (none) |
 | REQ-STK-PTP-007 | (none) |
-| REQ-STK-PTP-008 | (none) |
+| REQ-STK-PTP-008 | ADR-001, ADR-002, ADR-003 |
 | REQ-STK-PTP-009 | (none) |
 | REQ-STK-PTP-010 | (none) |
 | REQ-STK-PTP-011 | (none) |
-| REQ-STK-PTP-012 | (none) |
+| REQ-STK-PTP-012 | ADR-001, ADR-002, ADR-003 |
 | REQ-STK-PTP-013 | (none) |
 | REQ-STK-PTP-014 | ADR-001 |
 | REQ-STK-PTP-015 | (none) |

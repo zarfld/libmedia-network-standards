@@ -19,7 +19,9 @@ specType: architecture
 standard: '42010'
 status: draft
 traceability:
-  requirements: []
+  requirements:
+  - REQ-STK-PTP-008
+  - REQ-STK-PTP-012
 version: 1.0.0
 ---
 
