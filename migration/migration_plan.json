@@ -1,0 +1,270 @@
+{
+  "total_violations": 1089,
+  "total_batches": 23,
+  "estimated_timeline": "161 days (23 weeks)",
+  "batches": [
+    {
+      "batch_id": 1,
+      "requirement_ids": [
+        "REQ-STK-NAMING-001",
+        "REQ-STK-NAMING-002",
+        "REQ-STK-NAMING-003",
+        "SR-IEEE1588PTP-001",
+        "SR-IEEE8021Q-001",
+        "SR-IEEE8021Q2022-001",
+        "SR-IEEE8021BA-001",
+        "SR-IEEE17221LEG-001",
+        "SR-IEEE17221-001",
+        "SR-IEEE1722-001",
+        "SR-IEEE8021AS-001",
+        "SR-IEEE8021AB-001",
+        "SR-IEEE8021AX-001",
+        "SR-IEEE8021X-001",
+        "SR-AES67-001",
+        "SR-AES70-001",
+        "SR-AES5-001",
+        "SR-AES3-001",
+        "SR-AES60ID-001",
+        "SR-CROSSARCH-001",
+        "SR-MILAN-001",
+        "SR-CROSSARCH-001",
+        "REQ-F-CROSSARCH-001",
+        "SR-IEEE1588PTP-001",
+        "SR-IEEE1588PTP-002",
+        "REQ-F-IEEE1588PTP-001",
+        "REQ-NF-P-001",
+        "REQ-NF-P-002",
+        "REQ-NF-S-001",
+        "REQ-NF-S-002",
+        "REQ-NF-U-001",
+        "REQ-NF-R-001",
+        "REQ-NF-R-002",
+        "REQ-NF-M-001",
+        "REQ-NF-M-002",
+        "REQ-NF-SC-001",
+        "REQ-NF-C-001",
+        "REQ-STK-AES3-001",
+        "REQ-STK-AES3-002",
+        "REQ-STK-AES3-003",
+        "REQ-STK-AES3-004",
+        "REQ-STK-AES3-005",
+        "US-AES3-001",
+        "US-AES3-002",
+        "US-AES3-003",
+        "US-AES3-004",
+        "US-AES3-005",
+        "US-AES3-006",
+        "US-AES3-007",
+        "US-AES3-008"
+      ],
+      "estimated_effort": "high",
+      "priority": "critical",
+      "target_completion": "2025-10-19",
+      "status": "pending"
+    },
+    {
+      "batch_id": 2,
+      "requirement_ids": [
+        "REQ-STK-AES5-001",
+        "REQ-STK-AES5-002",
+        "REQ-STK-AES5-003",
+        "REQ-STK-AES5-004",
+        "REQ-STK-AES5-005",
+        "US-AES5-001",
+        "US-AES5-002",
+        "US-AES5-003",
+        "US-AES5-004",
+        "US-AES5-005",
+        "US-AES5-006",
+        "US-AES5-007",
+        "US-AES5-008",
+        "REQ-STK-AES60ID-001",
+        "REQ-STK-AES60ID-002",
+        "REQ-STK-AES60ID-003",
+        "REQ-STK-AES60ID-004",
+        "REQ-STK-AES60ID-005",
+        "US-AES60ID-001",
+        "US-AES60ID-002",
+        "US-AES60ID-003",
+        "US-AES60ID-004",
+        "US-AES60ID-005",
+        "US-AES60ID-006",
+        "US-AES60ID-007"
+      ],
+      "estimated_effort": "medium",
+      "priority": "high",
+      "target_completion": "2025-10-26",
+      "status": "pending"
+    },
+    {
+      "batch_id": 4,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-09",
+      "status": "pending"
+    },
+    {
+      "batch_id": 5,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-16",
+      "status": "pending"
+    },
+    {
+      "batch_id": 6,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-23",
+      "status": "pending"
+    },
+    {
+      "batch_id": 7,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-30",
+      "status": "pending"
+    },
+    {
+      "batch_id": 8,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-37",
+      "status": "pending"
+    },
+    {
+      "batch_id": 9,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-44",
+      "status": "pending"
+    },
+    {
+      "batch_id": 10,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-51",
+      "status": "pending"
+    },
+    {
+      "batch_id": 11,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-58",
+      "status": "pending"
+    },
+    {
+      "batch_id": 12,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-65",
+      "status": "pending"
+    },
+    {
+      "batch_id": 13,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-72",
+      "status": "pending"
+    },
+    {
+      "batch_id": 14,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-79",
+      "status": "pending"
+    },
+    {
+      "batch_id": 15,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-86",
+      "status": "pending"
+    },
+    {
+      "batch_id": 16,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-93",
+      "status": "pending"
+    },
+    {
+      "batch_id": 17,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-100",
+      "status": "pending"
+    },
+    {
+      "batch_id": 18,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-107",
+      "status": "pending"
+    },
+    {
+      "batch_id": 19,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-114",
+      "status": "pending"
+    },
+    {
+      "batch_id": 20,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-121",
+      "status": "pending"
+    },
+    {
+      "batch_id": 21,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-128",
+      "status": "pending"
+    },
+    {
+      "batch_id": 22,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-135",
+      "status": "pending"
+    },
+    {
+      "batch_id": 23,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-142",
+      "status": "pending"
+    },
+    {
+      "batch_id": 24,
+      "requirement_ids": [],
+      "estimated_effort": "low",
+      "priority": "low",
+      "target_completion": "2025-11-149",
+      "status": "pending"
+    }
+  ],
+  "current_batch": 1,
+  "completion_percentage": 0.0
+}
