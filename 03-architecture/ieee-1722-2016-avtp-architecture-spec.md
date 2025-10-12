@@ -6,17 +6,22 @@ version: "1.0.0"
 author: "Software Architecture Team"
 date: "2025-01-27"
 status: "approved"
-relatedRequirements:
-  - "ieee-1722-2016-avtp-requirements.md"
-relatedADRs:
-  - "ADR-005-ieee-1722-avtp-transport-architecture.md"
-  - "ADR-006-ieee-1722-hardware-abstraction-pattern.md"
-architecturalViewpoints:
-  - "System Context View"
-  - "Container Architecture View"
-  - "Component Architecture View"
-  - "Process Flow View"
-  - "Deployment Architecture View"
+traceability:
+  requirements:
+    - "REQ-F-001"
+    - "REQ-F-002"
+    - "REQ-F-003"
+    - "REQ-F-004"
+    - "REQ-F-005"
+    - "REQ-F-006"
+    - "REQ-F-007"
+    - "REQ-F-008"
+    - "REQ-F-009"
+    - "REQ-F-010"
+    - "REQ-NF-001"
+    - "REQ-NF-002"
+    - "REQ-NF-003"
+    - "REQ-NF-004"
 ---
 
 # IEEE 1722-2016 AVTP Transport Architecture Specification
