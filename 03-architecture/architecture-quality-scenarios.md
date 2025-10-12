@@ -1,6 +1,6 @@
 ---
 specType: architecture
-standard: 42010
+standard: ISO/IEC/IEEE 42010:2011
 phase: 03-architecture
 version: 1.0.0
 author: Architecture Team
@@ -13,6 +13,15 @@ traceability:
 ---
 
 # Architecture Quality Attribute Scenarios
+
+## Architectural Context
+
+### Stakeholder Concerns
+Per ISO/IEC/IEEE 42010:2011:
+
+**Stakeholders**: Development Team, System Integrators, End Users
+**Concerns**: Performance predictability, system reliability, security compliance
+**Viewpoints**: Quality Viewpoint - Non-functional requirements and quality scenarios
 
 Quality Attribute (QA) scenarios make non-functional requirements concrete and testable. Each scenario follows the structured form recommended in architecture evaluation methods (e.g., ATAM) and ties directly to requirements.
 

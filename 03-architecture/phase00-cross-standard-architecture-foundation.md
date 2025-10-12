@@ -22,6 +22,22 @@ applies-to:
 
 > **CRITICAL**: This is the foundational architecture that MUST be completed before ANY individual IEEE standard implementation work begins per the mandatory Phase 00 → Phase 01 gate.
 
+## Architectural Context
+
+### Architectural Decisions Referenced
+- ADR-001: Hardware Abstraction Interfaces - Defines Common/interfaces/ abstraction layer
+- ADR-002: IEEE Standards Layering - Establishes cross-standard dependency management
+
+### Architectural Viewpoints & Stakeholder Concerns  
+Per ISO/IEC/IEEE 42010:2011:
+
+**Stakeholders**: Development Team, System Integrators, Hardware Vendors, Standards Bodies
+**Concerns**: Cross-standard integration, hardware portability, dependency management, namespace organization
+**Viewpoints**: 
+- Structural Viewpoint - Component organization and namespace architecture
+- Behavioral Viewpoint - Cross-standard coordination and lifecycle management
+- Physical Viewpoint - Hardware abstraction and deployment architecture
+
 ## 🎯 Purpose
 
 Design unified cross-standard architecture foundation enabling:

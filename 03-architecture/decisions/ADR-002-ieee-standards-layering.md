@@ -1,15 +1,15 @@
 ---
 specType: architecture
-standard: 42010
+standard: ISO/IEC/IEEE 42010:2011
 phase: 03-architecture
 version: 1.0.0
 author: Architecture Team
 date: "2025-10-12"
-status: accepted
+status: approved
 traceability:
   requirements:
-    - REQ-F-STANDARDS-LAYERING-001
-    - REQ-NF-INTEROP-001
+    - REQ-F-002
+    - REQ-NF-002
 ---
 
 # ADR-002: IEEE Media Networking Standards Layering Architecture

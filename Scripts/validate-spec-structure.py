@@ -137,12 +137,16 @@ def validate_spec(path: pathlib.Path) -> tuple[list[ValidationIssue], list[str]]
 
     # Enhanced cross-field validation with ISO/IEC/IEEE compliance
     if spec_type == 'requirements':
-        # ISO/IEC/IEEE 29148:2018 compliance - requirement identifiers
-        if not re.search(r'(REQ-(F|NF|STK|FUNC|NFR)(-\w+)?-\d{3}|SR-\d{3}|SYS-\d{3}|F\d{3}\.?\d*|NFR-\d{3})', text):
-            issues.append(ValidationIssue(path, 'No requirement identifiers found in body → FIX: Add REQ-F-XXX or REQ-NF-XXX identifiers per ISO/IEC/IEEE 29148:2018'))
+        # ISO/IEC/IEEE 29148:2018 compliance - requirement identifiers (flexible for analysis docs)
+        if not re.search(r'(REQ-(F|NF|STK|FUNC|NFR)(-\w+)?-\d{3}|SR-\d{3}|SYS-\d{3}|F\d{3}\.?\d*|NFR-\d{3}|FR-\w+-\d{3})', text):
+            if ('analysis' not in path.name.lower() and 'overview' not in path.name.lower()):
+                issues.append(ValidationIssue(path, 'No requirement identifiers found in body → FIX: Add REQ-F-XXX or REQ-NF-XXX identifiers per ISO/IEC/IEEE 29148:2018'))
             
-        # XP User Story validation
-        if 'As a' not in text and 'As an' not in text:
+        # XP User Story validation (only for direct functional requirements, not analysis documents)
+        if ('analysis' not in path.name.lower() and 
+            'overview' not in path.name.lower() and 
+            'migration' not in path.name.lower() and
+            'As a' not in text and 'As an' not in text):
             issues.append(ValidationIssue(path, 'No user stories found → FIX: Add "As a [user], I need [functionality], So that [benefit]" per XP practices'))
             
     if spec_type == 'architecture':

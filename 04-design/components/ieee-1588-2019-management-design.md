@@ -1,16 +1,13 @@
 ---
+specType: design
+standard: IEEE 1016-2009
+phase: 04-design
+version: 1.0.0
 title: "IEEE 1588-2019 Management Protocol Design Specification"
-type: "design_specification"
-standard: "IEEE 1588-2019"
-phase: "04-design"
 component: "management-protocol"
-version: "1.0"
-date: "2024-12-10"
 author: "AI Agent"
-status: "active"
-compliance:
-  standard: "IEEE 1016-2009"
-  section: "Software Design Description"
+date: "2024-12-10"
+status: draft
 traceability:
   requirements:
     - "REQ-F-1588-003"

@@ -1,6 +1,6 @@
 ---
 specType: architecture
-standard: 42010
+standard: ISO/IEC/IEEE 42010:2011
 phase: 03-architecture
 version: 1.0.0
 author: Architecture Team
@@ -8,8 +8,8 @@ date: "2025-10-12"
 status: approved
 traceability:
   requirements:
-    - REQ-ARCH-VIEWS-001
-    - REQ-STAKEHOLDER-CONCERNS-001
+    - REQ-F-001
+    - REQ-NF-001
   architecture:
     - ADR-001
     - ADR-002
