@@ -10,10 +10,10 @@ status: "approved"
 description: "Technology stack recommendations and implementation guidelines for IEEE 1588-2019 Precision Time Protocol v2.1"
 traceability:
   requirements:
-    - "REQ-F-005"
-    - "REQ-F-006"
-    - "REQ-F-007"
-    - "REQ-F-008"
+    - "REQ-1588-F-005"
+    - "REQ-1588-F-006"
+    - "REQ-1588-F-016"
+    - "REQ-1588-F-017"
   architectureComponents:
     - "ARC-C-010"
     - "ARC-C-017"

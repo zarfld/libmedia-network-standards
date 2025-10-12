@@ -10,18 +10,18 @@ status: "draft"
 description: "Complete C4 architecture specification for IEEE 1588-2019 Precision Time Protocol v2.1 implementation with enterprise timing capabilities"
 traceability:
   requirements:
-    - "REQ-F-001"
-    - "REQ-F-002"
-    - "REQ-F-003"
-    - "REQ-F-004"
-    - "REQ-F-005"
-    - "REQ-F-009"
-    - "REQ-F-013"
-    - "REQ-F-017"
-    - "REQ-F-021"
-    - "REQ-F-025"
-    - "REQ-F-033"
-    - "REQ-F-041"
+    - "REQ-1588-F-001"
+    - "REQ-1588-F-002"
+    - "REQ-1588-F-003"
+    - "REQ-1588-F-004"
+    - "REQ-1588-F-005"
+    - "REQ-1588-F-006"
+    - "REQ-1588-F-007"
+    - "REQ-1588-F-008"
+    - "REQ-1588-F-009"
+    - "REQ-1588-F-010"
+    - "REQ-1588-F-011"
+    - "REQ-1588-F-012"
   architectureComponents:
     - "ARC-C-010"
     - "ARC-C-011"
@@ -103,7 +103,7 @@ Platform Layer (Intel/ARM/FPGA HAL)
 1. **Direct Hardware Integration**: Rejected due to portability limitations and testing complexity
 2. **Single Unified Layer**: Rejected due to mixing protocol and platform concerns
 
-**Compliance**: Addresses REQ-F-006 (Hardware Abstraction), REQ-F-041 (Platform Independence)
+**Compliance**: Addresses REQ-1588-F-006 (Hardware Abstraction), REQ-1588-F-012 (Platform Independence)
 
 ---
 
@@ -142,7 +142,7 @@ Implement event-driven state machine architecture using hierarchical state machi
 1. **Polling-Based Architecture**: Rejected due to timing unpredictability
 2. **Thread-Per-Clock Model**: Rejected due to synchronization complexity and overhead
 
-**Compliance**: Addresses REQ-F-001 (Enterprise Timing), REQ-F-005 (Deterministic Design), REQ-F-009 (Clock State Machines)
+**Compliance**: Addresses REQ-1588-F-001 (Enterprise Timing), REQ-1588-F-005 (Deterministic Design), REQ-1588-F-009 (Clock State Machines)
 
 ---
 
@@ -189,7 +189,7 @@ Implement layered security and management framework with pluggable authenticatio
 1. **Basic Security Only**: Rejected due to enterprise requirements
 2. **Embedded Management**: Rejected due to scalability limitations
 
-**Compliance**: Addresses REQ-F-003 (Security), REQ-F-004 (Management), REQ-F-025 (Authentication), REQ-F-033 (Configuration Management)
+**Compliance**: Addresses REQ-1588-F-003 (Security), REQ-1588-F-004 (Management), REQ-1588-F-010 (Authentication), REQ-1588-F-011 (Configuration Management)
 
 ---
 
@@ -483,7 +483,7 @@ graph TB
 - Multi-domain isolation preventing cross-traffic interference
 - Real-time priority scheduling for PTP message processing
 
-**Compliance**: Addresses REQ-F-001 (Enterprise Timing), REQ-F-017 (Precision Algorithms)
+**Compliance**: Addresses REQ-1588-F-001 (Enterprise Timing), REQ-1588-F-007 (Precision Algorithms)
 
 ### QA-SC-011: Multi-Domain Scalability
 
@@ -500,7 +500,7 @@ graph TB
 - Optimized memory management avoiding dynamic allocation
 - Lock-free data structures for concurrent domain processing
 
-**Compliance**: Addresses REQ-F-002 (Multi-Domain), REQ-F-021 (Domain Support)
+**Compliance**: Addresses REQ-1588-F-002 (Multi-Domain), REQ-1588-F-008 (Domain Support)
 
 ### QA-SC-012: Security Framework Performance
 
@@ -517,7 +517,7 @@ graph TB
 - Pipelined authentication processing with timing isolation
 - Configurable security levels balancing performance and protection
 
-**Compliance**: Addresses REQ-F-003 (Security), REQ-F-025 (Authentication)
+**Compliance**: Addresses REQ-1588-F-003 (Security), REQ-1588-F-010 (Authentication)
 
 ---
 
@@ -647,11 +647,11 @@ graph TB
 
 | Architecture Component | Requirements Coverage | Design Elements |
 |----------------------|---------------------|----------------|
-| PTP Core Engine (ARC-C-010) | REQ-F-001, REQ-F-009 | Central protocol orchestration |
-| Clock State Machine (ARC-C-011) | REQ-F-005, REQ-F-009 | Deterministic state transitions |
-| Multi-Domain Manager (ARC-C-014) | REQ-F-002, REQ-F-021 | Domain isolation and coordination |
-| Security Framework (ARC-C-015) | REQ-F-003, REQ-F-025 | Authentication and authorization |
-| Hardware Abstraction (ARC-C-017) | REQ-F-006, REQ-F-041 | Cross-platform deployment |
+| PTP Core Engine (ARC-C-010) | REQ-1588-F-001, REQ-1588-F-009 | Central protocol orchestration |
+| Clock State Machine (ARC-C-011) | REQ-1588-F-005, REQ-1588-F-009 | Deterministic state transitions |
+| Multi-Domain Manager (ARC-C-014) | REQ-1588-F-002, REQ-1588-F-008 | Domain isolation and coordination |
+| Security Framework (ARC-C-015) | REQ-1588-F-003, REQ-1588-F-010 | Authentication and authorization |
+| Hardware Abstraction (ARC-C-017) | REQ-1588-F-006, REQ-1588-F-012 | Cross-platform deployment |
 
 ### B. Interface Specifications
 

@@ -10,11 +10,11 @@ status: "accepted"
 description: "Architecture decision for IEEE 1588-2019 PTP v2.1 implementation using multi-layered architecture with strict hardware abstraction"
 traceability:
   requirements:
-    - "REQ-F-006"
-    - "REQ-F-041"
-    - "REQ-F-042"
-    - "REQ-F-043"
-    - "REQ-F-044"
+    - "REQ-1588-F-006"
+    - "REQ-1588-F-012"
+    - "REQ-1588-F-013"
+    - "REQ-1588-F-014"
+    - "REQ-1588-F-015"
   architectureComponents:
     - "ARC-C-010"
     - "ARC-C-017"
