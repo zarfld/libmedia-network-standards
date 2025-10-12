@@ -10,12 +10,11 @@ authoritativeReferences:
   title: ISO/IEC/IEEE 42010:2011 - Architecture description
   url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
 date: '2025-10-12'
+id: IEEE_1722_PERFORMANCE_REAL_TEMPLATE
 phase: 02-requirements
 specType: requirements
 standard: '29148'
 status: draft
-traceability:
-  stakeholderRequirements: []
 version: 1.0.0
 ---
 
@@ -48,7 +47,7 @@ traceability:
     - StR-002
 ```
 
-## Feature: IEEE 1722 Performance Analysis
+## Feature: Requirements Specification Template
 
 ### Overview
 

@@ -338,33 +338,99 @@ class SpecificationDocumentTemplateGenerator:
     
     def create_known_correct_yaml_front_matter_structure(self, specification_type: str, file_content_string: str = "", 
                                                        specification_file_path: Path = None) -> Dict[str, Any]:
-        """Create KNOWN CORRECT YAML front matter - guaranteed to be perfect."""
+        """Create KNOWN CORRECT YAML front matter using actual repository schemas."""
         
         # Detect standards from file path (faster than content analysis)
         detected_ieee_standards_list = self.detect_ieee_standards_from_file_path(specification_file_path) if specification_file_path else []
         
-        # Known correct YAML structure - matches schema exactly
-        known_correct_yaml_front_matter_dictionary = {
-            'specType': specification_type,
-            'phase': self.get_known_correct_lifecycle_phase(specification_file_path) if specification_file_path else f"0{'2' if specification_type == 'requirements' else '3' if specification_type == 'architecture' else '4'}-{specification_type}",
-            'version': '1.0.0',
-            'author': f'{specification_type.title()} Engineering Team',
-            'date': '2025-10-12',
-            'status': 'draft'
+        # ACTUALLY USE LOADED SCHEMAS - not hard-coded templates!
+        schema = self.repository_yaml_schemas.get(specification_type, {})
+        required_fields = schema.get('required', [])
+        properties = schema.get('properties', {})
+        
+        # Build YAML dictionary from schema requirements
+        known_correct_yaml_front_matter_dictionary = {}
+        
+        # Add all required fields from schema
+        for field_name in required_fields:
+            if field_name in properties:
+                field_def = properties[field_name]
+                
+                if field_name == 'specType':
+                    known_correct_yaml_front_matter_dictionary[field_name] = specification_type
+                elif field_name == 'phase':
+                    known_correct_yaml_front_matter_dictionary[field_name] = self.get_known_correct_lifecycle_phase(specification_file_path) if specification_file_path else f"0{'2' if specification_type == 'requirements' else '3' if specification_type == 'architecture' else '4'}-{specification_type}"
+                elif field_name == 'version':
+                    known_correct_yaml_front_matter_dictionary[field_name] = '1.0.0'
+                elif field_name == 'author':
+                    known_correct_yaml_front_matter_dictionary[field_name] = f'{specification_type.title()} Engineering Team'
+                elif field_name == 'date':
+                    known_correct_yaml_front_matter_dictionary[field_name] = '2025-10-12'
+                elif field_name == 'status':
+                    if 'enum' in field_def:
+                        known_correct_yaml_front_matter_dictionary[field_name] = field_def['enum'][0]  # First valid option
+                    else:
+                        known_correct_yaml_front_matter_dictionary[field_name] = 'draft'
+                elif field_name == 'standard':
+                    if 'pattern' in field_def:
+                        # Extract standard number from pattern
+                        pattern = field_def['pattern']
+                        if '29148' in pattern:
+                            known_correct_yaml_front_matter_dictionary[field_name] = '29148'
+                        elif '42010' in pattern:
+                            known_correct_yaml_front_matter_dictionary[field_name] = '42010'
+                        elif '1016' in pattern:
+                            known_correct_yaml_front_matter_dictionary[field_name] = '1016'
+                elif field_name == 'traceability':
+                    # Build traceability object from schema
+                    trace_props = field_def.get('properties', {})
+                    trace_required = field_def.get('required', [])
+                    trace_obj = {}
+                    for trace_field in trace_required:
+                        if trace_field in trace_props:
+                            trace_obj[trace_field] = []  # Empty array as default
+                    known_correct_yaml_front_matter_dictionary[field_name] = trace_obj
+                else:
+                    # Default handling for other required fields
+                    if field_def.get('type') == 'string':
+                        known_correct_yaml_front_matter_dictionary[field_name] = ''
+                    elif field_def.get('type') == 'array':
+                        known_correct_yaml_front_matter_dictionary[field_name] = []
+                    elif field_def.get('type') == 'object':
+                        known_correct_yaml_front_matter_dictionary[field_name] = {}
+        
+        # CRITICAL: Add ID field based on file path (user requirement!)
+        if specification_file_path:
+            filename = specification_file_path.name
+            # Extract ID from filename pattern
+            import re
+            if 'ADR-' in filename.upper():
+                match = re.search(r'ADR-(\d{3})', filename.upper())
+                if match:
+                    known_correct_yaml_front_matter_dictionary['id'] = f"ADR-{match.group(1)}"
+            elif 'ARCH-' in filename.upper():
+                match = re.search(r'ARCH-([A-Z0-9-]+)', filename.upper())
+                if match:
+                    known_correct_yaml_front_matter_dictionary['id'] = f"ARCH-{match.group(1)}"
+            elif 'REQ-' in filename.upper():
+                match = re.search(r'REQ-(F|NF)-(\d{3,4})', filename.upper())
+                if match:
+                    known_correct_yaml_front_matter_dictionary['id'] = f"REQ-{match.group(1)}-{match.group(2)}"
+            else:
+                # Generate ID from filename
+                known_correct_yaml_front_matter_dictionary['id'] = filename.replace('.md', '').replace('-', '_').upper()
+        
+        # Add optional fields that aren't required but are commonly used
+        optional_fields = {
+            'architecturalViewpoints': [],
+            'qualityAttributes': [],
+            'designConcerns': [],
+            'implementationConstraints': []
         }
         
-        # Add known correct specification-type specific fields
-        if specification_type == 'requirements':
-            known_correct_yaml_front_matter_dictionary['standard'] = '29148'
-            known_correct_yaml_front_matter_dictionary['traceability'] = {'stakeholderRequirements': []}
-        elif specification_type == 'architecture':
-            known_correct_yaml_front_matter_dictionary['standard'] = '42010'
-            known_correct_yaml_front_matter_dictionary['architecturalViewpoints'] = []
-            known_correct_yaml_front_matter_dictionary['qualityAttributes'] = []
-        elif specification_type == 'design':
-            known_correct_yaml_front_matter_dictionary['standard'] = '1016'
-            known_correct_yaml_front_matter_dictionary['designConcerns'] = []
-            known_correct_yaml_front_matter_dictionary['implementationConstraints'] = []
+        for field_name, default_value in optional_fields.items():
+            if field_name in properties and field_name not in known_correct_yaml_front_matter_dictionary:
+                known_correct_yaml_front_matter_dictionary[field_name] = default_value
         
         # Add known correct authoritative references
         known_correct_yaml_front_matter_dictionary['authoritativeReferences'] = []

@@ -1,486 +1,603 @@
 ---
-title: "IEEE 1588-2019 Gap Analysis and Integration Architecture"
-type: "architecture"
-specType: "architecture"  
-version: "1.0"
-date: "2024-12-17"
-author: "Architecture Team"
-status: "draft"
-phase: "03-architecture"
-standards:
-  primary: "IEEE 1588-2019"
-  references: 
-    - "ISO/IEC/IEEE 42010:2011"
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1588_2019
+  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
+  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1588_2019_GAP_ANALYSIS_INTEGRATION_ARCHITECTURE
+phase: 03-architecture
+specType: architecture
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
-    - "FR-1588-001: Clock state machine implementation"
-    - "FR-1588-002: BMCA algorithm implementation"  
-    - "FR-1588-003: Message processing handlers"
-    - "FR-1588-004: Transport layer abstraction"
-    - "FR-1588-005: Management protocol implementation"
-  architecture_decisions:
-    - "ADR-003: IEEE 1588-2019 Architecture Implementation Strategy"
-  architecture_views:
-    - "ieee-1588-2019-phase-03-standard-specific-architecture.md"
-    - "ieee-1588-2019-missing-components-architecture.md"
-    - "current-architecture-modernization-spec.md"
-  architecture_components:
-    - "ieee-1588-2019-management-architecture.md"
-    - "ieee-1588-2019-multi-domain-architecture.md"  
-    - "ieee-1588-2019-security-architecture.md"
----
-
-# IEEE 1588-2019 Gap Analysis and Integration Architecture
-
-## 1. Executive Summary
-
-### 1.1 Gap Analysis Overview
-This document provides a systematic analysis of the identified IEEE 1588-2019 implementation gaps and defines the integration architecture to bridge the current 30% implementation to full IEEE compliance. The analysis is based on comprehensive requirements analysis and follows ISO/IEC/IEEE 42010:2011 architectural practices.
-
-### 1.2 Current State Assessment
-**IMPLEMENTATION STATUS**: Based on requirements analysis, the current IEEE 1588-2019 implementation includes:
-
-**✅ COMPLETED (30% - Solid Foundation)**:
-- Basic PTP message structures and types
-- Error handling framework  
-- Timer and event system foundation
-- Network packet I/O abstraction
-- Basic IEEE 1588-2019 constants and definitions
-
-**❌ MISSING (70% - Critical Protocol Components)**:
-- IEEE Section 9.2: Port state machine implementation
-- IEEE Section 9.3: Best Master Clock Algorithm (BMCA)
-- IEEE Section 11: Message processing handlers (Sync, Announce, Delay_Req/Resp)
-- IEEE Section 13: Transport layer abstraction (Ethernet L2, UDP/IPv4)
-- IEEE Section 15: Management protocol and TLV processing
-- IEEE Section 7.6: Clock discipline and synchronization control
-
-### 1.3 Integration Strategy
-The integration architecture employs **incremental gap-filling** approach:
-1. **Preserve existing foundation** - maintain 30% working implementation
-2. **Add missing components systematically** - follow IEEE specification order
-3. **Ensure seamless integration** - maintain API compatibility where possible
-4. **Provide migration path** - support both legacy and new implementations during transition
-
-## 2. Detailed Gap Analysis
-
-### 2.1 Port State Machine Gap (IEEE Section 9.2)
-
-**Current State**: No port state machine implementation
-**IEEE Requirement**: Complete state machine with all defined states and transitions
-**Gap Impact**: ⚠️ **CRITICAL** - No protocol operation possible without state machine
-
-#### Missing Components:
-```cpp
-// REQUIRED: IEEE 1588-2019 Section 9.2 Table 27 - Port States
-enum class PortState {
-    INITIALIZING,   // Port initialization state
-    FAULTY,         // Port fault detected state  
-    DISABLED,       // Port administratively disabled
-    LISTENING,      // Port listening for Announce messages
-    PRE_MASTER,     // Port preparing to become master
-    MASTER,         // Port acting as master clock
-    PASSIVE,        // Port in passive mode
-    UNCALIBRATED,   // Port synchronized but not calibrated
-    SLAVE           // Port synchronized to master clock
-};
-
-// REQUIRED: State transition matrix per IEEE specification
-class PortStateMachine {
-    void handle_powerup_event();           // Initialize → Listening
-    void handle_fault_event();             // Any → Faulty  
-    void handle_designated_enabled();      // Listening → Pre_Master
-    void handle_master_clock_selected();   // Pre_Master → Master
-    void handle_announce_receipt_timeout(); // Slave → Listening
-    // ... additional IEEE-compliant transitions
-};
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-**Integration Points**:
-- Uses existing timer system for timeout events
-- Integrates with existing network interface for packet events
-- Provides state information to BMCA engine
+## Architecture Decision Record
 
-### 2.2 BMCA Algorithm Gap (IEEE Section 9.3)
+### ADR-001: [Decision Title]
 
-**Current State**: No Best Master Clock Algorithm implementation  
-**IEEE Requirement**: Complete BMCA with dataset comparison per Algorithm 9.3.2.4
-**Gap Impact**: ⚠️ **CRITICAL** - Cannot select best master clock or establish hierarchy
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-#### Missing Components:
-```cpp
-// REQUIRED: IEEE 1588-2019 Section 9.3.2.4 - Dataset Comparison
-class BMCAEngine {
-    // IEEE Algorithm 9.3.2.4 - Compare datasets A and B
-    ComparisonResult compare_datasets(const DataSet& A, const DataSet& B);
-    
-    // Dataset comparison steps per IEEE specification:
-    // 1. Compare grandmasterPriority1
-    // 2. Compare grandmasterClass  
-    // 3. Compare grandmasterAccuracy
-    // 4. Compare grandmasterVariance
-    // 5. Compare grandmasterPriority2
-    // 6. Compare grandmasterIdentity
-    // 7. Compare stepsRemoved
-    // 8. Compare receivingPortIdentity
-    
-    void update_best_master_clock();      // Update BMC based on received Announce
-    void handle_announce_message(const AnnounceMessage& msg);
-};
-```
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
 
-**Integration Points**:
-- Receives Announce messages from message processor (to be implemented)
-- Updates port state machine based on master clock decisions
-- Uses existing clock identity from network interface
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
 
-### 2.3 Message Processing Gap (IEEE Section 11)
+**Consequences**:
 
-**Current State**: Basic message structures exist, no processing logic
-**IEEE Requirement**: Complete message handlers for all PTP message types
-**Gap Impact**: ⚠️ **CRITICAL** - No protocol communication possible
+**Positive**:
 
-#### Missing Components:
-```cpp
-// REQUIRED: IEEE 1588-2019 Section 11 - Message Processing
-class MessageProcessor {
-    void dispatch_message(const PTPMessage& msg);
-};
+- [Benefit 1]
+- [Benefit 2]
 
-class SyncHandler {
-    // IEEE Section 11.4 - Sync message processing
-    void handle_sync_message(const SyncMessage& sync);
-    void handle_follow_up_message(const FollowUpMessage& follow_up);
-};
+**Negative**:
 
-class DelayHandler {
-    // IEEE Section 11.3/11.6 - Delay measurement
-    void handle_delay_request(const DelayReqMessage& req);
-    void handle_delay_response(const DelayRespMessage& resp);
-};
+- [Drawback 1]
+- [Trade-off]
 
-class AnnounceHandler {
-    // IEEE Section 11.5 - Announce message processing
-    void handle_announce_message(const AnnounceMessage& announce);
-    void validate_announce_content(const AnnounceMessage& announce);
-};
-```
+**Alternatives Considered**:
 
-**Integration Points**:
-- Uses existing message structures and constants
-- Integrates with port state machine for protocol decisions
-- Uses existing timer system for message intervals
-- Connects to transport layer for packet transmission
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-### 2.4 Transport Layer Gap (IEEE Section 13)
-
-**Current State**: Generic network interface exists, no PTP-specific transport
-**IEEE Requirement**: Ethernet L2 and UDP/IPv4 transport with IEEE addressing
-**Gap Impact**: ⚠️ **HIGH** - Limited transport support reduces interoperability
-
-#### Missing Components:
-```cpp
-// REQUIRED: IEEE 1588-2019 Section 13.2 - Ethernet Transport
-class EthernetTransport {
-    // Ethernet multicast addresses per IEEE specification
-    static constexpr uint8_t PTP_PRIMARY_MCAST[6] = {0x01, 0x1B, 0x19, 0x00, 0x00, 0x00};
-    static constexpr uint8_t PTP_PDELAY_MCAST[6] = {0x01, 0x80, 0xC2, 0x00, 0x00, 0x0E};
-    static constexpr uint16_t PTP_ETHERTYPE = 0x88F7;
-    
-    int send_ethernet_ptp(const PTPMessage& msg, const uint8_t dest_mac[6]);
-    int receive_ethernet_ptp(PTPMessage& msg, uint8_t src_mac[6]);
-};
-
-// REQUIRED: IEEE 1588-2019 Section 13.3 - UDP Transport  
-class UDPTransport {
-    // UDP multicast addresses per IEEE specification
-    static constexpr uint32_t PTP_PRIMARY_MCAST_IPV4 = 0xE0000181; // 224.0.1.129
-    static constexpr uint16_t PTP_EVENT_PORT = 319;
-    static constexpr uint16_t PTP_GENERAL_PORT = 320;
-    
-    int send_udp_ptp(const PTPMessage& msg, uint32_t dest_ip);
-    int receive_udp_ptp(PTPMessage& msg, uint32_t& src_ip);
-};
-```
-
-**Integration Points**:
-- Extends existing Common::interfaces::NetworkInterface
-- Uses existing network statistics and error handling
-- Integrates with message processor for protocol operation
-
-### 2.5 Management Protocol Gap (IEEE Section 15)
-
-**Current State**: No management protocol implementation
-**IEEE Requirement**: Complete TLV processing and dataset management
-**Gap Impact**: ⚠️ **MEDIUM** - Reduced management and monitoring capabilities
-
-#### Missing Components:
-```cpp
-// REQUIRED: IEEE 1588-2019 Section 15 - Management Protocol
-class ManagementEngine {
-    void handle_get_request(const ManagementMessage& req);
-    void handle_set_request(const ManagementMessage& req);
-    void send_management_response(const ManagementTLV& tlv);
-};
-
-class TLVProcessor {
-    // IEEE Section 15.5 - TLV processing
-    void parse_tlv(const uint8_t* data, size_t length, ManagementTLV& tlv);
-    void serialize_tlv(const ManagementTLV& tlv, uint8_t* data, size_t& length);
-    
-    // Standard management TLVs per IEEE specification
-    void handle_null_management_tlv();
-    void handle_clock_description_tlv();
-    void handle_user_description_tlv();
-    void handle_default_data_set_tlv();
-    // ... additional TLVs
-};
-```
-
-**Integration Points**:
-- Uses existing message structures for management messages
-- Integrates with clock interface for dataset access
-- Connects to transport layer for management message transmission
-
-## 3. Integration Architecture Strategy
-
-### 3.1 Incremental Integration Approach
-
-```
-Phase 1: Foundation Integration (Weeks 1-2)
-┌─────────────────────────────────────────────┐
-│              Existing 30%                   │
-│  ┌─────────────┐  ┌─────────────────────┐   │ 
-│  │ PTP Types   │  │   Network Interface │   │
-│  │ Error Sys   │  │   Timer System      │   │ 
-│  │ Constants   │  │   Event System      │   │
-│  └─────────────┘  └─────────────────────┘   │
-└─────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────┐
-│          Phase 1 Additions                  │
-│  ┌─────────────┐  ┌─────────────────────┐   │
-│  │ State       │  │  Hardware Abstract  │   │
-│  │ Interface   │  │  Extensions         │   │ 
-│  │ Definition  │  │  (IEEE 1588 spec)  │   │
-│  └─────────────┘  └─────────────────────┘   │
-└─────────────────────────────────────────────┘
-```
-
-```
-Phase 2: Core Protocol Integration (Weeks 3-4)  
-┌─────────────────────────────────────────────┐
-│         Foundation + Phase 1                │
-└─────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────┐
-│          Phase 2 Additions                  │
-│  ┌─────────────┐  ┌─────────────────────┐   │
-│  │ Port State  │  │   BMCA Engine       │   │
-│  │ Machine     │  │   (IEEE Sec 9.3)   │   │ 
-│  │(IEEE Sec9.2)│  │                     │   │
-│  └─────────────┘  └─────────────────────┘   │
-└─────────────────────────────────────────────┘
-```
-
-### 3.2 Component Integration Dependencies
-
-```cpp
-// Integration dependency order based on IEEE specification layering
-namespace IEEE::_1588::_2019 {
-
-    // Layer 1: Hardware Abstraction (integrates with existing Common)
-    namespace interfaces {
-        class IEEE1588NetworkInterface; // Extends Common::interfaces::NetworkInterface
-        class IEEE1588ClockInterface;   // Extends Common::interfaces::ClockInterface
-    }
-    
-    // Layer 2: Core State Management (builds on existing timer/event system)
-    namespace core {
-        class PortStateMachine;    // Uses existing timer events
-        class BMCAEngine;          // Uses existing clock identity
-    }
-    
-    // Layer 3: Protocol Processing (uses existing message structures) 
-    namespace messages {
-        class MessageProcessor;    // Uses existing PTP message types
-        class SyncHandler;         // Integrates with existing constants
-        class AnnounceHandler;     // Uses existing network interface
-    }
-    
-    // Layer 4: Transport Integration (extends existing network abstraction)
-    namespace transport {
-        class EthernetTransport;   // Builds on Common::interfaces::NetworkInterface
-        class UDPTransport;        // Uses existing packet I/O framework
-    }
-    
-    // Layer 5: Management Integration (uses existing message framework)
-    namespace management {
-        class ManagementEngine;    // Integrates with existing error handling
-        class TLVProcessor;        // Uses existing serialization patterns
-    }
-}
-```
-
-### 3.3 API Compatibility Strategy
-
-#### Existing API Preservation
-```cpp
-// PRESERVED: Existing APIs remain unchanged during integration
-namespace existing {
-    // Keep existing PTP message structures
-    struct PTPMessage { /* existing definition */ };
-    
-    // Keep existing network interface contract
-    class NetworkInterface { /* existing methods */ };
-    
-    // Keep existing timer system
-    class TimerSystem { /* existing functionality */ };
-}
-
-// EXTENDED: New APIs complement existing functionality  
-namespace IEEE::_1588::_2019 {
-    // New IEEE-specific interfaces extend existing ones
-    class IEEE1588NetworkInterface : public existing::NetworkInterface {
-        // Adds IEEE-specific capabilities while preserving base functionality
-    };
-}
-```
-
-#### Migration Support
-```cpp
-// TRANSITION: Support both old and new APIs during migration
-class PTPClock {
-public:
-    // Legacy interface - maintains compatibility
-    int legacy_start_ptp_clock(const Config& config);
-    
-    // New IEEE-compliant interface - preferred for new code
-    int start_ieee1588_clock(const IEEE1588Config& config, 
-                           IEEE1588NetworkInterface* net_interface,
-                           IEEE1588ClockInterface* clock_interface);
-    
-    // Automatic migration helper
-    int migrate_to_ieee1588_interfaces();
-};
-```
-
-## 4. Risk Analysis and Mitigation
-
-### 4.1 Integration Risks
-
-| Risk Category | Risk | Impact | Probability | Mitigation Strategy |
-|---------------|------|---------|-------------|-------------------|
-| **Technical** | Breaking existing 30% functionality | High | Low | Comprehensive regression testing + API preservation |
-| **Technical** | IEEE specification misinterpretation | High | Medium | Continuous verification against authoritative IEEE document |
-| **Technical** | Performance regression during integration | Medium | Medium | Performance benchmarking + optimization |
-| **Project** | Integration complexity exceeding timeline | Medium | High | Incremental delivery + risk-based prioritization |
-
-### 4.2 Quality Assurance Strategy
-
-#### Regression Prevention
-- **Preserve existing test suite** - all current tests must pass
-- **Add integration test coverage** - verify new components work with existing code
-- **Performance benchmarking** - ensure no performance degradation
-- **API compatibility validation** - automated compatibility testing
-
-#### IEEE Compliance Verification  
-- **Specification reference testing** - each component verified against IEEE sections
-- **Interoperability testing** - operation with commercial PTP devices
-- **Conformance test suite** - automated IEEE compliance validation
-- **Documentation traceability** - clear mapping to IEEE specification requirements
-
-## 5. Implementation Phases and Deliverables
-
-### 5.1 Phase 1: Foundation Integration (Weeks 1-2)
-**Objective**: Establish integration foundation without breaking existing functionality
-
-**Deliverables**:
-- [ ] Hardware abstraction interface extensions (IEEE1588NetworkInterface, IEEE1588ClockInterface)
-- [ ] Integration testing framework setup
-- [ ] Regression test suite validation  
-- [ ] Performance baseline establishment
-
-**Success Criteria**:
-- All existing tests pass
-- New interfaces compile and link successfully
-- No performance regression in existing functionality
-- Clean integration with existing Common interfaces
-
-### 5.2 Phase 2: Core Protocol Integration (Weeks 3-4)
-**Objective**: Add core IEEE 1588-2019 protocol components
-
-**Deliverables**:
-- [ ] Port State Machine implementation (IEEE Section 9.2)
-- [ ] BMCA Engine implementation (IEEE Section 9.3)  
-- [ ] Integration with existing timer and event systems
-- [ ] State machine conformance testing
-
-**Success Criteria**:
-- Port state machine follows IEEE specification exactly
-- BMCA algorithm passes dataset comparison tests
-- Integration with existing components works seamlessly
-- Protocol state transitions validated against IEEE requirements
-
-### 5.3 Phase 3: Message Processing Integration (Weeks 5-6)  
-**Objective**: Add complete message processing capabilities
-
-**Deliverables**:
-- [ ] Message processor implementation (IEEE Section 11)
-- [ ] Sync, Announce, Delay_Req/Resp handlers
-- [ ] Integration with existing message structures
-- [ ] Message format conformance testing
-
-**Success Criteria**:
-- All IEEE message types processed correctly
-- Message validation per specification requirements
-- Timing accuracy meets IEEE standards
-- Interoperability with commercial PTP devices demonstrated
-
-### 5.4 Phase 4: Transport and Management Integration (Weeks 7-8)
-**Objective**: Complete IEEE 1588-2019 implementation
-
-**Deliverables**:
-- [ ] Transport layer implementations (IEEE Section 13)
-- [ ] Management protocol implementation (IEEE Section 15)
-- [ ] Complete integration testing
-- [ ] Performance optimization and validation
-
-**Success Criteria**:
-- Ethernet L2 and UDP/IPv4 transport working
-- Management protocol TLV processing functional  
-- Full IEEE 1588-2019 conformance achieved
-- Performance requirements met
-
-## 6. Acceptance Criteria
-
-### 6.1 Functional Acceptance
-- [ ] **Complete IEEE 1588-2019 Implementation**: All missing 70% components implemented
-- [ ] **Existing Functionality Preserved**: No regression in current 30% implementation
-- [ ] **Protocol Conformance**: IEEE specification compliance verified for all components
-- [ ] **Interoperability**: Successful operation with commercial PTP devices
-
-### 6.2 Quality Acceptance  
-- [ ] **Test Coverage**: 100% unit test coverage for new components
-- [ ] **Integration Testing**: Complete integration test suite passing
-- [ ] **Performance**: Timing accuracy within IEEE specification requirements
-- [ ] **Documentation**: Complete architecture documentation with IEEE traceability
-
-### 6.3 Architecture Acceptance
-- [ ] **Clean Integration**: Seamless integration with existing architecture
-- [ ] **Hardware Independence**: Standards layer remains hardware agnostic  
-- [ ] **Cross-Platform**: Compilation and operation on target platforms
-- [ ] **Maintainability**: Clear component boundaries and interface contracts
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
 ---
 
-**References:**
-- **IEEE 1588-2019**: Precision Time Protocol (PTPv2.1) specification - **AUTHORITATIVE STANDARD**
-- **ADR-003**: IEEE 1588-2019 Architecture Implementation Strategy
-- **Phase 03 Architecture**: `ieee-1588-2019-phase-03-standard-specific-architecture.md`
-- **Requirements Analysis**: `02-requirements/functional/ieee-1588-2019-requirements-analysis.md`
-- **Current Implementation**: `current-architecture-modernization-spec.md`
+## System Context
 
-**Integration Note**: This gap analysis and integration architecture ensures systematic implementation of missing IEEE 1588-2019 components while preserving existing functionality and maintaining IEEE specification compliance throughout the integration process.
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

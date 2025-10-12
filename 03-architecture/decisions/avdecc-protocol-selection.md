@@ -1,9 +1,10 @@
 ---
 author: Architecture Engineering Team
 authoritativeReferences:
-- id: IEEE_1588_2019
-  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
-  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: IEEE_1722_1_2021
+  title: IEEE 1722.1-2021 - Device Discovery, Connection Management and Control Protocol
+    for IEEE 1722
+  url: mcp://markitdown/standards/IEEE 1722.1-2021-en.pdf
 - id: ISO_IEC_IEEE_29148_2018
   section: Requirements specification processes
   title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
@@ -13,7 +14,7 @@ authoritativeReferences:
   title: ISO/IEC/IEEE 42010:2011 - Architecture description
   url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
 date: '2025-10-12'
-id: IEEE_1588_2019_MANAGEMENT_ARCHITECTURE
+id: AVDECC_PROTOCOL_SELECTION
 phase: 03-architecture
 specType: architecture
 standard: '42010'
