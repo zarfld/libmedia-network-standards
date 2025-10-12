@@ -22,10 +22,10 @@ Accepted
 IEEE 802.1AS-2021 introduces enhanced path delay mechanisms including both peer-to-peer and end-to-end path delay measurement. Professional media applications require sub-microsecond timing accuracy, which depends on precise path delay measurement and compensation.
 
 ### Requirements Driving This Decision
-- **REQ-FUN-IEEE8021AS-003**: Peer-to-Peer Path Delay support
-- **REQ-FUN-IEEE8021AS-004**: End-to-End Path Delay support (new in 2021)
-- **REQ-NFR-IEEE8021AS-001**: Timing accuracy <500 nanoseconds
-- **REQ-SYS-IEEE8021AS-002**: Precision timing accuracy requirements
+- **REQ-F-004**: Peer-to-Peer Path Delay support
+- **REQ-F-005**: End-to-End Path Delay support (new in 2021)
+- **REQ-NF-002**: Timing accuracy <500 nanoseconds
+- **REQ-F-006**: Precision timing accuracy requirements
 
 ### Technical Constraints
 - Hardware timestamping accuracy varies by vendor

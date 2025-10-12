@@ -22,8 +22,8 @@ traceability:
 adrId: ADR-002
 status: accepted
 relatedRequirements:
-  - REQ-F-STANDARDS-LAYERING-001  # Standards shall follow IEEE protocol layering
-  - REQ-NF-INTEROP-001  # Cross-standard interoperability required
+  - REQ-F-001  # Standards shall follow IEEE protocol layering
+  - REQ-NF-001  # Cross-standard interoperability required
 relatedComponents:
   - IEEE::_802_1::AS::_2021  # gPTP timing foundation
   - IEEE::_1722::_2016       # AVTP transport layer

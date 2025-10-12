@@ -21,8 +21,8 @@ traceability:
 adrId: ADR-001
 status: accepted
 relatedRequirements:
-  - REQ-NF-PORTABILITY-001  # System shall support multiple hardware vendors
-  - REQ-F-CROSS-STANDARD-001  # Standards shall coordinate without hardware dependencies
+  - REQ-NF-001  # System shall support multiple hardware vendors
+  - REQ-F-001  # Standards shall coordinate without hardware dependencies
 relatedComponents:
   - Common::interfaces::NetworkInterface
   - Common::interfaces::TimerInterface

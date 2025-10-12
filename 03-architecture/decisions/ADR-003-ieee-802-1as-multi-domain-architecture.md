@@ -21,10 +21,10 @@ Accepted
 IEEE 802.1AS-2021 introduces enhanced multi-domain support for complex network topologies. Professional media installations require multiple timing domains for different applications (audio, video, control) while maintaining precise synchronization relationships between domains.
 
 ### Requirements Driving This Decision
-- **REQ-SYS-IEEE8021AS-001**: Enhanced Multi-Domain Support
-- **REQ-FUN-IEEE8021AS-001**: Domain Configuration  
-- **REQ-FUN-IEEE8021AS-002**: Cross-Domain Synchronization
-- **REQ-NFR-IEEE8021AS-002**: Scalability Requirements (minimum 16 domains)
+- **REQ-F-001**: Enhanced Multi-Domain Support
+- **REQ-F-002**: Domain Configuration  
+- **REQ-F-003**: Cross-Domain Synchronization
+- **REQ-NF-001**: Scalability Requirements (minimum 16 domains)
 
 ### Technical Constraints
 - Domain numbers limited to 0-127 per IEEE specification
