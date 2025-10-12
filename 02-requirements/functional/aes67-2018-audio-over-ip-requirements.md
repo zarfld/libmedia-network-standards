@@ -91,6 +91,59 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 **CRITICAL**: Only use AES67-2018 for audio-over-IP implementation. AES67 is standalone and does not depend on IEEE 1722/802.1AS protocols.
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
+
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-AES67-001: Broadcast Engineer IP Audio Infrastructure
+
+**As a** broadcast engineer implementing IP-based audio systems,  
+**I need** AES67-2018 interoperable audio-over-IP protocols,  
+**So that** equipment from different manufacturers can seamlessly exchange high-quality audio over standard IP networks.
+
+### US-AES67-002: System Administrator Network Integration
+
+**As a** system administrator managing enterprise audio networks,  
+**I need** AES67-2018 devices that integrate with existing IT infrastructure,  
+**So that** I can leverage standard networking equipment and practices for audio transport.
+
+### US-AES67-003: Live Production Engineer Multi-Vendor Setup
+
+**As a** live production engineer using equipment from multiple vendors,  
+**I need** AES67-2018 compatibility that ensures all devices work together seamlessly,  
+**So that** I can focus on production quality rather than technical integration issues.
+
+### US-AES67-004: Installation Technician Simplified Deployment
+
+**As an** installation technician deploying distributed audio systems,  
+**I need** AES67-2018 auto-discovery and configuration features,  
+**So that** I can quickly set up complex audio networks without extensive manual configuration.
+
+### US-AES67-005: Audio Engineer Low-Latency Performance
+
+**As an** audio engineer managing real-time audio applications,  
+**I need** AES67-2018 implementations that provide predictable low latency,  
+**So that** I can maintain synchronization in live mixing and monitoring applications.
+
+### US-AES67-006: Network Engineer Quality of Service
+
+**As a** network engineer managing converged networks carrying audio and data,  
+**I need** AES67-2018 traffic that properly utilizes QoS mechanisms,  
+**So that** audio quality remains consistent even with network congestion.
+
+### US-AES67-007: Remote Production Coordinator Wide Area Networks
+
+**As a** remote production coordinator managing geographically distributed teams,  
+**I need** AES67-2018 that works reliably over WAN connections,  
+**So that** remote contributors can participate in productions with professional audio quality.
+
+### US-AES67-008: Equipment Manufacturer Standards Compliance
+
+**As an** equipment manufacturer developing professional audio devices,  
+**I need** clear AES67-2018 implementation guidelines and test procedures,  
+**So that** my products achieve reliable interoperability with other AES67 devices.
+
 - AVB network integration and compatibility
 - Protocol Implementation Conformance Statement (PICS)
 

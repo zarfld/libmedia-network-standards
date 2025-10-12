@@ -60,6 +60,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-LLDP-001: Network Engineer Topology Visualization
+
+**As a** network engineer troubleshooting complex installations,  
+**I need** automatic LLDP topology discovery that shows how all devices are connected,  
+**So that** I can quickly understand network layout and identify connectivity issues without manual cable tracing.
+
+### US-LLDP-002: System Administrator Device Inventory
+
+**As a** system administrator managing large network deployments,  
+**I need** LLDP device capability discovery that provides comprehensive device information,  
+**So that** I can maintain accurate inventory records and plan system upgrades effectively.
+
+### US-LLDP-003: TSN Engineer AVB Stream Configuration
+
+**As a** TSN engineer configuring audio/video bridging networks,  
+**I need** LLDP discovery of AVB capabilities and stream reservation support,  
+**So that** I can automatically configure optimal paths for time-sensitive audio streams.
+
+### US-LLDP-004: Operations Engineer Centralized Management
+
+**As an** operations engineer managing distributed facilities,  
+**I need** LLDP integration with network management systems for centralized monitoring,  
+**So that** I can oversee multiple locations from a single management interface.
+
+### US-LLDP-005: Installation Technician Device Verification
+
+**As an** installation technician deploying new equipment,  
+**I need** LLDP neighbor discovery to verify correct device connections,  
+**So that** I can quickly confirm installation correctness without complex testing procedures.
+
+### US-LLDP-006: Security Engineer Access Control
+
+**As a** security engineer implementing network access policies,  
+**I need** LLDP device identification and capability information for access control decisions,  
+**So that** devices receive appropriate network permissions based on their authenticated capabilities.
+
+### US-LLDP-007: Equipment Manufacturer Interoperability
+
+**As an** equipment manufacturer developing network-attached devices,  
+**I need** standardized LLDP implementation guidelines and test procedures,  
+**So that** my devices integrate seamlessly with existing network infrastructure.
+
+### US-LLDP-008: Service Technician Remote Diagnostics
+
+**As a** service technician supporting remote installations,  
+**I need** LLDP device status and capability reporting for remote troubleshooting,  
+**So that** I can diagnose network issues without requiring on-site visits.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Automatic Network Topology Discovery

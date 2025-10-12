@@ -77,6 +77,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-AES3-001: Audio Engineer Digital Interface Setup
+
+**As an** audio engineer working in a professional recording studio,  
+**I need** reliable AES3-2009 digital audio interfaces between my mixing console and audio workstation,  
+**So that** I can transfer high-quality digital audio signals without degradation or synchronization issues.
+
+### US-AES3-002: System Integrator Multi-Device Connection
+
+**As a** system integrator designing broadcast facilities,  
+**I need** AES3-2009 interfaces that support long cable runs and multiple device connections,  
+**So that** I can create robust audio distribution systems across large facilities.
+
+### US-AES3-003: Live Sound Engineer Signal Routing
+
+**As a** live sound engineer managing concert audio systems,  
+**I need** AES3-2009 interfaces with reliable electrical characteristics and connector compatibility,  
+**So that** I can route digital audio signals reliably in demanding live performance environments.
+
+### US-AES3-004: Broadcast Engineer Metadata Transmission
+
+**As a** broadcast engineer managing on-air content,  
+**I need** AES3-2009 interfaces that support embedded metadata and channel status information,  
+**So that** I can maintain proper audio identification and control throughout the broadcast chain.
+
+### US-AES3-005: Post-Production Engineer Synchronization
+
+**As a** post-production engineer working with multiple audio devices,  
+**I need** AES3-2009 interfaces that provide sample-accurate synchronization,  
+**So that** I can maintain precise timing relationships in complex audio post-production workflows.
+
+### US-AES3-006: Test Engineer Interface Validation
+
+**As a** test engineer validating professional audio equipment,  
+**I need** AES3-2009 interfaces with comprehensive diagnostic capabilities,  
+**So that** I can verify signal integrity, timing accuracy, and standards compliance.
+
+### US-AES3-007: Equipment Manufacturer International Compatibility
+
+**As an** equipment manufacturer developing professional audio devices,  
+**I need** AES3-2009 interface implementations that harmonize with international standards,  
+**So that** my products work reliably in global markets and with equipment from other manufacturers.
+
+### US-AES3-008: Installation Technician Environmental Robustness
+
+**As an** installation technician working in various facility environments,  
+**I need** AES3-2009 interfaces that operate reliably in different temperature and humidity conditions,  
+**So that** I can install audio systems that perform consistently across diverse environments.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Professional Digital Audio Interconnection

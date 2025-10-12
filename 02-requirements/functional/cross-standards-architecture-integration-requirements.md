@@ -105,6 +105,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted from any standard.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-CROSS-001: System Architect Multi-Standard Integration
+
+**As a** system architect designing complex media infrastructure,  
+**I need** unified integration frameworks that coordinate IEEE, AES, and AVnu standards,  
+**So that** I can create coherent system designs without conflicts between different protocol requirements.
+
+### US-CROSS-002: Integration Engineer Seamless Deployment
+
+**As an** integration engineer implementing multi-vendor solutions,  
+**I need** cross-standard compatibility validation and automated integration testing,  
+**So that** I can confidently deploy systems that use multiple networking and audio standards together.
+
+### US-CROSS-003: Network Engineer Protocol Coordination
+
+**As a** network engineer managing converged infrastructure,  
+**I need** coordinated configuration management across gPTP, AVTP, AVDECC, and AES67 protocols,  
+**So that** timing, QoS, and routing work harmoniously across all media transport layers.
+
+### US-CROSS-004: Audio Engineer Transparent Operations
+
+**As an** audio engineer operating professional media systems,  
+**I need** transparent interoperability between IEEE AVB and AES67 audio transport,  
+**So that** I can focus on creative work without worrying about underlying protocol differences.
+
+### US-CROSS-005: System Administrator Unified Management
+
+**As a** system administrator maintaining large media installations,  
+**I need** unified monitoring and management tools that work across all implemented standards,  
+**So that** I can efficiently operate and troubleshoot complex multi-standard environments.
+
+### US-CROSS-006: Equipment Manufacturer Standards Compliance
+
+**As an** equipment manufacturer developing professional media devices,  
+**I need** clear guidance on implementing multiple standards together without conflicts,  
+**So that** my products work reliably in diverse multi-vendor, multi-standard installations.
+
+### US-CROSS-007: Test Engineer Validation Framework
+
+**As a** test engineer validating integrated media systems,  
+**I need** comprehensive test frameworks that verify cross-standard interactions and compatibility,  
+**So that** I can certify that complex systems meet all relevant standard requirements simultaneously.
+
+### US-CROSS-008: Standards Engineer Architecture Compliance
+
+**As a** standards engineer ensuring specification compliance,  
+**I need** architectural frameworks that maintain fidelity to individual standards while enabling integration,  
+**So that** systems achieve true multi-standard compliance rather than compromising any single standard.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-CROSSARCH-001: Unified System Architecture and Integration Framework

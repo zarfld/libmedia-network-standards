@@ -67,6 +67,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-AES60ID-001: Audio Producer Immersive Content Creation
+
+**As an** audio producer creating immersive entertainment content,  
+**I need** AES60id-2020 object-based audio metadata tools to position sounds in 3D space,  
+**So that** I can create engaging immersive audio experiences for movies, games, and VR applications.
+
+### US-AES60ID-002: Broadcast Engineer Adaptive Audio Delivery
+
+**As a** broadcast engineer managing multi-format content distribution,  
+**I need** AES60id-2020 metadata that enables adaptive audio rendering for different playback systems,  
+**So that** content automatically adapts to stereo, surround, and object-based audio systems.
+
+### US-AES60ID-003: Game Developer Interactive Audio Design
+
+**As a** game developer creating interactive audio experiences,  
+**I need** AES60id-2020 object-based metadata that supports real-time audio manipulation,  
+**So that** audio elements can respond dynamically to player actions and game events.
+
+### US-AES60ID-004: Post-Production Engineer Spatial Audio Workflow
+
+**As a** post-production engineer working with spatial audio content,  
+**I need** AES60id-2020 metadata tools that integrate with my existing DAW and mixing workflows,  
+**So that** I can efficiently create and edit object-based audio productions.
+
+### US-AES60ID-005: System Integrator Multi-Platform Compatibility
+
+**As a** system integrator deploying audio systems across multiple venues,  
+**I need** AES60id-2020 metadata that works consistently across different rendering systems,  
+**So that** content plays correctly regardless of the specific audio hardware installed.
+
+### US-AES60ID-006: Content Creator Accessibility Enhancement
+
+**As a** content creator focused on accessibility,  
+**I need** AES60id-2020 metadata that supports personalized audio rendering,  
+**So that** listeners with different hearing capabilities can customize their audio experience.
+
+### US-AES60ID-007: Archive Manager Future-Proof Content Preservation
+
+**As an** archive manager preserving audio content for long-term storage,  
+**I need** AES60id-2020 metadata standards that ensure content remains playable on future systems,  
+**So that** immersive audio content maintains its artistic intent across decades.
+
+### US-AES60ID-008: Live Event Engineer Dynamic Venue Adaptation
+
+**As a** live event engineer managing audio in various venue configurations,  
+**I need** AES60id-2020 metadata that allows real-time adaptation to different speaker layouts,  
+**So that** the same content can be optimally rendered in venues of different sizes and configurations.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Immersive Audio Experience and Spatial Processing

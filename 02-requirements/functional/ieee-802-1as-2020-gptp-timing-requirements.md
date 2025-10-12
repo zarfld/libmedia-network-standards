@@ -65,6 +65,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-GPTP-001: Audio Engineer Sample-Accurate Synchronization
+
+**As an** audio engineer operating multi-device recording systems,  
+**I need** IEEE 802.1AS-2020 gPTP to provide sample-accurate timing across all devices,  
+**So that** audio streams remain perfectly synchronized without drift or phase issues.
+
+### US-GPTP-002: Broadcast Engineer Multi-Studio Coordination
+
+**As a** broadcast engineer managing distributed studio facilities,  
+**I need** gPTP network-wide time synchronization for coordinated content switching,  
+**So that** live broadcasts can seamlessly transition between multiple locations.
+
+### US-GPTP-003: Live Production Coordinator Equipment Synchronization
+
+**As a** live production coordinator managing complex video systems,  
+**I need** sub-microsecond timing accuracy for frame-accurate switching and effects,  
+**So that** multi-camera productions maintain perfect timing relationships.
+
+### US-GPTP-004: Network Engineer TSN Infrastructure Management
+
+**As a** network engineer deploying Time-Sensitive Networking solutions,  
+**I need** reliable gPTP grandmaster selection and failover capabilities,  
+**So that** timing infrastructure remains stable even during network topology changes.
+
+### US-GPTP-005: System Integrator Multi-Vendor Deployment
+
+**As a** system integrator deploying mixed-vendor AVB installations,  
+**I need** consistent gPTP implementation across different equipment manufacturers,  
+**So that** timing synchronization works reliably regardless of device brand.
+
+### US-GPTP-006: Test Engineer Timing Validation
+
+**As a** test engineer validating professional media systems,  
+**I need** gPTP diagnostic and measurement capabilities to verify timing accuracy,  
+**So that** I can certify that systems meet professional timing requirements.
+
+### US-GPTP-007: Equipment Manufacturer Standards Compliance
+
+**As an** equipment manufacturer developing time-sensitive devices,  
+**I need** clear gPTP implementation guidelines and conformance test procedures,  
+**So that** my products achieve reliable timing interoperability with existing infrastructure.
+
+### US-GPTP-008: Operations Engineer System Monitoring
+
+**As an** operations engineer maintaining critical timing infrastructure,  
+**I need** gPTP status monitoring and alerting for timing anomalies,  
+**So that** I can proactively address issues before they impact production operations.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Network-Wide Time Synchronization Infrastructure

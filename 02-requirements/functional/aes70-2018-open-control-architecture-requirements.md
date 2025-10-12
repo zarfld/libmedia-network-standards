@@ -77,6 +77,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-AES70-001: System Operator Centralized Device Control
+
+**As a** system operator managing a large-scale audio installation,  
+**I need** AES70-2018 centralized control of all audio devices from a single interface,  
+**So that** I can efficiently monitor and control the entire system without visiting individual equipment locations.
+
+### US-AES70-002: Audio Engineer Remote Parameter Adjustment
+
+**As an** audio engineer mixing a live show,  
+**I need** AES70-2018 remote control capabilities that let me adjust device parameters in real-time,  
+**So that** I can fine-tune the sound from the optimal listening position without leaving the console.
+
+### US-AES70-003: System Integrator Multi-Vendor Compatibility
+
+**As a** system integrator designing custom audio solutions,  
+**I need** AES70-2018 standardized control protocols that work across different equipment manufacturers,  
+**So that** I can create integrated systems without vendor lock-in or proprietary control limitations.
+
+### US-AES70-004: Facility Manager Automated System Management
+
+**As a** facility manager overseeing multiple venues,  
+**I need** AES70-2018 automation and scripting capabilities for routine system operations,  
+**So that** systems can operate efficiently with minimal manual intervention and consistent performance.
+
+### US-AES70-005: Broadcast Engineer Workflow Integration
+
+**As a** broadcast engineer managing on-air audio systems,  
+**I need** AES70-2018 control integration with broadcast automation systems,  
+**So that** audio routing and processing can be automatically coordinated with program content.
+
+### US-AES70-006: Equipment Manufacturer Standards Compliance
+
+**As an** equipment manufacturer developing professional audio devices,  
+**I need** clear AES70-2018 implementation specifications and test procedures,  
+**So that** my devices integrate seamlessly with OCA-compliant control systems.
+
+### US-AES70-007: Network Administrator Secure Device Management
+
+**As a** network administrator managing IP-based audio infrastructure,  
+**I need** AES70-2018 devices that integrate with enterprise security and management systems,  
+**So that** audio equipment follows the same governance policies as other network devices.
+
+### US-AES70-008: Service Technician Remote Diagnostics
+
+**As a** service technician maintaining distributed audio systems,  
+**I need** AES70-2018 remote diagnostic and monitoring capabilities,  
+**So that** I can identify and resolve issues without dispatching technicians to every location.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### REQ-STK-AES70-001: Professional Audio System Integration

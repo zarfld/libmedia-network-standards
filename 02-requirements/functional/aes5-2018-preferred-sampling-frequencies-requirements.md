@@ -67,6 +67,58 @@ mcp_markitdown_convert_to_markdown "file://D:/SyncDrive/SynologyDrive/MCP/Standa
 
 **COPYRIGHT NOTICE**: Reference by section/clause number only. No content reproduction permitted.
 
+## User Stories
+
+As per Extreme Programming (XP) practices, the following user stories express the requirements from user perspectives:
+
+### US-AES5-001: Audio Engineer Sample Rate Consistency
+
+**As an** audio engineer working across multiple digital audio workstations,  
+**I need** standardized sampling frequencies that are consistent between all my equipment,  
+**So that** I can transfer projects between systems without sample rate conversion artifacts.
+
+### US-AES5-002: Broadcast Engineer Production Workflow
+
+**As a** broadcast engineer managing content for multiple delivery platforms,  
+**I need** AES5-2018 preferred sampling frequencies that align with broadcast standards,  
+**So that** my content meets technical specifications for television, radio, and streaming distribution.
+
+### US-AES5-003: Equipment Manufacturer System Compatibility
+
+**As an** equipment manufacturer developing digital audio devices,  
+**I need** to implement AES5-2018 preferred sampling frequencies in my products,  
+**So that** they integrate seamlessly with existing professional audio infrastructure.
+
+### US-AES5-004: System Integrator Multi-Vendor Installations
+
+**As a** system integrator designing complex audio facilities,  
+**I need** equipment from different manufacturers to use standardized AES5-2018 sampling frequencies,  
+**So that** I can create integrated systems without frequency conversion issues.
+
+### US-AES5-005: Mastering Engineer Quality Control
+
+**As a** mastering engineer preparing final audio content,  
+**I need** precise AES5-2018 sampling frequency support with minimal jitter and drift,  
+**So that** I can maintain the highest audio quality in my final masters.
+
+### US-AES5-006: Consumer Device Developer Market Compatibility
+
+**As a** consumer device developer creating audio playback equipment,  
+**I need** to support AES5-2018 frequencies that bridge professional and consumer applications,  
+**So that** my devices can handle content created in professional environments.
+
+### US-AES5-007: Test Engineer Frequency Validation
+
+**As a** test engineer validating digital audio equipment,  
+**I need** AES5-2018 reference frequencies for calibration and measurement,  
+**So that** I can verify equipment meets sampling frequency accuracy requirements.
+
+### US-AES5-008: Live Sound Engineer Multi-Format Support
+
+**As a** live sound engineer managing various input sources,  
+**I need** equipment that handles multiple AES5-2018 preferred frequencies automatically,  
+**So that** I can accommodate different source formats without manual intervention.
+
 ## 1. Stakeholder Requirements (SR)
 
 ### SR-001: Professional Audio System Interoperability
