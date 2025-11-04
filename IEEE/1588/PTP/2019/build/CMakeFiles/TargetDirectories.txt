@@ -1,5 +1,0 @@
-D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/CMakeFiles/ieee1588_2019_basic_example.dir
-D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/CMakeFiles/ieee1588_2019_time_sensitive_example.dir
-D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/CMakeFiles/INSTALL.dir
-D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/CMakeFiles/ALL_BUILD.dir
-D:/Repos/OpenAvnu/lib/Standards/IEEE/1588/PTP/2019/build/CMakeFiles/ZERO_CHECK.dir

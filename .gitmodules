@@ -1,0 +1,21 @@
+[submodule "IEEE/802.1AS/2021"]
+	path = IEEE/802.1AS/2021
+	url = https://github.com/zarfld/IEEE_802.1AS_2021.git
+[submodule "IEEE/802.1/Q/2020"]
+	path = IEEE/802.1/Q/2020
+	url = https://github.com/zarfld/IEEE_802.1Q_2020.git
+[submodule "IEEE/802.1/BA/2016"]
+	path = IEEE/802.1/BA/2016
+	url = https://github.com/zarfld/IEEE_802.1BA_2016.git
+[submodule "IEEE/1588/PTP/2019"]
+	path = IEEE/1588/PTP/2019
+	url = https://github.com/zarfld/IEEE_1588_2019.git
+[submodule "IEEE/1722/2016"]
+	path = IEEE/1722/2016
+	url = https://github.com/zarfld/IEEE_1722_2016.git
+[submodule "IEEE/1722.1/2021"]
+	path = IEEE/1722.1/2021
+	url = https://github.com/zarfld/IEEE_1722.1_2021.git
+[submodule "IEEE/1722.1/2013"]
+	path = IEEE/1722.1/2013
+	url = https://github.com/zarfld/IEEE_1722.1_2013.git
