@@ -22,6 +22,6 @@
 [submodule "AVnu/Milan/1.2-2023"]
 	path = AVnu/Milan/1.2-2023
 	url = https://github.com/zarfld/AVnu_Milan_1.2_2023.git
-[submodule "AVnu/Milan/2.0a-2023"]
+[submodule "Milan-Baseline-Interoperability-Specification-2.0a"]
 	path = AVnu/Milan/2.0a-2023
-	url = https://github.com/zarfld/AVnu_Milan_2.0a_2023.git
+	url = https://github.com/zarfld/Milan-Baseline-Interoperability-Specification-2.0a.git
