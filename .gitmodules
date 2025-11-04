@@ -19,3 +19,9 @@
 [submodule "IEEE/1722.1/2013"]
 	path = IEEE/1722.1/2013
 	url = https://github.com/zarfld/IEEE_1722.1_2013.git
+[submodule "AVnu/Milan/1.2-2023"]
+	path = AVnu/Milan/1.2-2023
+	url = https://github.com/zarfld/AVnu_Milan_1.2_2023.git
+[submodule "AVnu/Milan/2.0a-2023"]
+	path = AVnu/Milan/2.0a-2023
+	url = https://github.com/zarfld/AVnu_Milan_2.0a_2023.git
