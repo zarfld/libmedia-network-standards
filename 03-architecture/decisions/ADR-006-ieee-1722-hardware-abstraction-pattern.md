@@ -1,355 +1,600 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: ADR-006
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Team"
-date: "2025-10-12"
-status: "approved"
+standard: '42010'
+status: draft
 traceability:
-  requirements:
-    - "REQ-F-001"
-    - "REQ-F-002"
-    - "REQ-NF-001"
+  requirements: []
+version: 1.0.0
 ---
 
-# ADR-006: Hardware Abstraction Pattern for Multi-vendor Support
+# Architecture Specification Template
 
-## Status
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
 
-Accepted
+---
 
-## Context
+## Metadata
 
-Professional media networking requires support for multiple hardware platforms from different vendors (Intel, Broadcom, Marvell) while maintaining consistent IEEE 1722-2016 AVTP protocol behavior. Each vendor provides different APIs, capabilities, and optimization opportunities.
-
-### Hardware Platform Requirements
-
-- **Intel Platforms**: Network adapters, embedded systems, server platforms
-- **Broadcom Platforms**: Switch chips, network processors, embedded controllers  
-- **Marvell Platforms**: Automotive Ethernet, industrial controllers, TSN switches
-- **Generic Platforms**: Software fallback for unsupported hardware
-
-### Technical Challenges
-
-- **API Diversity**: Each vendor has different programming interfaces
-- **Capability Variance**: Hardware capabilities vary significantly between platforms
-- **Performance Optimization**: Platform-specific optimizations required for real-time performance
-- **Maintenance Burden**: Multiple codepaths increase complexity and testing requirements
-- **Real-time Constraints**: Hardware abstraction cannot compromise timing determinism
-
-### Standards Requirements
-
-- **IEEE 1722-2016 Compliance**: Protocol behavior must be consistent across all platforms
-- **Professional Quality**: Sub-5ms audio latency, sub-16ms video latency requirements
-- **Interoperability**: Multi-vendor networks must operate seamlessly
-
-## Stakeholder Concerns
-
-- **Hardware Vendors**: Need efficient hardware utilization while maintaining API abstraction
-- **Audio Engineers**: Require consistent low-latency performance regardless of hardware platform
-- **Network Engineers**: Need predictable network behavior across multi-vendor infrastructures
-- **System Integrators**: Require single codebase deployable across different hardware configurations
-- **Product Managers**: Need to minimize development and testing costs across platforms
-
-## Architectural Viewpoints
-
-- **Portability Viewpoint**: Hardware abstraction enabling deployment across vendor platforms
-- **Performance Viewpoint**: Maintaining real-time constraints through abstraction layers
-- **Maintainability Viewpoint**: Single codebase reducing complexity and testing burden
-- **Extensibility Viewpoint**: Pattern supporting future hardware platforms and capabilities
-
-## Decision
-
-We will implement a **Dependency Injection Hardware Abstraction Pattern** with runtime capability discovery:
-
-### Architecture Pattern
-
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 ```
+
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
+---
+
+## System Context
+
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
 ┌─────────────────────────────────────┐
-│        Protocol Layer               │ ← Pure IEEE 1722-2016 implementation
-│     (Hardware Agnostic)             │
+│     Presentation Layer              │  (API Controllers, DTOs)
 ├─────────────────────────────────────┤
-│     Hardware Abstraction Layer      │ ← C interface definitions
-│      (Capability-based APIs)        │
+│     Application Layer               │  (Use Cases, Commands, Queries)
 ├─────────────────────────────────────┤
-│       Hardware Bridge Layer        │ ← Vendor-specific implementations
-│    (Intel|Broadcom|Marvell|Generic) │
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
 ├─────────────────────────────────────┤
-│       Vendor Hardware APIs          │ ← Platform-specific SDKs
-│     (Intel HAL|Broadcom SDK|etc.)   │
+│     Infrastructure Layer            │  (Repositories, External Services)
 └─────────────────────────────────────┘
 ```
 
-### Key Components
+**Module Dependencies**:
 
-#### 1. Hardware Abstraction Interface (C-based)
-
-```c
-// Network operations with capability-based selection
-typedef struct {
-    // Core network operations
-    int (*send_packet)(const void* packet, size_t length, uint64_t timestamp);
-    int (*receive_packet)(void* buffer, size_t* length, uint64_t* timestamp);
-    
-    // Capability discovery
-    int (*get_capabilities)(network_capabilities_t* caps);
-    
-    // Performance optimization hooks
-    int (*enable_hardware_timestamping)(void);
-    int (*configure_traffic_shaping)(const qos_config_t* config);
-    int (*allocate_zero_copy_buffer)(size_t size, void** buffer);
-} network_interface_t;
-
-// Timing operations with precision selection
-typedef struct {
-    // Time access
-    uint64_t (*get_current_time)(void);
-    int (*get_time_accuracy)(timing_accuracy_t* accuracy);
-    
-    // Event scheduling
-    int (*schedule_event)(uint32_t delay_ns, event_callback_t callback);
-    int (*cancel_event)(event_handle_t handle);
-    
-    // Hardware sync capabilities
-    int (*sync_to_hardware_clock)(void);
-    int (*get_sync_status)(sync_status_t* status);
-} timing_interface_t;
-
-// Memory operations with performance optimization
-typedef struct {
-    // Buffer management
-    void* (*allocate_buffer)(size_t size, uint32_t alignment);
-    int (*free_buffer)(void* buffer);
-    
-    // DMA operations (if supported)
-    int (*map_dma_buffer)(void* buffer, dma_mapping_t* mapping);
-    int (*unmap_dma_buffer)(dma_mapping_t* mapping);
-    
-    // Cache management
-    int (*flush_cache)(void* buffer, size_t size);
-    int (*invalidate_cache)(void* buffer, size_t size);
-} memory_interface_t;
-```
-
-#### 2. Capability-based Runtime Selection
-
-```c
-// Hardware capability discovery
-typedef struct {
-    // Network capabilities
-    bool hardware_timestamping_available;
-    bool zero_copy_transmit_available;
-    bool traffic_shaping_available;
-    uint32_t max_packet_size;
-    uint32_t tx_queue_count;
-    uint32_t rx_queue_count;
-    
-    // Timing capabilities  
-    bool hardware_ptp_available;
-    uint32_t timing_resolution_ns;
-    uint32_t timing_accuracy_ns;
-    
-    // Memory capabilities
-    bool dma_available;
-    uint32_t dma_alignment_requirement;
-    size_t cache_line_size;
-} hardware_capabilities_t;
-```
-
-#### 3. Hardware Bridge Implementation Pattern
-
-```c
-// Intel Hardware Bridge Implementation
-static int intel_send_packet(const void* packet, size_t length, uint64_t timestamp) {
-    // Use Intel-specific APIs for optimal performance
-    return intel_hal_send_packet_with_timestamp(packet, length, timestamp);
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
 }
 
-static int intel_get_capabilities(network_capabilities_t* caps) {
-    caps->hardware_timestamping_available = true;  // Intel supports HW timestamping
-    caps->zero_copy_transmit_available = true;     // Intel DMA support
-    caps->timing_accuracy_ns = 80;                 // Intel achieves ±80ns accuracy
-    return 0;
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
 }
 
-static const network_interface_t intel_network_interface = {
-    .send_packet = intel_send_packet,
-    .receive_packet = intel_receive_packet,
-    .get_capabilities = intel_get_capabilities,
-    .enable_hardware_timestamping = intel_enable_hw_timestamping,
-    .configure_traffic_shaping = intel_configure_qos,
-    .allocate_zero_copy_buffer = intel_allocate_dma_buffer
-};
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
 
-// Broadcom Hardware Bridge Implementation  
-static int broadcom_send_packet(const void* packet, size_t length, uint64_t timestamp) {
-    // Use Broadcom SDK for switch fabric optimization
-    return broadcom_sdk_transmit_packet(packet, length, timestamp);
+export class UserRepository implements IUserRepository {
+  // Database implementation
 }
 
-static const network_interface_t broadcom_network_interface = {
-    .send_packet = broadcom_send_packet,
-    .receive_packet = broadcom_receive_packet,
-    .get_capabilities = broadcom_get_capabilities,
-    .enable_hardware_timestamping = broadcom_enable_hw_timestamping,
-    .configure_traffic_shaping = broadcom_configure_switch_qos,
-    .allocate_zero_copy_buffer = broadcom_allocate_switch_buffer
-};
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
 
-// Generic Software Fallback
-static int generic_send_packet(const void* packet, size_t length, uint64_t timestamp) {
-    // Use standard socket APIs with software timestamping
-    return socket_send_with_software_timestamp(packet, length, timestamp);
+export class UserController {
+  // HTTP handling
 }
 ```
 
-#### 4. Runtime Platform Detection and Selection
+### Physical/Deployment View
 
-```c
-typedef enum {
-    HARDWARE_PLATFORM_INTEL,
-    HARDWARE_PLATFORM_BROADCOM, 
-    HARDWARE_PLATFORM_MARVELL,
-    HARDWARE_PLATFORM_GENERIC
-} hardware_platform_t;
+**Production Environment**:
 
-// Runtime hardware detection
-hardware_platform_t detect_hardware_platform(void) {
-    // Check for Intel hardware
-    if (intel_hardware_detected()) {
-        return HARDWARE_PLATFORM_INTEL;
-    }
-    
-    // Check for Broadcom hardware
-    if (broadcom_hardware_detected()) {
-        return HARDWARE_PLATFORM_BROADCOM;
-    }
-    
-    // Check for Marvell hardware
-    if (marvell_hardware_detected()) {
-        return HARDWARE_PLATFORM_MARVELL;
-    }
-    
-    // Fallback to generic implementation
-    return HARDWARE_PLATFORM_GENERIC;
-}
-
-// Interface selection based on detected platform
-int avtp_initialize_hardware_interfaces(avtp_hardware_interfaces_t* interfaces) {
-    hardware_platform_t platform = detect_hardware_platform();
-    
-    switch (platform) {
-        case HARDWARE_PLATFORM_INTEL:
-            interfaces->network = &intel_network_interface;
-            interfaces->timing = &intel_timing_interface;
-            interfaces->memory = &intel_memory_interface;
-            break;
-            
-        case HARDWARE_PLATFORM_BROADCOM:
-            interfaces->network = &broadcom_network_interface;
-            interfaces->timing = &broadcom_timing_interface;
-            interfaces->memory = &broadcom_memory_interface;
-            break;
-            
-        case HARDWARE_PLATFORM_MARVELL:
-            interfaces->network = &marvell_network_interface;
-            interfaces->timing = &marvell_timing_interface;
-            interfaces->memory = &marvell_memory_interface;
-            break;
-            
-        default:
-            interfaces->network = &generic_network_interface;
-            interfaces->timing = &generic_timing_interface;
-            interfaces->memory = &generic_memory_interface;
-            break;
-    }
-    
-    return 0;
-}
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
 
-## Rationale
+**Infrastructure**:
 
-### Pros
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
 
-- **Hardware Independence**: Protocol layer completely isolated from hardware details
-- **Performance Optimization**: Platform-specific optimizations without compromising portability  
-- **Capability-based Selection**: Runtime optimization selection based on actual hardware capabilities
-- **Maintainability**: Clean separation between standards and hardware implementation
-- **Testability**: Mock interfaces enable comprehensive unit testing without hardware
-- **Extensibility**: New hardware platforms can be added without protocol changes
-- **Standards Compliance**: IEEE 1722-2016 behavior consistent across all platforms
+### Data View
 
-### Cons
+**Data Architecture**:
 
-- **Complexity**: Additional abstraction layer increases architecture complexity
-- **Performance Overhead**: Function pointer indirection adds minimal latency
-- **Development Effort**: Multiple hardware bridge implementations required
-- **Testing Scope**: Comprehensive validation across all supported platforms
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-### Risk Mitigation
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-- **Performance**: Compiler optimizations and careful interface design minimize overhead
-- **Complexity**: Clear documentation and interface specifications
-- **Development**: Incremental platform enablement, starting with most critical platforms
-- **Testing**: Automated test frameworks with hardware simulation capabilities
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
 
-## Consequences
+**Data Flow**:
 
-### Implementation Impact
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-1. **Protocol Layer Benefits**
-   - Single IEEE 1722-2016 implementation for all platforms
-   - No hardware-specific code contamination
-   - Comprehensive unit testing with mock interfaces
-   - Consistent behavior across all supported hardware
+**Caching Strategy**:
 
-2. **Hardware Bridge Requirements**
-   - Intel bridge: Network adapter integration, hardware timestamping
-   - Broadcom bridge: Switch fabric optimization, TSN QoS integration
-   - Marvell bridge: Automotive Ethernet support, TSN controller integration
-   - Generic bridge: Software fallback for unsupported platforms
-
-3. **Testing Strategy**
-   - **Unit Testing**: Mock hardware interfaces for protocol validation
-   - **Integration Testing**: Real hardware validation on each supported platform
-   - **Performance Testing**: Platform-specific optimization validation
-   - **Interoperability Testing**: Multi-vendor network validation
-
-### Development Guidelines
-
-1. **Protocol Layer**
-   - Never include hardware-specific headers or APIs
-   - All hardware access through abstraction interfaces
-   - Capability-based feature selection at runtime
-   - Comprehensive error handling for all hardware operations
-
-2. **Hardware Bridges**
-   - Implement all required interface functions
-   - Provide accurate capability reporting
-   - Optimize for platform-specific performance characteristics
-   - Handle hardware errors gracefully with fallback behavior
-
-3. **Testing Requirements**
-   - Mock interface implementations for unit testing
-   - Platform-specific integration test suites
-   - Performance benchmarking for each platform
-   - Stress testing with multiple concurrent streams
-
-### Migration Strategy
-
-1. **Phase 1**: Hardware abstraction interface definitions and generic implementation
-2. **Phase 2**: Intel platform bridge implementation and validation
-3. **Phase 3**: Broadcom platform bridge implementation and validation  
-4. **Phase 4**: Marvell platform bridge implementation and validation
-5. **Phase 5**: Performance optimization and professional equipment validation
-
-This hardware abstraction pattern ensures that IEEE 1722-2016 AVTP implementation achieves optimal performance on each supported platform while maintaining complete standards compliance and hardware independence.
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
 ---
 
-**Decision Date**: January 27, 2025  
-**Status**: Accepted  
-**Supersedes**: None  
-**References**: ADR-005 (IEEE 1722 AVTP Transport Architecture)
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

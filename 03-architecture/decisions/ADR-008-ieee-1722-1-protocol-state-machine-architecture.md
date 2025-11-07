@@ -1,383 +1,604 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1722_1_2021
+  title: IEEE 1722.1-2021 - Device Discovery, Connection Management and Control Protocol
+    for IEEE 1722
+  url: mcp://markitdown/standards/IEEE 1722.1-2021-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: ADR-008
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Team"
-date: "2025-10-12"
-status: "approved"
+standard: '42010'
+status: draft
 traceability:
-  requirements:
-    - "REQ-F-001"
-    - "REQ-F-003"
-    - "REQ-NF-001"
+  requirements: []
+version: 1.0.0
 ---
 
-# ADR-008: IEEE 1722.1 Protocol State Machine Architecture
+# Architecture Specification Template
 
-## Status
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
 
-Accepted
+---
 
-## Context
+## Metadata
 
-IEEE 1722.1-2021 AVDECC defines three core protocols (ADP, AECP, ACMP) that must operate concurrently with complex state management requirements. Each protocol has distinct state machines with timing requirements and interactions between protocols.
-
-### Protocol State Machine Requirements
-
-- **ADP State Machine**: Entity discovery and advertisement with periodic behavior
-- **AECP State Machine**: Command/response processing with timeout and retry logic
-- **ACMP State Machine**: Connection management with complex multi-entity coordination
-- **Concurrent Operation**: All protocols must operate simultaneously without interference
-- **Timing Precision**: Protocol timers must meet IEEE 1722.1-2021 specification requirements
-
-### Technical Challenges
-
-- **Protocol Interactions**: State changes in one protocol can affect others (e.g., ACMP depends on ADP)
-- **Timing Requirements**: Multiple concurrent timers with microsecond precision requirements
-- **Error Handling**: Protocol failures must be isolated and not affect other protocols  
-- **Resource Management**: Shared resources (network, entity database) must be coordinated
-- **Real-time Constraints**: State machine processing must not block protocol message handling
-
-## Stakeholder Concerns
-
-- **Audio Engineers**: Require reliable device control and connection management for professional workflows
-- **Network Engineers**: Need predictable protocol behavior and efficient network resource usage
-- **Software Developers**: Require maintainable state machine implementation with clear debugging capabilities
-- **Equipment Manufacturers**: Need robust protocol implementation supporting diverse device architectures
-
-## Architectural Viewpoints
-
-- **Concurrency Viewpoint**: Safe concurrent operation of multiple protocol state machines
-- **Timing Viewpoint**: Precise timer management and protocol timing requirements
-- **Reliability Viewpoint**: Fault isolation and error recovery across protocol boundaries
-- **Maintainability Viewpoint**: Clear state machine structure enabling debugging and testing
-
-## Decision
-
-We will implement an **Event-Driven State Machine Architecture** with protocol isolation:
-
-### 1. Protocol State Machine Framework
-
-```cpp
-namespace IEEE::_1722_1::_2021::protocols {
-
-// Base state machine interface
-class ProtocolStateMachine {
-public:
-    virtual ~ProtocolStateMachine() = default;
-    virtual void processEvent(const ProtocolEvent& event) = 0;
-    virtual void onTimer(TimerId timer_id) = 0;
-    virtual bool isHealthy() const = 0;
-    virtual std::string getStateName() const = 0;
-    
-protected:
-    virtual void enterState(StateId new_state) = 0;
-    virtual void exitState(StateId current_state) = 0;
-    virtual TimerId startTimer(std::chrono::milliseconds duration, TimerType type) = 0;
-    virtual void cancelTimer(TimerId timer_id) = 0;
-};
-
-// Protocol event base class  
-class ProtocolEvent {
-public:
-    enum class Type {
-        PACKET_RECEIVED,
-        TIMER_EXPIRED,
-        ENTITY_STATE_CHANGED,
-        NETWORK_INTERFACE_CHANGED,
-        PROTOCOL_ERROR
-    };
-    
-    Type getType() const { return type_; }
-    std::chrono::steady_clock::time_point getTimestamp() const { return timestamp_; }
-    
-protected:
-    ProtocolEvent(Type type) : type_(type), timestamp_(std::chrono::steady_clock::now()) {}
-    
-private:
-    Type type_;
-    std::chrono::steady_clock::time_point timestamp_;
-};
-
-} // namespace IEEE::_1722_1::_2021::protocols
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-### 2. ADP State Machine Implementation
+## Architecture Decision Record
 
-```cpp
-namespace IEEE::_1722_1::_2021::adp {
+### ADR-001: [Decision Title]
 
-class ADPStateMachine : public ProtocolStateMachine {
-public:
-    enum class State {
-        INITIAL,
-        WAITING,
-        ADVERTISE,
-        DEPARTING
-    };
-    
-    ADPStateMachine(const EntityModel& entity_model, NetworkInterface& network);
-    
-    void processEvent(const ProtocolEvent& event) override;
-    void onTimer(TimerId timer_id) override;
-    bool isHealthy() const override;
-    
-    // ADP-specific operations
-    void startAdvertising();
-    void stopAdvertising();
-    void sendEntityDiscover();
-    
-private:
-    State current_state_ = State::INITIAL;
-    const EntityModel& entity_model_;
-    NetworkInterface& network_interface_;
-    
-    // ADP timers per IEEE 1722.1-2021
-    TimerId advertise_timer_;
-    TimerId discover_timer_;
-    std::chrono::milliseconds advertise_interval_{2000}; // 2-62 seconds configurable
-    
-    // State transition handlers
-    void handleWaitingState(const ProtocolEvent& event);
-    void handleAdvertiseState(const ProtocolEvent& event);
-    void handleDepartingState(const ProtocolEvent& event);
-    
-    // Protocol message handlers
-    void processEntityAvailable(const EntityAvailableMessage& msg);
-    void processEntityDiscover(const EntityDiscoverMessage& msg);
-    void processEntityDeparting(const EntityDepartingMessage& msg);
-    
-    void sendEntityAvailable();
-    void sendEntityDeparting();
-};
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-} // namespace IEEE::_1722_1::_2021::adp
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
+---
+
+## System Context
+
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-### 3. AECP State Machine Implementation
+### Stakeholders and Concerns
 
-```cpp
-namespace IEEE::_1722_1::_2021::aecp {
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
 
-class AECPStateMachine : public ProtocolStateMachine {
-public:
-    enum class State {
-        WAITING_FOR_COMMAND,
-        PROCESSING_COMMAND,
-        WAITING_FOR_RESPONSE,
-        ACQUIRED
-    };
-    
-    AECPStateMachine(EntityModel& entity_model, NetworkInterface& network);
-    
-    void processEvent(const ProtocolEvent& event) override;
-    void onTimer(TimerId timer_id) override;
-    
-    // AECP command processing
-    void sendCommand(const AEMCommand& command, const MacAddress& target);
-    void processResponse(const AEMResponse& response);
-    
-private:
-    State current_state_ = State::WAITING_FOR_COMMAND;
-    EntityModel& entity_model_;
-    NetworkInterface& network_interface_;
-    
-    // Command tracking for timeout/retry
-    struct PendingCommand {
-        uint16_t sequence_number;
-        AEMCommand command;
-        MacAddress target_address;
-        std::chrono::steady_clock::time_point send_time;
-        uint8_t retry_count;
-        CommandCallback callback;
-    };
-    
-    std::unordered_map<uint16_t, PendingCommand> pending_commands_;
-    TimerId command_timeout_timer_;
-    uint16_t next_sequence_number_ = 0;
-    
-    // State handlers
-    void handleWaitingForCommand(const ProtocolEvent& event);
-    void handleProcessingCommand(const ProtocolEvent& event);
-    void handleWaitingForResponse(const ProtocolEvent& event);
-    void handleAcquired(const ProtocolEvent& event);
-    
-    // AEM command processors
-    void processReadDescriptor(const AEMCommand& command);
-    void processAcquireEntity(const AEMCommand& command);
-    void processSetConfiguration(const AEMCommand& command);
-    void processMilanCommand(const AEMCommand& command);
-    
-    void sendResponse(uint16_t sequence_number, AEMStatusCode status, 
-                     const std::vector<uint8_t>& payload);
-    void handleCommandTimeout(uint16_t sequence_number);
-};
+---
 
-} // namespace IEEE::_1722_1::_2021::aecp
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
 ```
 
-### 4. ACMP State Machine Implementation
+### Container Specifications
 
-```cpp
-namespace IEEE::_1722_1::_2021::acmp {
+#### Container: API Gateway
 
-class ACMPStateMachine : public ProtocolStateMachine {
-public:
-    enum class State {
-        WAITING,
-        CONNECTING,
-        CONNECTED,
-        DISCONNECTING,
-        FAST_CONNECT
-    };
-    
-    ACMPStateMachine(EntityModel& entity_model, NetworkInterface& network);
-    
-    void processEvent(const ProtocolEvent& event) override;
-    void onTimer(TimerId timer_id) override;
-    
-    // Stream connection management
-    void connectStream(const StreamConnectionRequest& request);
-    void disconnectStream(const StreamID& stream_id);
-    ConnectionState getConnectionState(const StreamID& stream_id) const;
-    
-private:
-    State current_state_ = State::WAITING;
-    EntityModel& entity_model_;
-    NetworkInterface& network_interface_;
-    
-    // Connection database
-    std::unordered_map<StreamID, StreamConnection> active_connections_;
-    std::unordered_map<uint16_t, PendingConnection> pending_connections_;
-    
-    TimerId connection_timeout_timer_;
-    uint16_t next_sequence_number_ = 0;
-    
-    // State handlers
-    void handleWaiting(const ProtocolEvent& event);
-    void handleConnecting(const ProtocolEvent& event);
-    void handleConnected(const ProtocolEvent& event);
-    void handleDisconnecting(const ProtocolEvent& event);
-    
-    // ACMP message processors
-    void processConnectTXCommand(const ACMPMessage& message);
-    void processConnectRXCommand(const ACMPMessage& message);
-    void processDisconnectTXCommand(const ACMPMessage& message);
-    void processGetTXStateCommand(const ACMPMessage& message);
-    
-    // Connection validation and management
-    bool validateStreamConnection(const StreamConnectionRequest& request) const;
-    void establishConnection(const StreamConnection& connection);
-    void teardownConnection(const StreamID& stream_id);
-};
+**Technology**: Node.js 18 + Express 4.x
 
-} // namespace IEEE::_1722_1::_2021::acmp
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
 ```
 
-### 5. Protocol Coordinator
+---
 
-```cpp
-class AVDECCProtocolCoordinator {
-public:
-    AVDECCProtocolCoordinator(EntityModel& entity_model, NetworkInterface& network);
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
     
-    void start();
-    void stop();
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
     
-    // Protocol access
-    ADPStateMachine& getADP() { return adp_state_machine_; }
-    AECPStateMachine& getAECP() { return aecp_state_machine_; }
-    ACMPStateMachine& getACMP() { return acmp_state_machine_; }
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
     
-    // Event distribution
-    void dispatchEvent(const ProtocolEvent& event);
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
     
-private:
-    EntityModel& entity_model_;
-    NetworkInterface& network_interface_;
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
     
-    // Protocol state machines
-    ADPStateMachine adp_state_machine_;
-    AECPStateMachine aecp_state_machine_;
-    ACMPStateMachine acmp_state_machine_;
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
     
-    // Event processing
-    EventQueue event_queue_;
-    std::thread event_processor_thread_;
-    std::atomic<bool> running_{false};
-    
-    // Timer management
-    TimerManager timer_manager_;
-    
-    void eventProcessorLoop();
-    void handleInterProtocolCommunication(const ProtocolEvent& event);
-};
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
 ```
 
-## Rationale
+---
 
-### **Event-Driven Architecture Benefits**
+## Architecture Views
 
-- **Protocol Isolation**: Each protocol state machine operates independently
-- **Scalable Concurrency**: Event queue handles concurrent protocol operations
-- **Testability**: State machines can be tested independently with synthetic events
-- **Debugging**: Event history provides clear audit trail for protocol behavior
+### Logical View
 
-### **Timing Precision**
+**Purpose**: Show key abstractions and their relationships
 
-- **Dedicated Timer Manager**: High-precision timers for protocol timing requirements  
-- **Timer Coalescing**: Multiple timers combined for efficiency while maintaining precision
-- **Priority Scheduling**: Critical protocol timers have priority over non-critical operations
-- **Jitter Reduction**: Timer implementation minimizes timing jitter for AVDECC compliance
+**Elements**:
 
-### **Error Isolation**
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
 
-- **Exception Boundaries**: Protocol failures contained within individual state machines
-- **Health Monitoring**: State machines report health status for system diagnostics
-- **Recovery Mechanisms**: Automatic recovery from transient failures with exponential backoff
-- **Graceful Degradation**: System continues operation when individual protocols fail
+**Patterns**:
 
-## Consequences
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
 
-### **Positive Impacts**
+### Process View
 
-- **IEEE 1722.1 Compliance**: State machine architecture directly follows IEEE specification
-- **Concurrent Operation**: Protocols operate efficiently without blocking each other
-- **Real-time Performance**: Event-driven architecture meets professional audio timing requirements
-- **Maintainability**: Clear state separation enables focused development and debugging
-- **Scalability**: Architecture supports devices with hundreds of streams and connections
+**Purpose**: Show runtime behavior and concurrency
 
-### **Negative Impacts**
+**Key Processes**:
 
-- **Memory Overhead**: Event queues and state tracking require additional memory  
-- **Implementation Complexity**: Event-driven architecture has higher development complexity
-- **Debugging Complexity**: Concurrent state machines can be challenging to debug
-- **Event Latency**: Event queue processing adds small latency to protocol operations
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
 
-### **Risk Mitigation**
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
 
-- **Comprehensive Testing**: State machine testing with IEEE 1722.1 compliance test vectors
-- **Performance Monitoring**: Real-time monitoring of event queue depth and processing latency
-- **Event Tracing**: Detailed event logging for debugging complex protocol interactions
-- **Fallback Mechanisms**: Simplified protocol behavior when event queue overloads
+**Concurrency Strategy**:
 
-## Implementation Requirements
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
 
-- Event-driven state machine framework with microsecond-precision timers
-- Complete implementation of ADP, AECP, and ACMP state machines per IEEE 1722.1-2021
-- Thread-safe event queue with priority scheduling for critical protocol events
-- Comprehensive error handling with protocol isolation and recovery mechanisms
-- Performance monitoring and diagnostics for protocol health and timing compliance
-- Integration with hardware abstraction layer for network interface access
+### Development View
 
-## Verification Criteria
+**Layer Architecture**:
 
-- All protocol state machines pass IEEE 1722.1-2021 compliance testing
-- Protocol timing requirements met with <1ms jitter for critical operations
-- Concurrent protocol operation with no deadlocks or race conditions
-- State machine recovery from all defined error conditions within specification timeouts
-- Event processing latency <100μs for 99.9% of events under normal load
-- Memory usage scales predictably with number of active connections and commands
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
 
-**References**: IEEE 1722.1-2021, ADR-007 (Entity Model Architecture), ADR-001 (Hardware Abstraction)
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

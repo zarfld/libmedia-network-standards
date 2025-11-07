@@ -1,284 +1,89 @@
 ---
-title: IEEE 1588-2019 PTP v2.1 Architecture Specification
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1588_2019
+  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
+  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1588_2019_PTPV2_ARCHITECTURE_SPEC
+phase: 03-architecture
 specType: architecture
 standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
 phase: 03-architecture
 version: 1.0.0
-author: Standards Architecture Team
-date: '2025-10-12'
+author: {{AUTHOR}}
+date: 2025-02-15
 status: draft
-description: Complete C4 architecture specification for IEEE 1588-2019 Precision Time
-  Protocol v2.1 implementation with enterprise timing capabilities
 traceability:
   requirements:
-  - REQ-F-043
-  - REQ-F-044
-  - REQ-F-045
-  - REQ-F-046
-  - REQ-F-047
-  - REQ-F-048
-  - REQ-F-049
-  - REQ-F-050
-  - REQ-F-051
-  - REQ-F-052
-  - REQ-F-053
-  - REQ-F-054
-  - REQ-F-055
-  - REQ-F-056
-  - REQ-F-057
-  - REQ-F-058
-  - REQ-F-059
-  - REQ-F-060
-  - REQ-F-061
-  - REQ-F-062
-  - REQ-F-063
-  - REQ-F-064
-  - REQ-F-065
-  - REQ-F-066
-  - REQ-F-067
-  - REQ-F-068
-  - REQ-F-069
-  - REQ-F-070
-  - REQ-F-071
-  - REQ-F-072
-  - REQ-F-073
-  - REQ-F-074
-  - REQ-F-075
-  - REQ-F-076
-  - REQ-F-077
-  - REQ-F-078
-  - REQ-F-079
-  - REQ-F-080
-  - REQ-F-081
-  - REQ-F-082
-  - REQ-F-083
-  - REQ-F-084
-  - REQ-F-085
-  - REQ-F-086
-  - REQ-F-087
-  - REQ-F-088
-  - REQ-F-089
-  - REQ-F-090
-  - REQ-F-091
-  - REQ-F-092
-  architectureComponents:
-  - ARC-C-010
-  - ARC-C-011
-  - ARC-C-012
-  - ARC-C-013
-  - ARC-C-014
-  - ARC-C-015
-  - ARC-C-016
-  - ARC-C-017
-  decisions:
-  - ADR-010
-  - ADR-011
-  - ADR-012
-requirements:
-- REQ-F-1589
-- REQ-F-1590
-- REQ-F-1591
-- REQ-F-1592
-- REQ-F-1593
-- REQ-F-1594
-- REQ-F-1595
-- REQ-F-1596
-- REQ-F-1597
-- REQ-F-1598
-- REQ-F-1599
-- REQ-F-1600
-- REQ-F-1601
-- REQ-F-1602
-- REQ-F-1603
-- REQ-F-1604
-- REQ-F-1605
-- REQ-F-1606
-- REQ-F-1607
-- REQ-F-1608
-- REQ-F-1609
-- REQ-F-1610
-- REQ-F-1611
-- REQ-F-1612
-- REQ-F-1613
-- REQ-F-1614
-- REQ-F-1615
-- REQ-F-1616
-- REQ-F-1617
-- REQ-F-1618
-- REQ-F-1619
-- REQ-F-1620
-- REQ-F-1621
-- REQ-F-1622
-- REQ-F-1623
-- REQ-F-1624
-- REQ-F-1625
-- REQ-F-1626
-- REQ-F-1627
-- REQ-F-1628
-- REQ-F-1629
-- REQ-F-1630
-- REQ-F-1631
-- REQ-F-1632
-- REQ-F-1633
-- REQ-F-1634
-- REQ-F-1635
-- REQ-F-1636
-- REQ-F-1637
-- REQ-F-1638
----
-# IEEE 1588-2019 PTP v2.1 Architecture Specification
-
-**Standards Compliance**: ISO/IEC/IEEE 42010:2011 Architecture Description  
-**Protocol Standard**: IEEE 1588-2019 Precision Time Protocol version 2.1  
-**Document Version**: 1.0  
-**Date**: January 27, 2025  
-**Prepared by**: Standards-Compliant Software Development Team
-
-## Executive Summary
-
-This architecture specification defines a comprehensive, enterprise-grade implementation of IEEE 1588-2019 Precision Time Protocol (PTP) version 2.1, providing enhanced timing synchronization capabilities for professional media networking, industrial automation, and time-sensitive applications. The architecture emphasizes sub-microsecond accuracy, multi-domain support, enhanced security, and hardware abstraction for cross-platform deployment.
-
-### Key Architectural Objectives
-
-- **Enterprise Timing Foundation**: Enhanced precision beyond IEEE 802.1AS gPTP with sub-microsecond accuracy
-- **Multi-Domain Architecture**: Support for complex networking environments with domain isolation (0-127)
-- **Enhanced Security Framework**: Authentication, authorization, and integrity protection per IEEE 1588-2019 Annex K
-- **Comprehensive Management**: Remote configuration and monitoring capabilities with TLV framework
-- **Hardware Abstraction**: Cross-platform deployment with deterministic real-time performance
-- **Standards Integration**: Foundation for TSN and compatibility with existing OpenAvnu components
-
----
-
-## Architecture Decision Records
-
-### ADR-010: Multi-Layered Architecture with Hardware Abstraction
-
-**Status**: Accepted
-
-**Context**:
-IEEE 1588-2019 PTP requires enterprise-grade timing precision with deterministic behavior across multiple hardware platforms while maintaining strict separation between protocol logic and platform-specific implementations.
-
-**Decision**:
-Implement a multi-layered architecture with strict hardware abstraction, separating PTP protocol logic from platform-specific timing operations through dependency injection patterns.
-
-**Architecture Pattern**:
-
-```text
-Application Layer (PTP Applications)
-    ↓
-Protocol Layer (IEEE 1588-2019 Core)
-    ↓
-Abstraction Layer (Hardware Interface)
-    ↓
-Platform Layer (Intel/ARM/FPGA HAL)
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-**Consequences**:
+## Architecture Decision Record
 
-**Positive**:
+### ADR-001: [Decision Title]
 
-- Cross-platform portability with consistent behavior
-- Deterministic protocol implementation testable without hardware
-- Clear separation of concerns enabling focused development
-- Standards compliance verification independent of hardware
-
-**Negative**:
-
-- Additional abstraction layer adds minimal latency overhead
-- Interface design complexity for timing-critical operations
-
-**Alternatives Considered**:
-
-1. **Direct Hardware Integration**: Rejected due to portability limitations and testing complexity
-2. **Single Unified Layer**: Rejected due to mixing protocol and platform concerns
-
-**Compliance**: Addresses REQ-F-048 (Hardware Abstraction), REQ-F-092 (Configuration Management)
-
----
-
-### ADR-011: Event-Driven State Machine Architecture
-
-**Status**: Accepted
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
 **Context**:
-IEEE 1588-2019 defines complex state machines for Ordinary Clock (OC), Boundary Clock (BC), and Transparent Clock (TC) modes requiring deterministic state transitions with bounded execution time.
+[What is the architectural issue or challenge we're addressing?]
 
 **Decision**:
-Implement event-driven state machine architecture using hierarchical state machines with deterministic event processing and bounded execution guarantees.
-
-**Design Patterns**:
-
-- **Hierarchical State Machines**: Nested states for complex clock behaviors
-- **Event Queue Architecture**: Lock-free queues for deterministic event processing
-- **State Pattern Implementation**: Type-safe state transitions with compile-time validation
+[What architecture approach/pattern/technology have we chosen?]
 
 **Consequences**:
 
 **Positive**:
 
-- Deterministic behavior with bounded execution time
-- Clear separation of state machine logic from event processing
-- Testable state transitions with comprehensive coverage
-- IEEE 1588-2019 compliance through formal state machine implementation
+- [Benefit 1]
+- [Benefit 2]
 
 **Negative**:
 
-- State machine complexity requires careful design and validation
-- Event queue management adds minimal overhead
+- [Drawback 1]
+- [Trade-off]
 
 **Alternatives Considered**:
 
-1. **Polling-Based Architecture**: Rejected due to timing unpredictability
-2. **Thread-Per-Clock Model**: Rejected due to synchronization complexity and overhead
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-**Compliance**: Addresses REQ-F-043 (Enterprise Timing), REQ-F-047 (Deterministic Design), REQ-F-051 (Clock State Machines), REQ-F-053 (Ordinary Clock), REQ-F-054 (Boundary Clock)
-
----
-
-### ADR-012: Comprehensive Security and Management Framework
-
-**Status**: Accepted
-
-**Context**:
-IEEE 1588-2019 introduces enhanced security mechanisms and comprehensive management protocol requiring enterprise-grade authentication, authorization, and remote configuration capabilities.
-
-**Decision**:
-Implement layered security and management framework with pluggable authentication mechanisms, TLV-based extensibility, and comprehensive monitoring capabilities.
-
-**Security Architecture**:
-
-- **Authentication Layer**: Pluggable authentication mechanisms per IEEE 1588-2019 Annex K
-- **Authorization Framework**: Role-based access control for PTP operations
-- **Integrity Protection**: Message authentication and tamper detection
-- **Key Management**: Security association lifecycle management
-
-**Management Architecture**:
-
-- **TLV Framework**: Extensible Type-Length-Value message processing
-- **Configuration Engine**: Remote parameter configuration with validation
-- **Monitoring System**: Comprehensive metrics collection and reporting
-- **Diagnostic Framework**: Fault detection and performance assessment
-
-**Consequences**:
-
-**Positive**:
-
-- Enterprise-grade security suitable for critical infrastructure
-- Comprehensive management enabling large-scale deployment
-- Extensible architecture supporting future protocol enhancements
-- IEEE 1588-2019 compliance for security and management features
-
-**Negative**:
-
-- Security processing adds computational overhead
-- Management framework increases system complexity
-
-**Alternatives Considered**:
-
-1. **Basic Security Only**: Rejected due to enterprise requirements
-2. **Embedded Management**: Rejected due to scalability limitations
-
-**Compliance**: Addresses REQ-F-045 (Security), REQ-F-046 (Management), REQ-F-067 (Management Messages), REQ-F-092 (Configuration Management)
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
 ---
 
@@ -287,476 +92,512 @@ Implement layered security and management framework with pluggable authenticatio
 ### Context Diagram (C4 Level 1)
 
 ```mermaid
-graph TB
-    subgraph "Professional Media Network"
-        TSN[TSN Infrastructure]
-        AudioDevices[Professional Audio Devices]
-        VideoDevices[Professional Video Equipment]
-        NetworkSwitches[Managed Ethernet Switches]
-    end
+C4Context
+    title System Context Diagram - [System Name]
     
-    subgraph "Industrial Automation"
-        PLCs[Programmable Logic Controllers]
-        HMI[Human Machine Interfaces]
-        IndustrialSwitches[Industrial Ethernet Infrastructure]
-    end
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
     
-    subgraph "Time Distribution"
-        GNSS[GNSS Time Reference]
-        UTC[UTC Time Source]
-        LocalRef[Local Reference Clocks]
-    end
+    System(system, "[System Name]", "Primary system being built")
     
-    PTPSystem[IEEE 1588-2019 PTP System<br/>ARC-C-010]
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
     
-    TSN --> PTPSystem
-    AudioDevices --> PTPSystem
-    VideoDevices --> PTPSystem
-    NetworkSwitches --> PTPSystem
-    PLCs --> PTPSystem
-    HMI --> PTPSystem
-    IndustrialSwitches --> PTPSystem
-    
-    GNSS --> PTPSystem
-    UTC --> PTPSystem
-    LocalRef --> PTPSystem
-    
-    PTPSystem --> Management[Network Management Systems]
-    PTPSystem --> Monitoring[Time Sync Monitoring]
-    PTPSystem --> Security[Security Management]
-    
-    style PTPSystem fill:#e1f5fe
-    style Management fill:#f3e5f5
-    style Monitoring fill:#f3e5f5
-    style Security fill:#f3e5f5
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-**Context Relationships**:
+### Stakeholders and Concerns
 
-- **Professional Media Network**: Primary consumers requiring sub-microsecond timing precision
-- **Industrial Automation**: Time-sensitive control systems requiring deterministic timing
-- **Time Distribution**: Authoritative time sources providing UTC traceability
-- **Management Systems**: Enterprise infrastructure for configuration and monitoring
-- **Security Framework**: Authentication and authorization for network protection
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
 
 ---
 
 ## Container Diagram (C4 Level 2)
 
 ```mermaid
-graph TB
-    subgraph "IEEE 1588-2019 PTP System"
-        PTPCore[PTP Core Engine<br/>ARC-C-010<br/>C++17, Real-time]
-        ClockSM[Clock State Machine<br/>ARC-C-011<br/>Hierarchical FSM]
-        MessageProcessor[Message Processing Layer<br/>ARC-C-012<br/>Network I/O]
-        BMCA[Best Master Clock Algorithm<br/>ARC-C-013<br/>Decision Engine]
-        MultiDomain[Multi-Domain Manager<br/>ARC-C-014<br/>Domain Isolation]
-        Security[Security Framework<br/>ARC-C-015<br/>Auth/Authorization]
-        Management[Management Protocol<br/>ARC-C-016<br/>TLV Processing]
-        HAL[Hardware Abstraction Layer<br/>ARC-C-017<br/>Platform Interface]
-    end
+C4Container
+    title Container Diagram - [System Name]
     
-    subgraph "External Systems"
-        NetworkStack[Network Stack<br/>UDP/Ethernet]
-        TimerHardware[Hardware Timers<br/>Platform Specific]
-        Security_External[External Security<br/>Key Management]
-        Management_External[Management Client<br/>SNMP/REST API]
-        Applications[PTP Applications<br/>Time Consumers]
-    end
+    Person(user, "User")
     
-    PTPCore <--> ClockSM
-    PTPCore <--> MessageProcessor
-    PTPCore <--> BMCA
-    PTPCore <--> MultiDomain
-    PTPCore <--> Security
-    PTPCore <--> Management
-    PTPCore <--> HAL
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
     
-    MessageProcessor <--> NetworkStack
-    HAL <--> TimerHardware
-    Security <--> Security_External
-    Management <--> Management_External
-    PTPCore <--> Applications
-    
-    style PTPCore fill:#e1f5fe
-    style ClockSM fill:#e8f5e8
-    style MessageProcessor fill:#e8f5e8
-    style BMCA fill:#e8f5e8
-    style MultiDomain fill:#e8f5e8
-    style Security fill:#fff3e0
-    style Management fill:#fff3e0
-    style HAL fill:#fce4ec
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
 ```
 
-**Container Responsibilities**:
+### Container Specifications
 
-- **PTP Core Engine (ARC-C-010)**: Central coordination and IEEE 1588-2019 protocol orchestration
-- **Clock State Machine (ARC-C-011)**: OC/BC/TC state management with deterministic transitions
-- **Message Processing Layer (ARC-C-012)**: PTP message serialization, validation, and network I/O
-- **Best Master Clock Algorithm (ARC-C-013)**: Enhanced BMCA with IEEE 1588-2019 improvements
-- **Multi-Domain Manager (ARC-C-014)**: Domain isolation and cross-domain coordination (0-127)
-- **Security Framework (ARC-C-015)**: Authentication, authorization, and integrity protection
-- **Management Protocol (ARC-C-016)**: TLV-based configuration and monitoring capabilities
-- **Hardware Abstraction Layer (ARC-C-017)**: Cross-platform timing and network interface abstraction
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
 
 ---
 
-## Component Diagram (C4 Level 3) - PTP Core Engine
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
 
 ```mermaid
-graph TB
-    subgraph "PTP Core Engine (ARC-C-010)"
-        subgraph "Protocol State Management"
-            OrdinaryClock[Ordinary Clock<br/>INT-010<br/>OC State Machine]
-            BoundaryClock[Boundary Clock<br/>INT-011<br/>BC Multi-Port]
-            TransparentClock[Transparent Clock<br/>INT-012<br/>TC Forwarding]
-        end
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
         
-        subgraph "Timing Algorithms"
-            OffsetCalc[Offset Calculation<br/>INT-013<br/>Servo Algorithms]
-            DelayMeasure[Delay Measurement<br/>INT-014<br/>P2P/E2E]
-            FreqAdj[Frequency Adjustment<br/>INT-015<br/>Clock Correction]
-        end
-        
-        subgraph "Message Framework"
-            MessageRouter[Message Router<br/>INT-016<br/>Protocol Dispatch]
-            TLVProcessor[TLV Processor<br/>INT-017<br/>Extension Handler]
-            DatasetManager[Dataset Manager<br/>INT-018<br/>Config Storage]
-        end
-        
-        subgraph "Quality Assurance"
-            MetricsCollector[Metrics Collector<br/>INT-019<br/>Performance Monitor]
-            FaultDetector[Fault Detector<br/>INT-020<br/>Error Recovery]
-            Validator[Protocol Validator<br/>INT-021<br/>Compliance Check]
-        end
-    end
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
     
-    subgraph "External Interfaces"
-        ClockInterface[Clock State Machine<br/>ARC-C-011]
-        NetworkInterface[Network Layer<br/>ARC-C-012]
-        SecurityInterface[Security Framework<br/>ARC-C-015]
-        ManagementInterface[Management Protocol<br/>ARC-C-016]
-        HardwareInterface[Hardware Abstraction<br/>ARC-C-017]
-    end
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
     
-    OrdinaryClock <--> MessageRouter
-    BoundaryClock <--> MessageRouter
-    TransparentClock <--> MessageRouter
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
     
-    OffsetCalc <--> DelayMeasure
-    DelayMeasure <--> FreqAdj
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
     
-    MessageRouter <--> TLVProcessor
-    TLVProcessor <--> DatasetManager
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
     
-    MetricsCollector <--> FaultDetector
-    FaultDetector <--> Validator
-    
-    MessageRouter <--> ClockInterface
-    MessageRouter <--> NetworkInterface
-    TLVProcessor <--> SecurityInterface
-    DatasetManager <--> ManagementInterface
-    OffsetCalc <--> HardwareInterface
-    
-    style OrdinaryClock fill:#e1f5fe
-    style BoundaryClock fill:#e1f5fe
-    style TransparentClock fill:#e1f5fe
-    style OffsetCalc fill:#e8f5e8
-    style DelayMeasure fill:#e8f5e8
-    style FreqAdj fill:#e8f5e8
-    style MessageRouter fill:#fff3e0
-    style TLVProcessor fill:#fff3e0
-    style DatasetManager fill:#fff3e0
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
 ```
 
-**Component Responsibilities**:
-
-**Protocol State Management**:
-
-- **Ordinary Clock (INT-010)**: Single-port PTP clock implementation with enhanced precision
-- **Boundary Clock (INT-011)**: Multi-port clock with domain bridging capabilities
-- **Transparent Clock (INT-012)**: Message forwarding with residence time correction
-
-**Timing Algorithms**:
-
-- **Offset Calculation (INT-013)**: Enhanced servo algorithms for sub-microsecond accuracy
-- **Delay Measurement (INT-014)**: Peer-to-Peer and End-to-End delay mechanisms
-- **Frequency Adjustment (INT-015)**: Clock correction with enhanced calibration
-
-**Message Framework**:
-
-- **Message Router (INT-016)**: Protocol message dispatch with type validation
-- **TLV Processor (INT-017)**: Type-Length-Value extension processing
-- **Dataset Manager (INT-018)**: Configuration parameter management and persistence
-
 ---
 
-## Deployment Diagram
+## Architecture Views
 
-```mermaid
-graph TB
-    subgraph "Enterprise Data Center"
-        subgraph "Management Server (DEP-001)"
-            ManagementNode[PTP Management Server<br/>Linux/Docker<br/>8 Core, 32GB RAM]
-            MonitoringDB[(Time Sync Database<br/>PostgreSQL)]
-            WebUI[Management Web UI<br/>React/Node.js]
-        end
-        
-        subgraph "Core Network Infrastructure (DEP-002)"
-            CoreSwitch1[Core Switch 1<br/>Boundary Clock Mode<br/>Hardware Timestamps]
-            CoreSwitch2[Core Switch 2<br/>Boundary Clock Mode<br/>Hardware Timestamps]
-            Grandmaster[Grandmaster Clock<br/>GNSS Reference<br/>Intel x86 + GPS]
-        end
-    end
-    
-    subgraph "Professional Audio Studio (DEP-003)"
-        AudioSwitch[Audio Network Switch<br/>Transparent Clock<br/>TSN Capable]
-        AudioConsole[Digital Audio Console<br/>Ordinary Clock<br/>ARM Cortex-A]
-        AudioProcessors[Audio Processors<br/>Ordinary Clock<br/>Embedded Linux]
-    end
-    
-    subgraph "Industrial Automation (DEP-004)"
-        IndustrialSwitch[Industrial Ethernet<br/>Boundary Clock<br/>FPGA-based]
-        PLCSystem[PLC Controller<br/>Ordinary Clock<br/>Real-time OS]
-        HMISystem[HMI Terminal<br/>Ordinary Clock<br/>Windows IoT]
-    end
-    
-    Grandmaster <--> CoreSwitch1
-    Grandmaster <--> CoreSwitch2
-    CoreSwitch1 <--> CoreSwitch2
-    
-    CoreSwitch1 <--> AudioSwitch
-    CoreSwitch2 <--> IndustrialSwitch
-    
-    AudioSwitch <--> AudioConsole
-    AudioSwitch <--> AudioProcessors
-    
-    IndustrialSwitch <--> PLCSystem
-    IndustrialSwitch <--> HMISystem
-    
-    ManagementNode <--> CoreSwitch1
-    ManagementNode <--> CoreSwitch2
-    ManagementNode <--> Grandmaster
-    
-    style Grandmaster fill:#e1f5fe
-    style CoreSwitch1 fill:#e8f5e8
-    style CoreSwitch2 fill:#e8f5e8
-    style AudioSwitch fill:#fff3e0
-    style IndustrialSwitch fill:#fff3e0
-    style ManagementNode fill:#fce4ec
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
 ```
 
-**Deployment Architecture**:
+**Module Dependencies**:
 
-- **Management Server (DEP-001)**: Centralized configuration and monitoring with PostgreSQL backend
-- **Core Network Infrastructure (DEP-002)**: Grandmaster and boundary clocks with hardware timestamping
-- **Professional Audio Studio (DEP-003)**: Transparent and ordinary clocks for media applications
-- **Industrial Automation (DEP-004)**: FPGA-based boundary clocks for deterministic industrial timing
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
 ---
 
-## Quality Attribute Scenarios
+## Cross-Cutting Concerns
 
-### QA-SC-010: Timing Accuracy Performance
+### Security Architecture
 
-**Scenario**: Professional audio studio requires sub-microsecond timing synchronization across 50 audio devices during live broadcast production.
+**Authentication**:
 
-**Stimulus**: Network traffic variation up to 80% utilization with mixed PTP and media traffic  
-**Response**: PTP system maintains ±100ns accuracy across all devices  
-**Measure**: 99.9% of timing measurements within ±100ns tolerance over 24-hour period
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-**Architecture Tactics**:
+**Authorization**:
 
-- Hardware timestamp utilization for precision measurement
-- Enhanced servo algorithms with adaptive filtering
-- Multi-domain isolation preventing cross-traffic interference
-- Real-time priority scheduling for PTP message processing
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-**Compliance**: Addresses REQ-F-043 (Enterprise Timing), REQ-F-049 (Precision Algorithms)
+**Data Protection**:
 
-### QA-SC-011: Multi-Domain Scalability
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
 
-**Scenario**: Large industrial facility requires 32 isolated timing domains with 500+ devices across manufacturing floors.
+### Performance Architecture
 
-**Stimulus**: Simultaneous operation of 32 PTP domains with independent grandmaster clocks  
-**Response**: Domain isolation maintained with zero cross-domain interference  
-**Measure**: <1% CPU utilization increase per additional domain, memory usage linear with domain count
+**Optimization Strategies**:
 
-**Architecture Tactics**:
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
 
-- Efficient domain management with hash-based message routing
-- Per-domain state machine isolation with minimal shared state
-- Optimized memory management avoiding dynamic allocation
-- Lock-free data structures for concurrent domain processing
+**Performance Targets**:
 
-**Compliance**: Addresses REQ-F-044 (Multi-Domain), REQ-F-050 (Domain Support)
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
 
-### QA-SC-012: Security Framework Performance
+### Monitoring & Observability
 
-**Scenario**: Critical infrastructure deployment requires authenticated PTP messages without compromising timing accuracy.
+**Metrics** (Prometheus):
 
-**Stimulus**: 100% PTP message authentication with cryptographic validation  
-**Response**: Authentication overhead <10μs per message with maintained timing precision  
-**Measure**: Security processing completes within 10μs, timing accuracy degradation <±50ns
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
 
-**Architecture Tactics**:
+**Logs** (ELK Stack):
 
-- Hardware-accelerated cryptographic operations where available
-- Efficient security association caching and lookup
-- Pipelined authentication processing with timing isolation
-- Configurable security levels balancing performance and protection
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
 
-**Compliance**: Addresses REQ-F-045 (Security), REQ-F-052 (Authentication)
+**Traces** (Jaeger):
 
----
+- Distributed tracing across services
+- Performance bottleneck identification
 
-## Technology Stack Specification
+**Alerts**:
 
-### Core Implementation Technologies
-
-**Primary Programming Language**: C++17
-- **Justification**: Deterministic performance, zero-cost abstractions, extensive toolchain
-- **Real-time Features**: Bounded execution time, no garbage collection, predictable memory usage
-- **Standards Support**: ISO C++17 with carefully selected features for embedded compatibility
-
-**Hardware Abstraction Framework**: Custom HAL with dependency injection
-- **Interface Design**: Pure virtual base classes for platform abstraction
-- **Implementation Strategy**: Platform-specific implementations for Intel, ARM, FPGA
-- **Integration Pattern**: Compile-time and runtime polymorphism for flexibility
-
-### Protocol Processing Framework
-
-**Message Processing**: Zero-copy serialization with custom allocators
-- **Network I/O**: Asynchronous I/O with completion ports (Windows) / epoll (Linux)
-- **Buffer Management**: Ring buffers with lock-free producers/consumers
-- **Validation Framework**: Compile-time and runtime protocol compliance checking
-
-**State Machine Engine**: Hierarchical state machines with UML compliance
-- **Event Processing**: Type-safe event dispatch with compile-time validation
-- **State Persistence**: Optional state serialization for fault recovery
-- **Testing Support**: State machine simulation and verification tools
-
-### Security and Management Technologies
-
-**Cryptographic Framework**: OpenSSL 3.0+ or platform-specific acceleration
-- **Algorithm Support**: AES, HMAC, RSA/ECC for key exchange
-- **Hardware Acceleration**: Intel AES-NI, ARM Crypto Extensions where available
-- **Key Management**: Secure key storage with HSM integration capability
-
-**Management Protocol**: TLV framework with JSON/CBOR serialization
-- **Transport**: UDP with optional TLS for management traffic
-- **API Design**: RESTful management API with OpenAPI specification
-- **Monitoring**: Prometheus metrics with Grafana dashboard integration
-
-### Development and Testing Infrastructure
-
-**Build System**: CMake 3.20+ with cross-platform support
-- **Compiler Support**: GCC 9+, Clang 10+, MSVC 2019+
-- **Static Analysis**: Clang Static Analyzer, PVS-Studio, SonarQube integration
-- **Documentation**: Doxygen with architectural decision record generation
-
-**Testing Framework**: Multi-level testing approach
-- **Unit Testing**: Google Test with mock hardware interfaces
-- **Integration Testing**: Real hardware validation with timing accuracy measurement
-- **Conformance Testing**: IEEE 1588-2019 compliance test suite
-- **Performance Testing**: Latency and throughput benchmarks under load
-
-### Deployment and Operations
-
-**Platform Support**: Cross-platform deployment strategy
-- **Linux**: Real-time kernel (PREEMPT_RT) with hardware timestamp support
-- **Windows**: Windows 10/11 with enhanced timer resolution
-- **Embedded**: Yocto/Buildroot with custom BSP integration
-- **Containerization**: Docker with host network mode for timing precision
-
-**Monitoring and Observability**: Comprehensive telemetry framework
-- **Metrics**: Custom metrics with industry-standard export formats
-- **Logging**: Structured logging with configurable verbosity levels
-- **Tracing**: Optional distributed tracing for multi-node timing analysis
-- **Alerting**: Threshold-based alerting for timing accuracy violations
+- PagerDuty for critical alerts
+- Slack for warning alerts
 
 ---
 
-## Implementation Roadmap
+## Technology Stack
 
-### Phase 1: Foundation Architecture (Weeks 1-4)
-- Hardware Abstraction Layer implementation with Intel/ARM support
-- Core PTP message processing framework with serialization
-- Basic Ordinary Clock state machine implementation
-- Unit testing framework with mock hardware interfaces
-
-### Phase 2: Enhanced Protocol Features (Weeks 5-8)
-- Boundary Clock and Transparent Clock implementations
-- Enhanced Best Master Clock Algorithm with IEEE 1588-2019 improvements
-- Multi-domain support with domain isolation mechanisms
-- Integration testing with real hardware platforms
-
-### Phase 3: Security and Management (Weeks 9-12)
-- Security framework implementation with authentication mechanisms
-- Management protocol with TLV framework and remote configuration
-- Monitoring and diagnostic capabilities with metrics collection
-- Performance optimization and real-time behavior validation
-
-### Phase 4: Enterprise Features (Weeks 13-16)
-- Advanced servo algorithms for enhanced timing precision
-- Comprehensive fault detection and recovery mechanisms
-- Management API development with web-based configuration interface
-- IEEE 1588-2019 conformance testing and certification
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
 
 ---
 
-## Compliance Verification
+## Quality Attributes Scenarios
 
-### IEEE 1588-2019 Compliance Matrix
+### Scalability Scenario
 
-**Protocol Implementation**:
-- ✅ Message format compliance (Header, TLV, Payload validation)
-- ✅ State machine behavior (OC/BC/TC per specification)
-- ✅ BMCA implementation (Enhanced algorithm with IEEE 1588-2019 improvements)
-- ✅ Security framework (Authentication per Annex K)
-- ✅ Management protocol (TLV-based configuration and monitoring)
+**Scenario**: Black Friday traffic spike (10x normal)
 
-**Performance Requirements**:
-- ✅ Timing accuracy: Sub-microsecond precision capability
-- ✅ Scalability: Multi-domain support (0-127) with isolation
-- ✅ Determinism: Bounded execution time for real-time applications
-- ✅ Resource usage: Predictable memory consumption without dynamic allocation
+**Response**:
 
-**Quality Assurance**:
-- ✅ Cross-platform compatibility (Intel, ARM, FPGA)
-- ✅ Hardware abstraction with dependency injection
-- ✅ Comprehensive testing (unit, integration, conformance)
-- ✅ Standards traceability from requirements through implementation
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
 
----
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
 
-## Appendices
+### Availability Scenario
 
-### A. Traceability Matrix
+**Scenario**: Database primary fails
 
-| Architecture Component | Requirements Coverage | Design Elements |
-|----------------------|---------------------|----------------|
-| PTP Core Engine (ARC-C-010) | REQ-F-043, REQ-F-051 | Central protocol orchestration |
-| Clock State Machine (ARC-C-011) | REQ-F-047, REQ-F-051 | Deterministic state transitions |
-| Multi-Domain Manager (ARC-C-014) | REQ-F-044, REQ-F-050 | Domain isolation and coordination |
-| Security Framework (ARC-C-015) | REQ-F-045, REQ-F-052 | Authentication and authorization |
-| Hardware Abstraction (ARC-C-017) | REQ-F-048, REQ-F-054 | Cross-platform deployment |
+**Response**:
 
-### B. Interface Specifications
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
 
-Detailed interface specifications are maintained in separate documents:
-- `INT-010-021`: Internal component interfaces with type signatures
-- `API-PTP-001`: Public API specification for application integration
-- `HAL-PTP-001`: Hardware Abstraction Layer interface definitions
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
 
-### C. Performance Benchmarks
+### Security Scenario
 
-Performance targets and measurement methodology:
-- **Timing Accuracy**: ±100ns under typical network conditions
-- **Message Processing**: <10μs latency for PTP message handling
-- **Memory Usage**: <50MB baseline with linear scaling per domain
-- **CPU Utilization**: <5% under normal operation, <20% peak load
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
 
 ---
 
-**Document Control**: This architecture specification is maintained under version control with IEEE 1588-2019 compliance validation through automated testing and manual review processes. All architectural decisions must reference authoritative IEEE specifications and maintain traceability to stakeholder requirements.
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

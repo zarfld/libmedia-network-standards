@@ -1,583 +1,603 @@
 ---
-title: "IEEE 1588-2019 PTPv2 Technology Stack Specification"
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1588_2019
+  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
+  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1588_2019_PTPV2_TECHNOLOGY_STACK
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Standards Architecture Team"
-date: "2025-01-27"
-status: "approved"
-description: "Technology stack recommendations and implementation guidelines for IEEE 1588-2019 Precision Time Protocol v2.1"
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
-    - "REQ-F-047"
-    - "REQ-F-048"
-    - "REQ-F-058"
-    - "REQ-F-059"
-  architectureComponents:
-    - "ARC-C-010"
-    - "ARC-C-017"
-  decisions:
-    - "ADR-013"
----
-
-# IEEE 1588-2019 PTPv2 Technology Stack Specification
-
-**Standards Compliance**: IEEE 1588-2019 Precision Time Protocol version 2.1  
-**Architecture Reference**: ADR-013 Multi-Layered Architecture with Hardware Abstraction  
-**Document Version**: 1.0  
-**Date**: January 27, 2025  
-**Prepared by**: Standards-Compliant Software Development Team
-
-## Executive Summary
-
-This document specifies the comprehensive technology stack for implementing IEEE 1588-2019 Precision Time Protocol (PTP) v2.1 with enterprise-grade timing capabilities. The technology selection emphasizes deterministic performance, cross-platform compatibility, and maintainable architecture supporting sub-microsecond accuracy requirements.
-
----
-
-## Core Implementation Technologies
-
-### Primary Programming Language: C++17
-
-**Selection Rationale**:
-
-- **Deterministic Performance**: Zero-cost abstractions with predictable execution time
-- **Real-time Capabilities**: No garbage collection, bounded memory usage, precise timing control
-- **Cross-platform Support**: Mature toolchains for Intel x86, ARM, and FPGA platforms
-- **Standards Compatibility**: Extensive IEEE 1588-2019 implementation ecosystem
-
-**Specific C++17 Features Utilized**:
-
-- **std::optional**: Safe handling of optional PTP message fields and hardware capabilities
-- **std::variant**: Type-safe representation of different PTP message types and clock modes
-- **constexpr**: Compile-time constant evaluation for protocol constants and calculations
-- **std::chrono**: High-precision time representation with nanosecond resolution
-- **Smart Pointers**: RAII resource management for network interfaces and timers
-
-**Real-time Programming Guidelines**:
-
-- **No Dynamic Allocation**: All memory pre-allocated during initialization phase
-- **Bounded Execution Time**: All critical path functions guarantee completion within specified time limits
-- **Lock-free Programming**: Use atomic operations and lock-free data structures for timing-critical sections
-- **Exception Safety**: No exceptions in real-time paths, error codes for failure reporting
-
-### Hardware Abstraction Framework
-
-**Architecture Pattern**: Custom HAL with dependency injection and interface segregation
-
-**Core Abstraction Principles**:
-
-- **Pure Virtual Interfaces**: Platform-independent protocol implementation
-- **Compile-time Polymorphism**: Template-based optimizations where performance critical
-- **Runtime Capability Detection**: Dynamic feature discovery and graceful degradation
-- **Zero-overhead Abstraction**: Virtual function overhead eliminated in hot paths through inlining
-
-**Interface Design Strategy**:
-
-```cpp
-namespace IEEE::_1588::_2019::hal {
-
-// Interface segregation - separate concerns
-class TimestampInterface {
-public:
-    virtual Timestamp getCurrentTime() const = 0;
-    virtual nanoseconds getResolution() const = 0;
-};
-
-class NetworkInterface {
-public:
-    virtual Result sendPacket(const PTPPacket& packet) = 0;
-    virtual Result receivePacket(PTPPacket& packet, Timestamp& rxTime) = 0;
-};
-
-// Platform capability discovery
-class PlatformCapabilities {
-public:
-    bool supportsHardwareTimestamps() const;
-    bool supportsCryptographicAcceleration() const;
-    nanoseconds getTimerResolution() const;
-};
-
-} // namespace IEEE::_1588::_2019::hal
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
 ---
 
-## Protocol Processing Framework
+## System Context
 
-### Message Processing Architecture
+### Context Diagram (C4 Level 1)
 
-**Zero-Copy Serialization**: Custom binary serialization avoiding memory copies
-
-**Network I/O Strategy**:
-
-- **Linux**: epoll with edge-triggered notifications for minimal latency
-- **Windows**: I/O Completion Ports with overlapped I/O for scalability
-- **Embedded**: Lightweight cooperative scheduling with interrupt-driven packet reception
-
-**Buffer Management**:
-
-```cpp
-class PacketBufferPool {
-private:
-    alignas(64) std::array<PacketBuffer, MAX_CONCURRENT_PACKETS> buffers_;
-    std::atomic<uint32_t> allocationMask_;
-
-public:
-    PacketBuffer* acquireBuffer() noexcept;
-    void releaseBuffer(PacketBuffer* buffer) noexcept;
-};
-```
-
-**Message Validation Framework**:
-
-- **Compile-time Validation**: Template-based packet format verification
-- **Runtime Checks**: IEEE 1588-2019 compliance validation with detailed error reporting
-- **Performance Optimization**: Validation cache for repeated message patterns
-
-### State Machine Implementation
-
-**Hierarchical State Machine Engine**: UML-compliant state machine framework
-
-**Event Processing Model**:
-
-```cpp
-template<typename StateType, typename EventType>
-class StateMachine {
-private:
-    using TransitionFunction = StateType(*)(StateType current, const EventType& event);
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
     
-    StateType currentState_;
-    std::array<TransitionFunction, StateCount> transitions_;
-
-public:
-    void processEvent(const EventType& event) {
-        currentState_ = transitions_[static_cast<size_t>(currentState_)](currentState_, event);
-    }
-};
-```
-
-**State Persistence and Recovery**:
-
-- **Optional State Serialization**: For fault-tolerant deployments requiring state recovery
-- **Checkpoint Mechanisms**: Periodic state snapshots for long-running synchronization sessions
-- **Rollback Capabilities**: State restoration for error recovery scenarios
-
----
-
-## Security and Cryptographic Framework
-
-### Cryptographic Library Integration
-
-**Primary Library**: OpenSSL 3.0+ with hardware acceleration support
-
-**Algorithm Support Matrix**:
-
-- **Message Authentication**: HMAC-SHA256 for PTP message integrity
-- **Key Exchange**: Elliptic Curve Diffie-Hellman (ECDH) for secure key establishment
-- **Encryption**: AES-256-GCM for sensitive configuration data protection
-- **Digital Signatures**: ECDSA with P-256 curves for authentication certificates
-
-**Hardware Acceleration Utilization**:
-
-- **Intel Platforms**: AES-NI instruction set for accelerated cryptographic operations
-- **ARM Platforms**: ARM Crypto Extensions (ARMv8) for hardware-accelerated encryption
-- **FPGA Platforms**: Custom cryptographic co-processors for deterministic security processing
-
-**Performance Optimization Strategy**:
-
-```cpp
-class CryptoAccelerator {
-public:
-    virtual ~CryptoAccelerator() = default;
-    virtual Result authenticateMessage(const PTPMessage& message, 
-                                     const SecurityKey& key,
-                                     AuthenticationTag& tag) = 0;
-    virtual microseconds getProcessingLatency() const = 0;
-};
-
-class IntelCryptoAccelerator : public CryptoAccelerator {
-    // Intel AES-NI optimized implementation
-    Result authenticateMessage(const PTPMessage& message, 
-                             const SecurityKey& key,
-                             AuthenticationTag& tag) override;
-};
-```
-
-### Security Framework Architecture
-
-**Authentication Mechanisms**:
-
-- **Pre-shared Keys**: Symmetric key authentication for closed networks
-- **Public Key Infrastructure**: Certificate-based authentication for enterprise deployments
-- **Hardware Security Modules**: Integration with HSM for key storage and operations
-
-**Authorization and Access Control**:
-
-- **Role-Based Access Control**: Configurable permissions for PTP operations
-- **Domain Security Policies**: Per-domain security configuration and enforcement  
-- **Audit Trail**: Comprehensive logging of security-related events and decisions
-
----
-
-## Management and Configuration Framework
-
-### Management Protocol Implementation
-
-**TLV Framework**: Extensible Type-Length-Value message processing
-
-```cpp
-template<typename TLVType>
-class TLVProcessor {
-public:
-    using ProcessorFunction = Result(*)(const TLVType& tlv, PTPEngine& engine);
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
     
-    void registerProcessor(uint16_t tlvType, ProcessorFunction processor) {
-        processors_[tlvType] = processor;
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
     }
     
-    Result processTLV(const RawTLV& tlv, PTPEngine& engine) {
-        auto it = processors_.find(tlv.getType());
-        return (it != processors_.end()) ? it->second(tlv, engine) : Result::UnsupportedTLV;
-    }
-
-private:
-    std::unordered_map<uint16_t, ProcessorFunction> processors_;
-};
-```
-
-**Configuration Management**:
-
-- **JSON Configuration**: Human-readable configuration with schema validation
-- **Binary Configuration**: Optimized configuration format for embedded deployments
-- **Runtime Configuration**: Dynamic parameter updates without service restart
-
-**Monitoring and Telemetry**:
-
-- **Metrics Collection**: Prometheus-compatible metrics export
-- **Performance Counters**: Detailed timing and accuracy measurements
-- **Event Logging**: Structured logging with configurable verbosity levels
-
-### Remote Management Interface
-
-**Management API Design**:
-
-- **RESTful API**: HTTP-based management interface with OpenAPI specification
-- **WebSocket**: Real-time event streaming for monitoring applications
-- **SNMP Integration**: Traditional network management protocol support
-
-**Security Considerations**:
-
-- **TLS Encryption**: All management traffic encrypted in transit
-- **Authentication**: OAuth 2.0 or certificate-based client authentication
-- **Authorization**: Fine-grained permissions for management operations
-
----
-
-## Development and Testing Infrastructure
-
-### Build System and Toolchain
-
-**Build System**: CMake 3.20+ with cross-platform support and dependency management
-
-**Compiler Requirements**:
-
-- **GCC 9.0+**: Primary Linux compiler with C++17 support and optimization
-- **Clang 10.0+**: Alternative compiler for static analysis and cross-compilation
-- **MSVC 2019+**: Windows development with latest C++ standard library
-
-**Cross-Compilation Support**:
-
-```cmake
-# ARM cross-compilation example
-set(CMAKE_SYSTEM_NAME Linux)
-set(CMAKE_SYSTEM_PROCESSOR arm)
-set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-```
-
-**Static Analysis Integration**:
-
-- **Clang Static Analyzer**: Deep static analysis for bug detection
-- **PVS-Studio**: Commercial static analysis for critical code paths
-- **SonarQube**: Code quality metrics and technical debt management
-- **Coverity**: Security vulnerability scanning and compliance checking
-
-### Testing Framework Architecture
-
-**Multi-Level Testing Strategy**:
-
-**Unit Testing Framework**: Google Test with custom timing test utilities
-
-```cpp
-class TimingTestFixture : public ::testing::Test {
-protected:
-    void SetUp() override {
-        mockTimer_ = std::make_unique<MockTimerInterface>();
-        mockNetwork_ = std make_unique<MockNetworkInterface>();
-        ptpEngine_ = std::make_unique<PTPEngine>(mockNetwork_.get(), mockTimer_.get());
-    }
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
     
-    // Timing-specific test utilities
-    void expectTimingAccuracy(nanoseconds expected, nanoseconds tolerance) {
-        // Custom timing assertion with high-precision measurement
-    }
-
-private:
-    std::unique_ptr<MockTimerInterface> mockTimer_;
-    std::unique_ptr<MockNetworkInterface> mockNetwork_;
-    std::unique_ptr<PTPEngine> ptpEngine_;
-};
-```
-
-**Integration Testing Framework**:
-
-- **Hardware-in-the-Loop**: Real hardware validation with precision test equipment
-- **Network Simulation**: Configurable network conditions for robustness testing
-- **Multi-Platform Validation**: Automated testing across Intel, ARM, and FPGA targets
-
-**Performance and Conformance Testing**:
-
-- **IEEE 1588-2019 Compliance**: Automated test suite for standards conformance
-- **Timing Accuracy Measurement**: Sub-microsecond accuracy validation
-- **Scalability Testing**: Multi-domain performance under load conditions
-- **Security Testing**: Penetration testing and vulnerability assessment
-
-### Documentation Generation
-
-**API Documentation**: Doxygen with architectural decision record integration
-
-**Performance Documentation**: Automated benchmarking with historical trend analysis
-
-**Compliance Documentation**: Traceability matrix generation linking requirements to implementation
-
----
-
-## Platform-Specific Implementations
-
-### Linux Real-Time Platform
-
-**Real-Time Kernel Configuration**:
-
-- **PREEMPT_RT Patch**: Full preemptible kernel for deterministic timing
-- **CPU Isolation**: Dedicated CPU cores for PTP processing without interruption  
-- **Priority Configuration**: SCHED_FIFO scheduling for time-critical threads
-- **Memory Locking**: mlockall() to prevent page faults in timing-critical sections
-
-**Hardware Integration**:
-
-```cpp
-class LinuxHardwareInterface : public HardwareInterface {
-public:
-    Timestamp getCurrentTime() const override {
-        struct timespec ts;
-        clock_gettime(CLOCK_REALTIME, &ts);
-        return Timestamp::fromTimespec(ts);
-    }
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
     
-    Result setSystemTime(const Timestamp& time) override {
-        struct timespec ts = time.toTimespec();
-        return (clock_settime(CLOCK_REALTIME, &ts) == 0) ? 
-               Result::Success : Result::SystemError;
-    }
-};
-```
-
-### Windows Enterprise Platform
-
-**Windows-Specific Optimizations**:
-
-- **High Resolution Timers**: QueryPerformanceCounter for microsecond precision
-- **I/O Completion Ports**: Scalable asynchronous I/O for network operations
-- **Memory Management**: Large page support for performance-critical data structures
-- **Service Integration**: Windows Service framework for system-level deployment
-
-**Precision Timing Implementation**:
-
-```cpp
-class WindowsTimerInterface : public TimerInterface {
-private:
-    LARGE_INTEGER frequency_;
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
     
-public:
-    WindowsTimerInterface() {
-        QueryPerformanceFrequency(&frequency_);
-        // Request 1ms timer resolution
-        timeBeginPeriod(1);
-    }
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
     
-    Timestamp getCurrentTime() const override {
-        LARGE_INTEGER counter;
-        QueryPerformanceCounter(&counter);
-        return Timestamp::fromWindowsCounter(counter, frequency_);
-    }
-};
-```
-
-### Embedded ARM Platform
-
-**Resource-Constrained Optimizations**:
-
-- **Memory Pool Allocation**: Pre-allocated pools avoiding runtime allocation
-- **Cooperative Scheduling**: Lightweight task scheduling without full OS overhead
-- **Interrupt-Driven I/O**: Minimal latency packet processing with direct interrupt handlers
-- **Power Management**: Dynamic clock scaling coordination with timing requirements
-
-**Embedded-Specific Implementation**:
-
-```cpp
-class EmbeddedNetworkInterface : public NetworkInterface {
-private:
-    static constexpr size_t PACKET_POOL_SIZE = 32;
-    PacketBuffer packetPool_[PACKET_POOL_SIZE];
-    std::atomic<uint32_t> poolAllocationMask_{0};
-
-public:
-    Result sendPacket(const PTPPacket& packet) override {
-        // Direct hardware register access for minimal latency
-        return writeToEthernetController(packet.data(), packet.size());
-    }
-};
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
 ```
 
 ---
 
-## Quality Assurance and Compliance
+## Architecture Views
 
-### Performance Requirements Verification
+### Logical View
 
-**Timing Accuracy Validation**:
+**Purpose**: Show key abstractions and their relationships
 
-- **Target Accuracy**: ±100 nanoseconds under typical network conditions
-- **Measurement Infrastructure**: Hardware timestamp counters with nanosecond resolution
-- **Statistical Analysis**: Long-term stability analysis with environmental variation testing
-- **Regression Testing**: Automated performance regression detection
+**Elements**:
 
-**Scalability Requirements**:
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
 
-- **Multi-Domain Support**: Validation of 32 simultaneous domains with minimal resource impact
-- **Device Count**: Testing with 500+ synchronized devices per domain
-- **Network Load**: Performance under 80% network utilization with mixed traffic
-- **Memory Usage**: Linear memory scaling with domain and device count
+**Patterns**:
 
-### IEEE 1588-2019 Compliance Verification
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
 
-**Protocol Compliance Testing**:
+### Process View
 
-- **Message Format Validation**: All message types conform to IEEE 1588-2019 specification
-- **State Machine Verification**: Clock state transitions match specification requirements
-- **BMCA Implementation**: Best Master Clock Algorithm follows enhanced IEEE 1588-2019 rules
-- **Security Framework**: Authentication and authorization per Annex K requirements
+**Purpose**: Show runtime behavior and concurrency
 
-**Interoperability Testing**:
+**Key Processes**:
 
-- **Multi-Vendor Validation**: Interoperability with commercial IEEE 1588-2019 implementations
-- **Cross-Platform Testing**: Consistent behavior across Intel, ARM, and FPGA platforms
-- **Network Infrastructure**: Compatibility with managed switches and industrial Ethernet equipment
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
 
-### Security Assessment
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
 
-**Security Framework Validation**:
+**Concurrency Strategy**:
 
-- **Penetration Testing**: Professional security assessment of authentication and authorization mechanisms
-- **Cryptographic Validation**: FIPS 140-2 compliance for cryptographic implementations
-- **Key Management**: Secure key lifecycle management and rotation procedures
-- **Audit Compliance**: Comprehensive audit trail for security-related events
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
 
----
+### Development View
 
-## Deployment and Operations
+**Layer Architecture**:
 
-### Containerization Strategy
-
-**Docker Integration**: Multi-stage builds with minimal runtime dependencies
-
-```dockerfile
-# Multi-stage build for production deployment
-FROM ubuntu:22.04 as builder
-RUN apt-get update && apt-get install -y \
-    g++ cmake libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-COPY . /src
-WORKDIR /src
-RUN cmake -B build -DCMAKE_BUILD_TYPE=Release && \
-    cmake --build build --parallel
-
-FROM ubuntu:22.04 as runtime  
-RUN apt-get update && apt-get install -y libssl3 && \
-    rm -rf /var/lib/apt/lists/*
-COPY --from=builder /src/build/bin/ptpd /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/ptpd"]
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
 ```
 
-**Kubernetes Deployment**: DaemonSet configuration for infrastructure-wide timing synchronization
+**Module Dependencies**:
 
-### Monitoring and Observability
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
 
-**Metrics Export**: Prometheus-compatible metrics with Grafana dashboard templates
+// application/ - Depends on domain/
+import { User } from '../domain/User';
 
-**Key Performance Indicators**:
+export class CreateUserUseCase {
+  // Application orchestration
+}
 
-- **Timing Accuracy**: Real-time offset measurements with statistical analysis
-- **Network Performance**: Packet loss, jitter, and delay measurements
-- **Resource Utilization**: CPU, memory, and network bandwidth consumption
-- **Security Events**: Authentication failures and security policy violations
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
 
-**Alerting Framework**:
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
 
-- **Accuracy Degradation**: Alerts when timing accuracy exceeds configured thresholds
-- **Network Issues**: Detection of asymmetric delays and packet loss patterns
-- **Security Incidents**: Immediate alerting for authentication failures and policy violations
-- **System Health**: Resource exhaustion and performance degradation detection
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
 
-### Maintenance and Updates
+export class UserController {
+  // HTTP handling
+}
+```
 
-**Configuration Management**: GitOps-based configuration with version control and rollback capabilities
+### Physical/Deployment View
 
-**Update Procedures**: Rolling updates with timing accuracy preservation during transitions
+**Production Environment**:
 
-**Backup and Recovery**: State backup mechanisms for rapid recovery from system failures
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
 ---
 
-## Appendices
+## Cross-Cutting Concerns
 
-### A. Performance Benchmarks
+### Security Architecture
 
-**Target Performance Metrics**:
+**Authentication**:
 
-- **Message Processing Latency**: <10 microseconds for PTP message handling
-- **Clock Synchronization Accuracy**: ±100 nanoseconds under normal conditions
-- **Memory Footprint**: <50 MB baseline with <10 MB per additional domain
-- **CPU Utilization**: <5% under normal load, <20% during initial synchronization
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-### B. Compliance Checklist
+**Authorization**:
 
-**IEEE 1588-2019 Requirements**:
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-- ✅ Enhanced Best Master Clock Algorithm implementation
-- ✅ Multi-domain support with domain isolation
-- ✅ Security framework per Annex K requirements
-- ✅ Management protocol with TLV extensibility
-- ✅ Transparent and Boundary Clock support
+**Data Protection**:
 
-### C. Technology Dependencies
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
 
-**Runtime Dependencies**:
+### Performance Architecture
 
-- OpenSSL 3.0+ for cryptographic operations
-- Platform-specific timing libraries (timespec, QueryPerformanceCounter)
-- Network interface libraries (socket APIs, raw Ethernet access)
+**Optimization Strategies**:
 
-**Development Dependencies**:
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
 
-- CMake 3.20+ for cross-platform build management
-- Google Test for unit testing framework
-- Doxygen for API documentation generation
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
 
 ---
 
-**Document Control**: This technology stack specification is maintained under version control with automated validation of technology compatibility and performance requirements. Updates require architecture review and impact assessment across all supported platforms.
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

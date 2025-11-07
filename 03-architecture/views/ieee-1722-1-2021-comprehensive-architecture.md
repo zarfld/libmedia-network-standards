@@ -20,9 +20,7 @@ specType: architecture
 standard: '42010'
 status: draft
 traceability:
-  requirements:
-  - REQ-NF-001
-  - REQ-NF-004
+  requirements: []
 version: 1.0.0
 ---
 

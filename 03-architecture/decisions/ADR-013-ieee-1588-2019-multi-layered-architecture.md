@@ -1,349 +1,603 @@
 ---
-title: "ADR-013: IEEE 1588-2019 PTPv2 Multi-Layered Architecture with Hardware Abstraction"
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1588_2019
+  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
+  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: ADR-013
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Standards Architecture Team"
-date: "2025-01-27"
-status: "approved"
-description: "Architecture decision for IEEE 1588-2019 PTP v2.1 implementation using multi-layered architecture with strict hardware abstraction"
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
-    - "REQ-F-048"
-    - "REQ-F-054"
-    - "REQ-F-055"
-    - "REQ-F-056"
-    - "REQ-F-057"
-  architectureComponents:
-    - "ARC-C-010"
-    - "ARC-C-017"
-  relatedADRs:
-    - "ADR-001"
-    - "ADR-007"
+    - REQ-F-001
+    - REQ-NF-001
+```
+
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
 ---
 
-# ADR-013: IEEE 1588-2019 PTPv2 Multi-Layered Architecture with Hardware Abstraction
+## System Context
 
-## Status
+### Context Diagram (C4 Level 1)
 
-**Accepted** - January 27, 2025
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
 
-## Context
+### Stakeholders and Concerns
 
-IEEE 1588-2019 Precision Time Protocol (PTP) v2.1 requires enterprise-grade timing precision with sub-microsecond accuracy while supporting deployment across diverse hardware platforms including Intel x86, ARM embedded systems, and FPGA-based industrial controllers. The implementation must maintain deterministic behavior and strict timing requirements while remaining testable and maintainable across platforms.
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
 
-### Key Technical Challenges
+---
 
-**Cross-Platform Timing Precision Requirements**:
-- Sub-microsecond accuracy across Intel, ARM, and FPGA platforms
-- Hardware timestamp utilization where available, software fallback otherwise
-- Deterministic execution time regardless of underlying hardware capabilities
-- Real-time performance guarantees for industrial and professional media applications
+## Container Diagram (C4 Level 2)
 
-**Protocol Complexity Management**:
-- IEEE 1588-2019 defines complex interactions between Ordinary Clock (OC), Boundary Clock (BC), and Transparent Clock (TC) modes
-- Multi-domain support (0-127) with complete isolation requirements
-- Enhanced security framework with authentication and authorization mechanisms
-- Comprehensive management protocol with TLV extensibility
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
 
-**Testing and Validation Requirements**:
-- Protocol compliance verification independent of hardware platform
-- Unit testing without physical hardware dependencies
-- Integration testing with real hardware for timing accuracy validation
-- Continuous integration pipeline supporting multiple target platforms
+### Container Specifications
 
-## Decision
+#### Container: API Gateway
 
-Implement a **multi-layered architecture with strict hardware abstraction** using dependency injection patterns to separate IEEE 1588-2019 protocol logic from platform-specific timing operations.
+**Technology**: Node.js 18 + Express 4.x
 
-### Architecture Layers
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
 
 ```text
-┌─────────────────────────────────────────────────────────────┐
-│                 Application Layer                           │
-│            (PTP Applications, Management)                   │
-├─────────────────────────────────────────────────────────────┤
-│                 Protocol Layer                              │
-│         (IEEE 1588-2019 Core Implementation)               │
-│    • Clock State Machines (OC/BC/TC)                      │
-│    • Best Master Clock Algorithm (BMCA)                   │
-│    • Message Processing Framework                          │
-│    • Multi-Domain Manager                                  │
-│    • Security and Management Protocols                    │
-├─────────────────────────────────────────────────────────────┤
-│              Abstraction Layer                              │
-│           (Hardware Interface Definitions)                  │
-│    • Network Interface (send/receive packets)             │
-│    • Timer Interface (precision timing operations)        │
-│    • Clock Interface (hardware timestamp access)          │
-│    • Security Interface (cryptographic acceleration)      │
-├─────────────────────────────────────────────────────────────┤
-│                Platform Layer                               │
-│          (Hardware-Specific Implementations)               │
-│    • Intel HAL (x86, hardware timestamps)                 │
-│    • ARM HAL (embedded systems, software timing)          │
-│    • FPGA HAL (industrial, dedicated timing hardware)     │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
 ```
 
-### Interface Design Pattern
+**Module Dependencies**:
 
-**Core Abstraction Interfaces**:
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
 
-```cpp
-namespace IEEE::_1588::_2019::hal {
+// application/ - Depends on domain/
+import { User } from '../domain/User';
 
-// Network interface for packet transmission
-class NetworkInterface {
-public:
-    virtual ~NetworkInterface() = default;
-    virtual Result sendPacket(const PacketBuffer& packet, 
-                             const NetworkAddress& destination) = 0;
-    virtual Result receivePacket(PacketBuffer& packet, 
-                                NetworkAddress& source, 
-                                Timestamp& receivedAt) = 0;
-    virtual bool supportsHardwareTimestamps() const = 0;
-};
+export class CreateUserUseCase {
+  // Application orchestration
+}
 
-// Precision timing interface
-class TimerInterface {
-public:
-    virtual ~TimerInterface() = default;
-    virtual Timestamp getCurrentTime() const = 0;
-    virtual Result setPeriodicTimer(TimerHandle& handle, 
-                                   Duration interval, 
-                                   TimerCallback callback) = 0;
-    virtual nanoseconds getResolution() const = 0;
-    virtual bool supportsHardwareClock() const = 0;
-};
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
 
-// Hardware clock synchronization interface
-class ClockInterface {
-public:
-    virtual ~ClockInterface() = default;
-    virtual Result adjustFrequency(const FrequencyAdjustment& adjustment) = 0;
-    virtual Result setTimeOffset(const TimeOffset& offset) = 0;
-    virtual ClockQuality getClockQuality() const = 0;
-    virtual bool supportsPhaseAdjustment() const = 0;
-};
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
 
-} // namespace IEEE::_1588::_2019::hal
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
 ```
 
-### Dependency Injection Implementation
+### Physical/Deployment View
 
-**Protocol Layer Integration**:
+**Production Environment**:
 
-```cpp
-namespace IEEE::_1588::_2019::core {
-
-class PTPEngine {
-private:
-    std::unique_ptr<hal::NetworkInterface> networkInterface_;
-    std::unique_ptr<hal::TimerInterface> timerInterface_;
-    std::unique_ptr<hal::ClockInterface> clockInterface_;
-    
-public:
-    // Constructor dependency injection
-    PTPEngine(std::unique_ptr<hal::NetworkInterface> network,
-              std::unique_ptr<hal::TimerInterface> timer,
-              std::unique_ptr<hal::ClockInterface> clock)
-        : networkInterface_(std::move(network))
-        , timerInterface_(std::move(timer))
-        , clockInterface_(std::move(clock)) {}
-    
-    // Protocol implementation using abstractions
-    Result synchronizeClock(const SyncMessage& syncMsg) {
-        auto timestamp = timerInterface_->getCurrentTime();
-        // ... IEEE 1588-2019 synchronization algorithm
-        return clockInterface_->setTimeOffset(calculatedOffset);
-    }
-};
-
-} // namespace IEEE::_1588::_2019::core
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
 
-## Consequences
+**Infrastructure**:
 
-### Positive Outcomes
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
 
-**Cross-Platform Portability**:
-- Single IEEE 1588-2019 protocol implementation runs on Intel, ARM, and FPGA platforms
-- Platform-specific optimizations isolated in HAL implementations
-- Consistent behavior and compliance across all target hardware
-- Simplified porting to new hardware platforms through HAL implementation
+### Data View
 
-**Testability and Quality Assurance**:
-- Protocol logic testable with mock hardware interfaces
-- Unit tests run without physical hardware dependencies
-- Integration tests validate real hardware timing performance
-- Continuous integration pipeline supports automated compliance testing
+**Data Architecture**:
 
-**Maintainability and Standards Compliance**:
-- Clear separation between IEEE 1588-2019 protocol logic and hardware concerns
-- Protocol changes isolated from platform-specific implementations
-- Standards compliance verification independent of hardware platform
-- Reduced complexity in protocol state machine implementation
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-**Performance Optimization Opportunities**:
-- Hardware-specific optimizations in HAL layer without protocol changes
-- Runtime selection of optimal timing mechanisms per platform
-- Hardware acceleration utilization (Intel AES-NI, ARM Crypto Extensions)
-- Zero-copy packet processing where hardware supports it
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 
-### Negative Consequences
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
 
-**Additional Abstraction Overhead**:
-- Virtual function call overhead for timing-critical operations (~1-5ns per call)
-- Memory indirection through interface pointers
-- Slightly increased binary size due to interface definitions
+**Data Flow**:
 
-**Interface Design Complexity**:
-- Careful interface design required to support all hardware capabilities
-- Abstraction level must balance simplicity with hardware feature exposure
-- Interface evolution requires consideration of all platform implementations
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-**Implementation Coordination**:
-- Multiple platform HAL implementations must be maintained
-- Testing matrix expands to cover all protocol × platform combinations
-- Platform-specific expertise required for optimal HAL implementations
+**Caching Strategy**:
 
-### Risk Mitigation Strategies
-
-**Performance Impact Mitigation**:
-- Critical path functions use static polymorphism where possible
-- Hot path operations optimized with platform-specific inline implementations
-- Performance benchmarking across all target platforms
-- Hardware timestamp utilization bypassing abstraction for precision operations
-
-**Interface Evolution Management**:
-- Interface versioning strategy for backward compatibility
-- Capability flags for optional hardware features
-- Graceful degradation when hardware features unavailable
-- Comprehensive interface specification documentation
-
-## Alternatives Considered
-
-### Alternative 1: Direct Hardware Integration
-
-**Approach**: Implement IEEE 1588-2019 protocol with direct calls to platform-specific APIs.
-
-**Advantages**:
-- Maximum performance with no abstraction overhead
-- Direct access to all hardware-specific features
-- Simpler build system with fewer dependencies
-
-**Disadvantages**:
-- Separate implementation required for each target platform
-- Difficult to test without target hardware
-- Protocol logic mixed with platform-specific code
-- Standards compliance verification complicated by platform differences
-
-**Rejection Reason**: Violates maintainability requirements and makes cross-platform support infeasible for a comprehensive IEEE 1588-2019 implementation.
-
-### Alternative 2: Single Unified Implementation Layer
-
-**Approach**: Implement all functionality in a single layer with compile-time platform selection.
-
-**Advantages**:
-- Simpler architecture with fewer layers
-- Compile-time optimization opportunities
-- Direct control over all implementation details
-
-**Disadvantages**:
-- Mixing of protocol and platform concerns
-- Difficult to test individual components in isolation
-- Complex conditional compilation management
-- Reduced code reuse across platforms
-
-**Rejection Reason**: Creates maintenance burden and violates separation of concerns principle essential for standards compliance verification.
-
-### Alternative 3: Plugin-Based Architecture
-
-**Approach**: Load platform-specific implementations as runtime plugins.
-
-**Advantages**:
-- Ultimate flexibility in platform support
-- New platforms supported without recompilation
-- Clear separation of platform-specific code
-
-**Disadvantages**:
-- Runtime overhead of plugin loading and dispatch
-- Complex deployment and configuration management
-- Security concerns with runtime code loading
-- Not suitable for embedded systems with constrained resources
-
-**Rejection Reason**: Complexity and security concerns outweigh benefits for IEEE 1588-2019 implementation requirements.
-
-## Implementation Guidelines
-
-### HAL Implementation Requirements
-
-**Network Interface Implementation**:
-- Support both hardware and software timestamping
-- Handle Ethernet frame transmission with priority queue support
-- Implement multicast group management for PTP messages
-- Provide packet filtering capabilities for PTP message types
-
-**Timer Interface Implementation**:
-- Achieve highest possible resolution on target platform
-- Support both periodic and one-shot timer operations
-- Implement timer callback mechanisms with bounded latency
-- Provide calibration mechanisms for timing accuracy improvement
-
-**Clock Interface Implementation**:
-- Support frequency adjustment with parts-per-billion precision
-- Implement phase adjustment for rapid synchronization
-- Provide clock quality metrics (accuracy, stability, traceability)
-- Handle hardware clock access with appropriate privilege management
-
-### Testing Strategy
-
-**Unit Testing with Mock Interfaces**:
-- Mock implementations for all HAL interfaces
-- Protocol behavior testing with controlled timing sequences
-- Error condition testing with interface failure simulation
-- State machine validation with deterministic mock responses
-
-**Integration Testing with Real Hardware**:
-- Timing accuracy measurement with precision test equipment
-- Platform-specific performance benchmarking
-- Hardware feature utilization validation
-- Cross-platform compatibility verification
-
-**Conformance Testing**:
-- IEEE 1588-2019 protocol compliance validation
-- Multi-vendor interoperability testing
-- Standards certification test suite execution
-- Long-term stability and accuracy assessment
-
-## Related Decisions
-
-- **ADR-001**: OpenAvnu Hardware Abstraction - Establishes general HAL patterns
-- **ADR-007**: AVDECC Layered Architecture - Similar layering approach for device control
-- **ADR-011**: Event-Driven State Machine Architecture - Complements this decision
-- **ADR-012**: Security and Management Framework - Utilizes abstraction for security operations
-
-## Compliance Verification
-
-**IEEE 1588-2019 Requirements Coverage**:
-- ✅ Cross-platform implementation support (Section 5.2)
-- ✅ Hardware timestamp utilization where available (Section 7.3.4)
-- ✅ Software timestamp fallback mechanisms (Section 7.3.5)
-- ✅ Multi-domain support with isolation (Section 8.2)
-- ✅ Security framework integration (Annex K)
-
-**Quality Attribute Satisfaction**:
-- ✅ Portability: Single implementation across Intel/ARM/FPGA platforms
-- ✅ Testability: Mock interfaces enable comprehensive unit testing
-- ✅ Maintainability: Clear separation of protocol and platform concerns
-- ✅ Performance: Hardware optimization opportunities preserved through abstraction
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
 ---
 
-**Decision Authority**: Standards Architecture Team  
-**Implementation Timeline**: Foundation architecture phase (Weeks 1-4)  
-**Review Schedule**: Architecture review after HAL interface stabilization  
+## Cross-Cutting Concerns
 
-**Document Control**: This ADR is maintained under version control with traceability to IEEE 1588-2019 requirements and architecture components. Changes require architecture team approval and impact assessment across all supported platforms.
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

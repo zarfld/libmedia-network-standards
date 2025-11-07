@@ -1,170 +1,603 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1722_2016
+  title: IEEE 1722-2016 - Audio Video Transport Protocol (AVTP)
+  url: mcp://markitdown/standards/IEEE 1722-2016-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: ADR-005
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Team"
-date: "2025-10-12"
-status: "approved"
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
-    - "REQ-F-001"
-    - "REQ-F-002"
-    - "REQ-NF-001"
----
-
-# ADR-005: IEEE 1722-2016 AVTP Transport Architecture Pattern
-
-## Status
-Accepted
-
-## Context
-
-We need to implement IEEE 1722-2016 Audio Video Transport Protocol (AVTP) as the media transport layer for professional networking systems. AVTP provides standardized streaming for time-sensitive audio and video applications over Ethernet networks.
-
-### Key Requirements:
-- **Real-time Performance**: Sub-5ms audio latency, sub-16ms video latency
-- **Professional Quality**: Uncompressed multi-channel audio, 4K+ video support
-- **Hardware Independence**: Support for Intel, Broadcom, Marvell platforms
-- **Standards Compliance**: Full IEEE 1722-2016 protocol implementation
-- **Scalability**: 100+ concurrent streams, 512+ audio channels
-- **Integration**: Seamless integration with IEEE 802.1AS gPTP timing
-
-### Technical Challenges:
-- Complex packet formats (AAF audio, CVF/RVF video)
-- Real-time timing synchronization requirements
-- Hardware-specific optimizations vs. portability
-- Multi-format media processing complexity
-- Quality of Service coordination
-
-## Decision
-
-We will implement IEEE 1722-2016 AVTP using a **Layered Architecture with Hardware Abstraction Pattern**:
-
-### Core Architecture Pattern:
-1. **Protocol Layer** (Hardware Agnostic)
-   - Pure IEEE 1722-2016 protocol implementation
-   - Format-specific processors (AAF, CVF, RVF)
-   - Stream management and QoS coordination
-   - Integration with IEEE 802.1AS timing foundation
-
-2. **Hardware Abstraction Layer**
-   - C-based interface definitions for network, timing, memory operations
-   - Runtime capability discovery and optimization selection
-   - Vendor-independent API surface for protocol layer
-
-3. **Hardware Bridge Layer** (Vendor-Specific)
-   - Intel-specific implementations
-   - Broadcom-specific implementations  
-   - Marvell-specific implementations
-   - Generic fallback implementations
-
-### Key Architectural Components:
-
-#### AVTP Core Engine
-- **Packet Processor**: AVTPDU validation, parsing, and construction
-- **Stream Controller**: Stream lifecycle management and coordination
-- **Timestamp Manager**: gPTP integration and presentation time calculation
-- **QoS Manager**: Traffic shaping and priority queue coordination
-
-#### Format Processors
-- **AAF Handler**: Professional audio format processing
-- **CVF Handler**: Compressed video format processing (H.264/H.265/JPEG-XS)
-- **RVF Handler**: Raw video format processing (4K/8K uncompressed)
-
-#### Stream Processing
-- **Assembly Engine**: Packet sequencing and fragment reassembly
-- **Disassembly Engine**: Packet fragmentation and sequence management
-- **Buffer Manager**: Zero-copy buffer pools and memory optimization
-
-### Hardware Abstraction Interface:
-```c
-typedef struct {
-    // Network Operations
-    int (*send_packet)(const void* packet, size_t length, uint64_t timestamp);
-    int (*receive_packet)(void* buffer, size_t* length, uint64_t* timestamp);
-    int (*get_network_capabilities)(network_capabilities_t* caps);
-    
-    // Timing Operations  
-    uint64_t (*get_current_time)(void);
-    int (*schedule_event)(uint32_t delay_ns, event_callback_t callback);
-    int (*get_timing_accuracy)(timing_accuracy_t* accuracy);
-    
-    // Memory Operations
-    void* (*allocate_buffer)(size_t size, uint32_t alignment);
-    int (*free_buffer)(void* buffer);
-    int (*map_dma_buffer)(void* buffer, dma_mapping_t* mapping);
-} avtp_hardware_interface_t;
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-## Rationale
+## Architecture Decision Record
 
-### Pros:
-- **Standards Purity**: Protocol layer maintains complete IEEE 1722-2016 compliance
-- **Hardware Independence**: Single protocol implementation supports all platforms
-- **Performance Optimization**: Hardware-specific optimizations through abstraction
-- **Maintainability**: Clean separation of concerns, isolated vendor code
-- **Testability**: Mock hardware interfaces enable comprehensive unit testing
-- **Scalability**: Efficient resource management and parallel processing
-- **Real-time Determinism**: Predictable timing behavior across platforms
-- **Professional Quality**: Optimized for broadcast and production requirements
+### ADR-001: [Decision Title]
 
-### Cons:
-- **Complexity**: Additional abstraction layer adds architectural complexity
-- **Performance Overhead**: Function pointer indirection in critical paths
-- **Integration Effort**: Multiple hardware bridge implementations required
-- **Testing Scope**: Comprehensive testing across all supported platforms
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-### Risk Mitigation:
-- **Performance**: Inline functions and compiler optimizations minimize overhead
-- **Complexity**: Clear interface definitions and comprehensive documentation
-- **Integration**: Incremental hardware platform enablement
-- **Testing**: Automated testing framework with hardware simulation
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
 
-## Consequences
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
 
-### Implementation Requirements:
-1. **Protocol Layer Development**
-   - Pure C/C++ implementation with no hardware dependencies
-   - Comprehensive IEEE 1722-2016 protocol compliance
-   - Integration with IEEE 802.1AS gPTP timing foundation
-   - Format-specific optimizations for audio and video processing
+**Consequences**:
 
-2. **Hardware Abstraction Development**
-   - C interface definitions for all hardware operations
-   - Runtime capability discovery and optimization selection
-   - Performance-critical path optimizations
-   - Comprehensive error handling and diagnostics
+**Positive**:
 
-3. **Hardware Bridge Development**
-   - Intel platform integration (network adapters, timing hardware)
-   - Broadcom platform integration (switch chips, embedded systems)
-   - Marvell platform integration (automotive Ethernet, TSN controllers)
-   - Generic platform fallback for unsupported hardware
+- [Benefit 1]
+- [Benefit 2]
 
-### Testing Strategy:
-- **Unit Testing**: Mock hardware interfaces for protocol validation
-- **Integration Testing**: Real hardware validation on each platform
-- **Performance Testing**: Latency and throughput validation
-- **Interoperability Testing**: Multi-vendor professional equipment validation
+**Negative**:
 
-### Documentation Requirements:
-- **IEEE 1722-2016 Implementation Guide**: Protocol compliance documentation
-- **Hardware Abstraction API Reference**: HAL interface specifications
-- **Platform Integration Guide**: Hardware bridge implementation guidelines
-- **Performance Optimization Guide**: Platform-specific tuning recommendations
+- [Drawback 1]
+- [Trade-off]
 
-### Migration Path:
-1. **Phase 1**: Core protocol implementation with software timing
-2. **Phase 2**: Hardware abstraction layer and Intel platform bridge
-3. **Phase 3**: Broadcom and Marvell platform bridges
-4. **Phase 4**: Performance optimization and professional validation
+**Alternatives Considered**:
 
-This architecture ensures that IEEE 1722-2016 AVTP implementation maintains the highest standards compliance while providing the flexibility and performance required for professional media networking applications.
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
 ---
 
-**Decision Date**: January 27, 2025  
-**Status**: Accepted  
-**Supersedes**: None  
-**Referenced By**: ADR-006 (Hardware Abstraction Pattern)
+## System Context
+
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

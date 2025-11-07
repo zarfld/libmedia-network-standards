@@ -1,394 +1,600 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: CROSS_STANDARD_ARCHITECTURE_VIEWS
+phase: 03-architecture
+specType: architecture
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
 specType: architecture
 standard: 42010
 phase: 03-architecture
 version: 1.0.0
-author: Architecture Team
-date: "2025-10-12"
-status: approved
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
     - REQ-F-001
     - REQ-NF-001
-  architecture:
-    - ADR-001
-    - ADR-002
+```
+
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
 ---
 
-# Architecture Views for IEEE Media Networking Standards
+## System Context
 
-> Multi-viewpoint architecture description per ISO/IEC/IEEE 42010:2011 addressing stakeholder concerns
+### Context Diagram (C4 Level 1)
 
-## Overview
-
-This document provides **multiple architectural viewpoints** showing how the IEEE media networking standards architecture addresses different **stakeholder concerns** through focused views.
-
-## Stakeholder Analysis
-
-### Primary Stakeholders and Their Concerns
-
-| Stakeholder | Primary Concerns | Critical Questions |
-|-------------|------------------|-------------------|
-| **Standards Developers** | Pure protocol implementation, IEEE compliance | How to implement protocols without hardware dependencies? |
-| **Hardware Integrators** | Cross-vendor compatibility, performance | How to integrate with different hardware platforms efficiently? |
-| **System Architects** | Maintainability, testability, evolution | How to evolve standards without breaking existing systems? |
-| **Certification Bodies** | Standards compliance, interoperability | How to verify IEEE compliance across implementations? |
-| **Audio/Video Engineers** | Timing accuracy, latency, reliability | How to achieve <100ns timing with <1ms latency? |
-| **Product Managers** | Time-to-market, vendor flexibility | How to support multiple hardware vendors without code changes? |
-
-## Architecture Viewpoints
-
-### Viewpoint 1: Standards Layering View
-
-**Stakeholders**: Standards Developers, Certification Bodies  
-**Concerns**: IEEE compliance, protocol correctness, standards evolution  
-**Purpose**: Show how IEEE standards are implemented following specification layering
-
-#### Layering Structure
-
-```text
-┌─────────────────────────────────────────────────────┐
-│                Application Layer                    │
-│  ┌─────────────────────────────────────────────┐   │
-│  │        IEEE 1722.1-2021 (AVDECC)           │   │ ← Device Control & Discovery
-│  │  ┌─────────────┐ ┌─────────────┐ ┌────────┐ │   │
-│  │  │    AEM      │ │    AECP     │ │  ACMP  │ │   │
-│  │  │ (Entities)  │ │ (Control)   │ │(Streams)│ │   │
-│  │  └─────────────┘ └─────────────┘ └────────┘ │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-                          ↓ uses ↓
-┌─────────────────────────────────────────────────────┐
-│                 Transport Layer                     │
-│  ┌─────────────────────────────────────────────┐   │
-│  │          IEEE 1722-2016 (AVTP)             │   │ ← Audio/Video Streams  
-│  │  ┌─────────────┐ ┌─────────────┐ ┌────────┐ │   │
-│  │  │     AAF     │ │     CRF     │ │  TSCF  │ │   │
-│  │  │  (Audio)    │ │  (Clock)    │ │(Control)│ │   │
-│  │  └─────────────┘ └─────────────┘ └────────┘ │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-                          ↓ uses ↓
-┌─────────────────────────────────────────────────────┐
-│                  Timing Layer                       │
-│  ┌─────────────────────────────────────────────┐   │
-│  │        IEEE 802.1AS-2021 (gPTP)            │   │ ← Precision Timing
-│  │  ┌─────────────┐ ┌─────────────┐ ┌────────┐ │   │
-│  │  │    Sync     │ │  Path Delay │ │  BMCA  │ │   │
-│  │  │ (Messages)  │ │ (Measurement)│ │(Master)│ │   │
-│  │  └─────────────┘ └─────────────┘ └────────┘ │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-                          ↓ uses ↓
-┌─────────────────────────────────────────────────────┐
-│                Network Layer                        │
-│         IEEE 802.1Q-2018 (VLAN/QoS)                │ ← Network Foundation
-└─────────────────────────────────────────────────────┘
-```
-
-#### Interface Dependencies
-
-```cpp
-// Standards use interfaces from lower layers only
-IEEE::_1722_1::_2021::Controller controller(
-    timing_sync_interface,    // From IEEE 802.1AS
-    transport_interface       // From IEEE 1722
-);
-
-IEEE::_1722::_2016::AVTPEngine avtp_engine(
-    timing_sync_interface     // From IEEE 802.1AS only
-);
-
-IEEE::_802_1::AS::_2021::GPTPDomain gptp_domain(
-    network_interface         // Hardware abstraction only
-);
-```
-
-### Viewpoint 2: Hardware Abstraction View
-
-**Stakeholders**: Hardware Integrators, Product Managers  
-**Concerns**: Multi-vendor support, platform portability, hardware independence  
-**Purpose**: Show how standards remain hardware-agnostic while enabling integration
-
-#### Abstraction Architecture
-
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│                     Standards Layer                            │
-│  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐  │
-│  │  IEEE 1722.1    │ │   IEEE 1722     │ │  IEEE 802.1AS   │  │
-│  │   (AVDECC)      │ │    (AVTP)       │ │    (gPTP)       │  │
-│  │                 │ │                 │ │                 │  │
-│  │ Pure Protocol   │ │ Pure Protocol   │ │ Pure Protocol   │  │
-│  │ Implementation  │ │ Implementation  │ │ Implementation  │  │ 
-│  └─────────────────┘ └─────────────────┘ └─────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-           ↓ uses ↓              ↓ uses ↓              ↓ uses ↓
-┌─────────────────────────────────────────────────────────────────┐
-│                 Abstraction Layer                               │
-│  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐  │
-│  │  Transport      │ │  Timing Sync    │ │   Network       │  │
-│  │  Interface      │ │  Interface      │ │   Interface     │  │
-│  │                 │ │                 │ │                 │  │
-│  │ send_packet()   │ │ get_time_ns()   │ │ send_frame()    │  │
-│  │ register_stream()│ │ sync_notify()   │ │ receive_frame() │  │
-│  └─────────────────┘ └─────────────────┘ └─────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-           ↓ implements ↓        ↓ implements ↓        ↓ implements ↓
-┌─────────────────────────────────────────────────────────────────┐
-│                   Service Layer                                 │
-│  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐  │
-│  │  Intel AVB      │ │  Broadcom       │ │   Marvell       │  │
-│  │  Service        │ │  Service        │ │   Service       │  │
-│  │                 │ │                 │ │                 │  │
-│  │ intel_hal_*()   │ │ broadcom_*()    │ │ marvell_*()     │  │
-│  │ Integration     │ │ Integration     │ │ Integration     │  │
-│  └─────────────────┘ └─────────────────┘ └─────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-#### Multi-Vendor Deployment Pattern
-
-```cpp
-// Same standards code works with any hardware
-void deploy_ieee_stack(HardwareVendor vendor) {
-    // Hardware-specific service selection
-    std::unique_ptr<NetworkInterface> net_interface;
-    std::unique_ptr<TimerInterface> timer_interface;
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
     
-    switch(vendor) {
-        case INTEL:
-            net_interface = std::make_unique<IntelNetworkService>();
-            timer_interface = std::make_unique<IntelTimerService>();
-            break;
-        case BROADCOM:
-            net_interface = std::make_unique<BroadcomNetworkService>();
-            timer_interface = std::make_unique<BroadcomTimerService>();
-            break;
-        case MARVELL:
-            net_interface = std::make_unique<MarvellNetworkService>();
-            timer_interface = std::make_unique<MarvellTimerService>();
-            break;
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
     }
     
-    // Standards remain identical across vendors
-    IEEE::_802_1::AS::_2021::GPTPDomain gptp(*net_interface, *timer_interface);
-    IEEE::_1722::_2016::AVTPEngine avtp(gptp.get_timing_interface());
-    IEEE::_1722_1::_2021::Controller avdecc(avtp.get_transport_interface());
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
 }
 ```
 
-### Viewpoint 3: Timing Coordination View
+### Physical/Deployment View
 
-**Stakeholders**: Audio/Video Engineers, System Architects  
-**Concerns**: Timing accuracy, latency, synchronization, real-time behavior  
-**Purpose**: Show how nanosecond timing precision is maintained across all layers
+**Production Environment**:
 
-#### Timing Flow Architecture
-
-```text
-┌──────────────────────────────────────────────────────────────────┐
-│                   Grandmaster Clock                             │
-│              (IEEE 1588/802.1AS Source)                        │
-│                        ±20ns                                     │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ sync messages ↓
-┌──────────────────────────────────────────────────────────────────┐
-│              IEEE 802.1AS gPTP Domain                           │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │  Sync Message  │ │  Path Delay    │ │  Follow Up     │     │
-│  │   Processing   │ │  Measurement   │ │   Processing   │     │
-│  │     <50ns      │ │     <30ns      │ │     <20ns      │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-│                      Local Clock: ±80ns                        │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ timing sync ↓
-┌──────────────────────────────────────────────────────────────────┐
-│                IEEE 1722 AVTP Engine                            │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │  Presentation  │ │  Stream        │ │  Timing        │     │
-│  │  Time Calc     │ │  Scheduling    │ │  Validation    │     │
-│  │    <100ns      │ │    <200ns      │ │    <50ns       │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-│                   Stream Timing: <1ms latency                  │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ transport ↓
-┌──────────────────────────────────────────────────────────────────┐
-│              IEEE 1722.1 AVDECC Controller                      │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │   Command      │ │   Stream       │ │   Status       │     │
-│  │  Scheduling    │ │   Coordination │ │   Monitoring   │     │
-│  │    <500ns      │ │    <300ns      │ │    <100ns      │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-│                 Control Timing: <2ms response                  │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ application ↓
-┌──────────────────────────────────────────────────────────────────┐
-│                  Audio/Video Application                         │
-│              End-to-End Latency: <10ms                         │
-└──────────────────────────────────────────────────────────────────┘
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
 
-#### Timing Interface Coordination
+**Infrastructure**:
 
-```cpp
-class TimingCoordinator {
-    // Ensures timing accuracy cascades correctly through layers
-public:
-    void coordinate_timing() {
-        // 1. IEEE 802.1AS establishes synchronized time
-        if (gptp_domain_.is_synchronized()) {
-            auto sync_time = gptp_domain_.get_synchronized_time_ns();
-            
-            // 2. IEEE 1722 uses synchronized time for presentation timestamps
-            avtp_engine_.set_reference_time(sync_time);
-            
-            // 3. IEEE 1722.1 coordinates streams with timing requirements
-            avdecc_controller_.update_stream_timing(sync_time);
-        }
-        
-        // Verify timing accuracy propagation
-        verify_end_to_end_timing();
-    }
-    
-private:
-    void verify_end_to_end_timing() {
-        auto gptp_accuracy = gptp_domain_.get_timing_accuracy_ns();
-        auto avtp_latency = avtp_engine_.get_stream_latency_ns();  
-        auto avdecc_response = avdecc_controller_.get_response_time_ns();
-        
-        // Milan requirements verification
-        assert(gptp_accuracy <= 80);      // ±80ns gPTP accuracy
-        assert(avtp_latency <= 1000000);  // <1ms stream latency
-        assert(avdecc_response <= 2000000); // <2ms control response
-    }
-};
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
 ```
 
-### Viewpoint 4: Testing and Verification View
+**Data Flow**:
 
-**Stakeholders**: Standards Developers, Certification Bodies, System Architects  
-**Concerns**: Testability, verification, standards compliance, quality assurance  
-**Purpose**: Show how architecture enables comprehensive testing at all levels
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-#### Testing Architecture
+**Caching Strategy**:
 
-```text
-┌──────────────────────────────────────────────────────────────────┐
-│                     Unit Testing Layer                          │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │ IEEE 1722.1    │ │  IEEE 1722     │ │ IEEE 802.1AS   │     │
-│  │  Unit Tests    │ │  Unit Tests    │ │  Unit Tests    │     │
-│  │                │ │                │ │                │     │
-│  │ Mock Transport │ │ Mock Timing    │ │ Mock Network   │     │
-│  │ Mock Timing    │ │ Mock Network   │ │ Mock Timer     │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ integrates ↓
-┌──────────────────────────────────────────────────────────────────┐
-│                 Integration Testing Layer                        │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │   Cross-Layer  │ │   Hardware     │ │   Timing       │     │
-│  │  Protocol Test │ │ Abstraction    │ │ Coordination   │     │
-│  │                │ │     Test       │ │     Test       │     │
-│  │ Real Standards │ │ Mock Hardware  │ │ Real Timing    │     │
-│  │ Mock Hardware  │ │ Real Standards │ │ Real Standards │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-└──────────────────────────────────────────────────────────────────┘
-                              ↓ validates ↓
-┌──────────────────────────────────────────────────────────────────┐
-│                    System Testing Layer                          │
-│  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐     │
-│  │ IEEE Standards │ │   Multi-Vendor │ │   Performance  │     │
-│  │  Compliance    │ │ Interoperability│ │   & Timing     │     │
-│  │                │ │                │ │                │     │
-│  │ Real Hardware  │ │ Mixed Hardware │ │ Real Hardware  │     │
-│  │ Real Standards │ │ Real Standards │ │ Real Standards │     │
-│  └────────────────┘ └────────────────┘ └────────────────┘     │
-└──────────────────────────────────────────────────────────────────┘
-```
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
-#### TDD Testing Strategy (XP Practice)
-
-```cpp
-// RED: Write failing test first
-TEST(IEEE1722_1_AVDECC, EntityDiscoveryRequiresGPTPSync) {
-    MockTimingSyncInterface mock_timing;
-    MockTransportInterface mock_transport;
-    
-    // Expect: AVDECC should not discover entities without timing sync
-    EXPECT_CALL(mock_timing, is_synchronized())
-        .WillRepeatedly(Return(false));
-    
-    IEEE::_1722_1::_2021::Controller controller(mock_timing, mock_transport);
-    
-    // Should fail without timing synchronization
-    auto entities = controller.discover_entities();
-    EXPECT_TRUE(entities.empty());
-}
-
-// GREEN: Write minimal implementation to pass
-class Controller {
-public:
-    std::vector<EntityDescriptor> discover_entities() {
-        if (!timing_sync_.is_synchronized()) {
-            return {};  // Minimal implementation to pass test
-        }
-        // ... discovery implementation
-    }
-};
-
-// REFACTOR: Improve implementation while keeping test green
-class Controller {
-public:
-    std::vector<EntityDescriptor> discover_entities() {
-        // Improved: Check timing accuracy requirements
-        if (!timing_sync_.is_synchronized() || 
-            timing_sync_.get_timing_accuracy_ns() > MILAN_MAX_TIMING_ERROR_NS) {
-            log_warning("Timing not suitable for reliable discovery");
-            return {};
-        }
-        
-        // Enhanced discovery with timing validation
-        return perform_synchronized_discovery();
-    }
-};
-```
+---
 
 ## Cross-Cutting Concerns
 
 ### Security Architecture
-- **Authentication**: Each IEEE layer provides authentication hooks
-- **Authorization**: Layer-based permission model  
-- **Encryption**: Optional per-layer encryption support
-- **Integrity**: Packet validation and checksums at each layer
 
-### Performance Architecture  
-- **Zero-Copy**: Packet processing without memory copying where possible
-- **Lock-Free**: Timing-critical paths use lock-free data structures
-- **NUMA-Aware**: Memory allocation respects hardware topology
-- **Real-Time**: Priority inheritance and deadline scheduling
+**Authentication**:
 
-### Evolution Architecture
-- **Versioning**: Multiple IEEE standard versions coexist
-- **Migration**: Gradual migration paths between standard versions  
-- **Extensibility**: Plugin architecture for vendor extensions
-- **Backward Compatibility**: Legacy standard support maintained
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-## Architecture Validation
+**Authorization**:
 
-### Compliance Verification
-- ✅ **ADR-001 Compliance**: All hardware access via abstraction interfaces
-- ✅ **ADR-002 Compliance**: IEEE layering hierarchy strictly enforced  
-- ✅ **ISO 42010 Compliance**: Multiple viewpoints address all stakeholder concerns
-- ✅ **IEEE 1016 Compliance**: Design descriptions follow standard format
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-### Stakeholder Satisfaction
-- ✅ **Standards Developers**: Pure protocol implementations without hardware dependencies
-- ✅ **Hardware Integrators**: Single service layer integration point per vendor
-- ✅ **System Architects**: Clear separation of concerns with testable interfaces  
-- ✅ **Certification Bodies**: Individual layer certification plus integration testing
-- ✅ **Audio/Video Engineers**: <100ns timing accuracy with <1ms latency guaranteed
-- ✅ **Product Managers**: Multi-vendor hardware support without code changes
+**Data Protection**:
 
-This multi-viewpoint architecture ensures that **all stakeholder concerns are addressed** while maintaining **IEEE standards compliance** and enabling **practical deployment** across diverse hardware platforms.
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

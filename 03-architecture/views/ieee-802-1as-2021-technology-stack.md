@@ -1,375 +1,603 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_802_1AS_2021
+  title: ISO/IEC/IEEE 8802-1AS:2021 - Generalized Precision Time Protocol (gPTP)
+  url: mcp://markitdown/standards/ISO-IEC-IEEE 8802-1AS-2021-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_802_1AS_2021_TECHNOLOGY_STACK
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Team"
-date: "2025-10-12"
-status: "draft"
+standard: '42010'
+status: draft
 traceability:
-  requirements:
-    - "REQ-NF-002"
-    - "REQ-NF-003"
-    - "REQ-NF-004"
+  requirements: []
+version: 1.0.0
 ---
 
-# IEEE 802.1AS-2021 gPTP Technology Stack Recommendations
+# Architecture Specification Template
 
-## Architectural Decisions
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
 
-This technology stack implements:
-- **ADR-001**: Hardware Abstraction Interfaces - Generic timing hardware APIs
-- **ADR-002**: IEEE Standards Layering - gPTP as foundational timing layer
-- **ADR-003**: Multi-Domain Architecture - Domain isolation and cross-domain sync
-- **ADR-004**: Enhanced Path Delay Architecture - Dual P2P/E2E mechanisms
+---
 
-## Stakeholder Concerns
+## Metadata
 
-- **Audio Engineers**: Require deterministic real-time performance with microsecond precision
-- **Video Engineers**: Need consistent timing across distributed video production systems  
-- **Network Engineers**: Must integrate with existing network infrastructure and management
-- **Hardware Vendors**: Need portable APIs that work across different timing hardware
-- **System Integrators**: Require predictable performance and diagnostic capabilities
-
-## Architectural Viewpoints
-
-- **Performance Viewpoint**: Real-time constraints and timing precision requirements
-- **Portability Viewpoint**: Hardware abstraction enabling multi-vendor support
-- **Safety Viewpoint**: Deterministic behavior and fault tolerance requirements
-- **Integration Viewpoint**: Compatibility with existing network and audio/video systems
-
-## Core Technology Stack
-
-### Programming Language: C/C++
-**Rationale**: Real-time performance requirements, hardware access, existing ecosystem
-
-**Recommended Standards**:
-- **C17/C18** for core protocol implementation
-- **C++17** for object-oriented architecture components
-- **MISRA C** guidelines for safety-critical applications
-
-### Real-Time Operating System
-
-#### **Primary: FreeRTOS**
-```c
-// FreeRTOS configuration for gPTP
-#define configTICK_RATE_HZ              1000000  // 1μs tick for precision
-#define configMAX_PRIORITIES            16
-#define configUSE_PREEMPTION            1
-#define configUSE_TIME_SLICING          0        // Deterministic scheduling
-#define configCHECK_FOR_STACK_OVERFLOW  2
-
-// gPTP task priorities
-#define GPTP_SYNC_TASK_PRIORITY         (configMAX_PRIORITIES - 1)
-#define GPTP_PDELAY_TASK_PRIORITY       (configMAX_PRIORITIES - 2)  
-#define GPTP_BMCA_TASK_PRIORITY         (configMAX_PRIORITIES - 3)
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-#### **Alternative: Linux RT (PREEMPT_RT)**
-```c
-// Linux RT configuration
-#define GPTP_THREAD_POLICY              SCHED_FIFO
-#define GPTP_SYNC_PRIORITY              99
-#define GPTP_PDELAY_PRIORITY            98
-#define GPTP_MGMT_PRIORITY              50
+## Architecture Decision Record
 
-// CPU isolation for timing threads
-// Boot parameter: isolcpus=2,3 rcu_nocbs=2,3
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
+---
+
+## System Context
+
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-### Hardware Abstraction Layer
+### Stakeholders and Concerns
 
-#### **Timing Hardware Interface**
-```c
-typedef struct gptp_timing_hal {
-    // Hardware identification
-    char vendor_name[32];
-    char device_model[64];
-    uint32_t api_version;
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
     
-    // Timing capabilities
-    struct {
-        bool hardware_timestamping;
-        bool multi_domain_support;
-        uint32_t timestamp_resolution_ns;
-        uint32_t frequency_adjustment_ppb_max;
-    } capabilities;
+    Person(user, "User")
     
-    // Core timing operations
-    int (*get_time)(uint8_t domain, struct timespec* ts);
-    int (*set_time)(uint8_t domain, const struct timespec* ts);
-    int (*adjust_frequency)(uint8_t domain, int32_t ppb);
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
     
-    // Packet timestamping
-    int (*tx_timestamp)(const void* packet, size_t len, struct timespec* ts);
-    int (*rx_timestamp)(const void* packet, size_t len, struct timespec* ts);
-    
-    // Multi-domain operations
-    int (*create_domain)(uint8_t domain_id, const domain_config_t* config);
-    int (*destroy_domain)(uint8_t domain_id);
-} gptp_timing_hal_t;
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
 ```
 
-### Network Stack Integration
+### Container Specifications
 
-#### **Primary: Raw Ethernet**
-```c
-// Direct Ethernet frame processing for minimal latency
-typedef struct gptp_eth_interface {
-    int socket_fd;                      // Raw socket for gPTP frames
-    uint8_t local_mac[6];              // Local MAC address
-    uint16_t ethertype;                // 0x88F7 for gPTP
-    
-    // Hardware timestamping socket options
-    struct hwtstamp_config hw_config;
-    int timestamping_flags;            // SOF_TIMESTAMPING_*
-    
-    // Send/receive operations
-    ssize_t (*send_frame)(const void* frame, size_t len, struct timespec* tx_ts);
-    ssize_t (*recv_frame)(void* frame, size_t max_len, struct timespec* rx_ts);
-} gptp_eth_interface_t;
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
 ```
 
-#### **Alternative: AF_PACKET with PACKET_MMAP**
-```c
-// High-performance packet processing for Linux
-struct gptp_packet_ring {
-    void* ring_buffer;
-    uint32_t frame_size;
-    uint32_t frame_count;
-    uint32_t head;
-    uint32_t tail;
-};
-```
+---
 
-### Configuration Management
+## Component Diagram (C4 Level 3)
 
-#### **Primary: JSON Configuration**
-```json
-{
-    "gptp": {
-        "version": "802.1AS-2021",
-        "domains": [
-            {
-                "domain_number": 0,
-                "name": "default",
-                "priority1": 248,
-                "priority2": 248,
-                "sync_interval": -3,
-                "pdelay_interval": 0,
-                "path_delay_mechanism": "P2P"
-            },
-            {
-                "domain_number": 1, 
-                "name": "audio",
-                "priority1": 200,
-                "priority2": 200,
-                "sync_interval": -4,
-                "pdelay_interval": -1,
-                "path_delay_mechanism": "adaptive"
-            }
-        ],
-        "hardware": {
-            "vendor": "generic",
-            "timestamping": "hardware",
-            "fallback_to_software": true
-        }
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
     }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
 }
 ```
 
-#### **Management Interface: YANG Model**
-```yang
-// IEEE 802.1AS-2021 YANG model support
-module ieee802-dot1as-gptp {
-    namespace "urn:ieee:std:802.1AS:yang:ieee802-dot1as-gptp";
-    prefix "gptp";
-    
-    container gptp-system {
-        list domain {
-            key "domain-number";
-            leaf domain-number {
-                type uint8 { range "0..127"; }
-            }
-            leaf sync-interval {
-                type int8 { range "-7..7"; }
-            }
-            // ... additional configuration parameters
-        }
-    }
-}
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
 
-### Development and Testing Tools
+**Infrastructure**:
 
-#### **Static Analysis: PC-lint Plus**
-```c
-// Lint configuration for gPTP
-//lint -strong(AXJ)      // Strong type checking
-//lint -e534             // Ignoring return value
-//lint +fdi              // Start deferred identification
-//lint -e715             // Symbol not referenced
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
 ```
 
-#### **Dynamic Analysis: Valgrind**
-```bash
-# Memory leak detection for gPTP daemon
-valgrind --tool=memcheck \
-         --leak-check=full \
-         --track-origins=yes \
-         --show-reachable=yes \
-         ./gptp-daemon --config=test.json
-```
+**Data Flow**:
 
-#### **Performance Profiling: perf**
-```bash
-# Profile gPTP timing performance
-perf record -g -e cycles:u,instructions:u ./gptp-daemon
-perf report --sort=symbol
-```
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-### Build System: CMake
+**Caching Strategy**:
 
-```cmake
-cmake_minimum_required(VERSION 3.16)
-project(ieee802_1as_2021_gptp VERSION 1.0.0)
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
-# Hardware abstraction build options
-option(ENABLE_INTEL_TSN_HAL "Enable Intel TSN hardware support" OFF)
-option(ENABLE_BROADCOM_HAL "Enable Broadcom hardware support" OFF)
-option(ENABLE_MARVELL_HAL "Enable Marvell hardware support" OFF)
-option(ENABLE_SOFTWARE_FALLBACK "Enable software timestamping fallback" ON)
+---
 
-# Real-time requirements
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall -Wextra")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE -pthread")
+## Cross-Cutting Concerns
 
-# Hardware abstraction library
-add_library(gptp_core STATIC
-    src/core/bmca.c
-    src/core/multi_domain.c
-    src/core/path_delay.c
-    src/core/message_processing.c
-    src/core/state_machines.c
-)
+### Security Architecture
 
-# Platform-specific implementations
-if(ENABLE_INTEL_TSN_HAL)
-    add_library(gptp_intel_hal SHARED
-        src/platform/intel/intel_tsn_hal.c
-        src/platform/intel/intel_timing.c
-    )
-    target_link_libraries(gptp_core gptp_intel_hal)
-endif()
+**Authentication**:
 
-# Conformance testing
-add_executable(gptp_conformance_tests
-    tests/conformance/ieee_802_1as_2021_tests.c
-    tests/conformance/multi_domain_tests.c
-    tests/conformance/path_delay_tests.c
-)
-```
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-### Deployment Architecture
+**Authorization**:
 
-#### **Container-Based Deployment (Docker)**
-```dockerfile
-FROM ubuntu:22.04
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-# Install real-time kernel and dependencies
-RUN apt-get update && apt-get install -y \
-    linux-image-rt-amd64 \
-    ethtool \
-    ptp4l \
-    linuxptp
+**Data Protection**:
 
-# gPTP application
-COPY gptp-daemon /usr/local/bin/
-COPY config/ /etc/gptp/
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
 
-# Real-time configuration
-RUN echo 'kernel.sched_rt_runtime_us = -1' >> /etc/sysctl.conf
-RUN echo '* - rtprio 99' >> /etc/security/limits.conf
+### Performance Architecture
 
-ENTRYPOINT ["/usr/local/bin/gptp-daemon"]
-```
+**Optimization Strategies**:
 
-#### **Bare Metal Deployment**
-```c
-// Embedded systems configuration
-#define GPTP_STACK_SIZE_BYTES       8192
-#define GPTP_HEAP_SIZE_BYTES        65536
-#define GPTP_MAX_DOMAINS            16
-#define GPTP_MAX_PORTS              8
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
 
-// Memory allocation for real-time operation
-static uint8_t gptp_memory_pool[GPTP_HEAP_SIZE_BYTES] __attribute__((aligned(8)));
-static StaticTask_t gptp_sync_task_buffer;
-static StackType_t gptp_sync_stack[GPTP_STACK_SIZE_BYTES];
-```
+**Performance Targets**:
 
-## Vendor Hardware Integration
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
 
-### Intel Hardware Support
-```c
-// Intel i210/i225 TSN hardware integration
-struct intel_tsn_hal {
-    void __iomem* registers;
-    uint32_t clock_frequency;
-    bool supports_multi_domain;
-    
-    // Intel-specific operations
-    int (*configure_ieee1588_clock)(uint8_t domain);
-    int (*enable_hardware_timestamping)(bool enable);
-    int (*adjust_system_time)(int64_t offset_ns);
-};
-```
+### Monitoring & Observability
 
-### Broadcom Hardware Support  
-```c
-// Broadcom switch hardware integration
-struct broadcom_switch_hal {
-    uint32_t switch_id;
-    uint8_t port_count;
-    bool supports_boundary_clock;
-    
-    // Broadcom-specific operations  
-    int (*configure_switch_timing)(const timing_config_t* config);
-    int (*enable_port_timestamping)(uint8_t port, bool enable);
-    int (*get_switch_time)(struct timespec* ts);
-};
-```
+**Metrics** (Prometheus):
 
-### Marvell Hardware Support
-```c
-// Marvell automotive TSN integration
-struct marvell_automotive_hal {
-    uint32_t device_id;
-    automotive_profile_t profile;
-    bool supports_automotive_extensions;
-    
-    // Marvell-specific operations
-    int (*configure_automotive_profile)(automotive_profile_t profile);
-    int (*enable_safety_features)(bool enable);
-    int (*monitor_timing_quality)(timing_quality_t* quality);
-};
-```
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
 
-## Performance Characteristics
+**Logs** (ELK Stack):
 
-### Timing Requirements
-- **Synchronization Accuracy**: <500 nanoseconds
-- **Convergence Time**: <2 seconds from network join
-- **Message Processing Latency**: <10 microseconds
-- **Path Delay Measurement**: <1 microsecond resolution
-- **CPU Usage**: <5% on 1GHz ARM processor
-- **Memory Footprint**: <2MB RAM, <512KB code
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
 
-### Scalability Metrics  
-- **Maximum Domains**: 16 simultaneous
-- **Maximum Network Hops**: 20 bridge hops
-- **Message Rate**: 1000+ messages/second/port
-- **Network Size**: 1000+ nodes per domain
-- **Failover Time**: <100 milliseconds
+**Traces** (Jaeger):
 
-This technology stack provides a comprehensive foundation for implementing IEEE 802.1AS-2021 gPTP while maintaining hardware vendor independence and meeting professional media timing requirements.
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

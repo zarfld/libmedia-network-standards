@@ -1,533 +1,604 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1722_1_2021
+  title: IEEE 1722.1-2021 - Device Discovery, Connection Management and Control Protocol
+    for IEEE 1722
+  url: mcp://markitdown/standards/IEEE 1722.1-2021-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1722_1_2021_AVDECC_TECHNOLOGY_STACK
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Technology Team"
-date: "2025-10-12"
-status: "approved"
+standard: '42010'
+status: draft
 traceability:
-  requirements:
-    - "REQ-NF-001"
-    - "REQ-NF-002"
-    - "REQ-NF-003"
+  requirements: []
+version: 1.0.0
 ---
 
-# IEEE 1722.1-2021 AVDECC Technology Stack Recommendations
+# Architecture Specification Template
 
-**Standards Compliance**: IEEE Std 1722.1-2021 "IEEE Standard for Device Discovery, Connection Management, and Control Protocol for IEEE 802 Based Networks"  
-**Architecture Reference**: IEEE 1722.1-2021 AVDECC Architecture Specification  
-**Document Version**: 1.0  
-**Date**: October 12, 2025  
-**Prepared by**: Architecture Technology Team
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
 
-## Architectural Decisions
+---
 
-This technology stack implements:
-- **ADR-001**: Hardware Abstraction Interfaces - Generic AVDECC hardware APIs
-- **ADR-002**: IEEE Standards Layering - AVDECC device control above AVTP transport
-- **ADR-007**: IEEE 1722.1 AVDECC Entity Model Architecture - Comprehensive entity representation
-- **ADR-008**: IEEE 1722.1 Protocol State Machine Architecture - Event-driven protocol implementation
-- **ADR-009**: Milan Professional Audio Integration - Milan compatibility layer
+## Metadata
 
-## Stakeholder Concerns
-
-- **Audio Professionals**: Require reliable, low-latency device control for professional audio production
-- **Equipment Manufacturers**: Need complete IEEE 1722.1-2021 compliance with Milan certification capability
-- **Network Engineers**: Require efficient protocol implementation with predictable network behavior
-- **Software Developers**: Need maintainable, well-documented AVDECC implementation with comprehensive APIs
-
-## Architectural Viewpoints
-
-- **Protocol Viewpoint**: Complete IEEE 1722.1-2021 protocol implementation with state machine precision
-- **Performance Viewpoint**: Real-time device control with sub-millisecond command response requirements
-- **Integration Viewpoint**: Seamless integration with IEEE 1722 AVTP and IEEE 802.1AS gPTP layers
-- **Professional Viewpoint**: Milan professional audio profile support for broadcast and production environments
-
-## Core Technology Stack
-
-### Programming Language: C++17 with C Interfaces
-
-**Rationale**:
-- **Protocol Precision**: Exact control over IEEE 1722.1-2021 state machine implementation
-- **Real-time Performance**: Deterministic memory management and zero-overhead abstractions
-- **Hardware Integration**: Direct access to network hardware timestamping and control features
-- **Professional Ecosystem**: Industry standard for professional audio and networking equipment
-- **Standards Compliance**: Precise control over protocol timing and message formatting
-
-**Implementation Pattern**:
-```cpp
-// C++ implementation for complex protocol logic
-namespace IEEE::_1722_1::_2021 {
-    class AVDECCEntity {
-        // Complex state management and protocol implementation
-    };
-}
-
-// C interface for cross-platform compatibility
-extern "C" {
-    avdecc_handle_t avdecc_entity_create(const avdecc_config_t* config);
-    int avdecc_send_command(avdecc_handle_t handle, const aem_command_t* command);
-    int avdecc_get_entity_info(avdecc_handle_t handle, entity_info_t* info);
-}
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 ```
+
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
 
 **Alternatives Considered**:
-- **Pure C**: Maximum portability but complex for IEEE 1722.1 state machine management
-- **Rust**: Modern safety but limited professional audio ecosystem and hardware driver support
-- **Go**: Simplified concurrency but garbage collection incompatible with real-time requirements
 
-**Technology Constraints**:
-- **No Exceptions**: Real-time determinism requires error codes over exception handling
-- **No Dynamic Allocation**: Protocol processing uses pre-allocated memory pools
-- **Constexpr**: Compile-time computation for protocol constants and validation
-- **RAII**: Resource management for network handles and entity state
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-### Build System: CMake with Cross-Platform Support
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
-**Rationale**:
-- **Cross-platform**: Native support for Linux, Windows, and embedded targets
-- **IEEE Standards Integration**: Clean integration with existing IEEE protocol libraries
-- **Professional Tooling**: Industry standard for professional audio and networking software
-- **Package Management**: Integration with Conan and vcpkg for dependency management
+---
 
-**Configuration Pattern**:
-```cmake
-# IEEE 1722.1 AVDECC Implementation
-add_library(ieee_1722_1_2021 STATIC
-    IEEE/1722.1/2021/adp/adp_state_machine.cpp
-    IEEE/1722.1/2021/aecp/aecp_state_machine.cpp
-    IEEE/1722.1/2021/acmp/acmp_state_machine.cpp
-    IEEE/1722.1/2021/aem/entity_model.cpp
-)
+## System Context
 
-target_link_libraries(ieee_1722_1_2021
-    ieee_1722_2016              # AVTP transport dependency
-    ieee_802_1_as_2021          # gPTP timing dependency
-    avnu_milan_v12              # Milan extensions
-    standards_common            # Hardware abstraction
-)
+### Context Diagram (C4 Level 1)
 
-# Professional audio certification testing
-add_executable(avdecc_milan_certification_tests
-    tests/milan/test_discovery_extensions.cpp
-    tests/milan/test_stream_formats.cpp
-    tests/milan/test_redundancy_behavior.cpp
-)
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-## Device Control Technology Stack
+### Stakeholders and Concerns
 
-### Entity Model Framework: Template-Based Descriptors
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
 
-**Rationale**:
-- **Type Safety**: Compile-time validation of IEEE 1722.1-2021 descriptor structures
-- **Performance**: Zero-overhead abstraction over raw protocol structures  
-- **Extensibility**: Clean support for Milan extensions and vendor-specific descriptors
-- **Memory Efficiency**: Efficient packing and alignment for professional audio descriptor sets
+---
 
-**Implementation Approach**:
-```cpp
-// Template-based descriptor system
-template<typename DescriptorType>
-class Descriptor {
-public:
-    static constexpr uint16_t descriptor_type = DescriptorType::TYPE_VALUE;
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
     
-    bool validate() const { return static_cast<const DescriptorType*>(this)->validate_impl(); }
-    size_t serialize(uint8_t* buffer, size_t max_len) const;
-    bool deserialize(const uint8_t* buffer, size_t length);
-};
-
-// IEEE 1722.1-2021 entity descriptor
-struct EntityDescriptor : public Descriptor<EntityDescriptor> {
-    static constexpr uint16_t TYPE_VALUE = 0x0000;
+    Person(user, "User")
     
-    uint64_t entity_id;
-    uint64_t entity_model_id;
-    uint32_t entity_capabilities;
-    // ... other fields per IEEE specification
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
     
-    bool validate_impl() const;
-};
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
 ```
 
-### Protocol State Machine: Event-Driven Architecture
+### Container Specifications
 
-**Primary Choice**: Custom Event Loop with High-Precision Timers
+#### Container: API Gateway
 
-**Rationale**:
-- **IEEE 1722.1 Compliance**: Precise timing control for protocol state machines
-- **Real-time Performance**: Deterministic event processing without blocking operations
-- **Concurrent Protocols**: ADP, AECP, and ACMP operate simultaneously without interference
-- **Professional Audio**: Sub-millisecond command response for broadcast applications
+**Technology**: Node.js 18 + Express 4.x
 
-**Architecture Pattern**:
-```cpp
-class AVDECCProtocolEngine {
-private:
-    // High-precision event queue
-    EventQueue<ProtocolEvent, 1000> event_queue_;
-    
-    // IEEE 1722.1-2021 protocol state machines
-    std::unique_ptr<ADPStateMachine> adp_state_machine_;
-    std::unique_ptr<AECPStateMachine> aecp_state_machine_;
-    std::unique_ptr<ACMPStateMachine> acmp_state_machine_;
-    
-    // Hardware abstraction
-    NetworkInterface& network_interface_;
-    TimerManager& timer_manager_;
-    
-public:
-    void processEvents() {
-        while (auto event = event_queue_.tryDequeue()) {
-            distributeEvent(*event);
-        }
-    }
-};
-```
+**Responsibilities**:
 
-**Alternative Considerations**:
-- **Boost.Statechart**: Feature-rich but higher overhead than required for IEEE protocols
-- **QT State Machine**: GUI-focused, not optimized for network protocol timing requirements
-- **libev/libevent**: C-based, lacks type safety for IEEE 1722.1 message structures
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
 
-## Network Abstraction Technology Stack
+**Interfaces Provided**:
 
-### Hardware Abstraction Layer: Dependency Injection Pattern
+- REST API (JSON over HTTPS)
+- WebSocket connections
 
-**Interface Design**:
-```cpp
-// Hardware-agnostic network interface
-class NetworkInterface {
-public:
-    virtual ~NetworkInterface() = default;
-    
-    // IEEE 1722.1 packet transmission
-    virtual Result sendAVDECCPacket(const MacAddress& dest, const std::vector<uint8_t>& payload) = 0;
-    virtual Result registerPacketHandler(PacketType type, PacketHandler handler) = 0;
-    
-    // Hardware timestamping for precise AVDECC timing
-    virtual Result getHardwareTimestamp(std::chrono::nanoseconds& timestamp) = 0;
-    virtual bool supportsHardwareTimestamping() const = 0;
-    
-    // Network interface information
-    virtual MacAddress getLocalMacAddress() const = 0;
-    virtual std::string getInterfaceName() const = 0;
-    virtual NetworkCapabilities getCapabilities() const = 0;
-};
-```
+**Interfaces Required**:
 
-### Primary: Raw Ethernet with Hardware Timestamping
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
 
-**Rationale**:
-- **IEEE 1722.1 Requirement**: AVDECC operates directly over Ethernet (IEEE 802.3)
-- **Timing Precision**: Hardware timestamping essential for professional audio synchronization
-- **QoS Integration**: Direct integration with IEEE 802.1Q traffic classes for professional audio
-- **Multicast Support**: Native support for AVDECC multicast discovery and advertisement
+**Quality Attributes**:
 
-**Implementation Approach**:
-```cpp
-#ifdef _WIN32
-// Windows raw socket implementation
-class WindowsRawEthernet : public NetworkInterface {
-    SOCKET raw_socket_;
-    HANDLE completion_port_;
-    // Windows-specific implementation
-};
-#else
-// Linux AF_PACKET implementation  
-class LinuxRawEthernet : public NetworkInterface {
-    int socket_fd_;
-    struct sockaddr_ll socket_address_;
-    // Linux-specific implementation using AF_PACKET
-};
-#endif
-```
-
-## Professional Audio Extensions
-
-### Milan Compatibility Framework
-
-**Architecture**:
-```cpp
-namespace AVnu::Milan {
-
-class MilanExtensionManager {
-public:
-    // Milan version detection and negotiation
-    MilanVersion detectMilanVersion(const EntityDescriptor& entity) const;
-    bool validateMilanCompliance(const EntityModel& model) const;
-    
-    // Professional audio format support
-    std::vector<StreamFormat> getMilanSupportedFormats() const;
-    bool isRedundancyRequired(const StreamFormat& format) const;
-    
-    // Milan certification testing
-    bool runCertificationTests() const;
-    CertificationReport generateCertificationReport() const;
-};
-
-} // namespace AVnu::Milan
-```
-
-### Real-Time Operating System Integration
-
-#### Primary: FreeRTOS for Embedded Platforms
-
-**Configuration for AVDECC**:
-```c
-// FreeRTOS configuration for IEEE 1722.1 real-time requirements
-#define configTICK_RATE_HZ                1000000  // 1μs precision for AVDECC timing
-#define configMAX_PRIORITIES              16
-#define configUSE_PREEMPTION              1
-#define configUSE_TIME_SLICING            0        // Deterministic scheduling
-
-// AVDECC task priorities
-#define AVDECC_ADP_TASK_PRIORITY         (configMAX_PRIORITIES - 1)
-#define AVDECC_AECP_TASK_PRIORITY        (configMAX_PRIORITIES - 2)
-#define AVDECC_ACMP_TASK_PRIORITY        (configMAX_PRIORITIES - 3)
-#define AVDECC_TIMER_TASK_PRIORITY       (configMAX_PRIORITIES - 1)
-```
-
-#### Alternative: Linux Real-Time (PREEMPT_RT)
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
 
 **Configuration**:
-```c
-// Linux RT configuration for AVDECC
-#define AVDECC_THREAD_POLICY             SCHED_FIFO
-#define AVDECC_ADP_PRIORITY              99
-#define AVDECC_AECP_PRIORITY             98  
-#define AVDECC_ACMP_PRIORITY             97
-#define AVDECC_TIMER_PRIORITY            99
 
-// Real-time thread creation
-pthread_attr_t rt_attr;
-struct sched_param rt_param = { .sched_priority = AVDECC_ADP_PRIORITY };
-pthread_attr_setschedpolicy(&rt_attr, AVDECC_THREAD_POLICY);
-pthread_attr_setschedparam(&rt_attr, &rt_param);
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
 ```
 
-## Testing and Validation Framework
+---
 
-### IEEE 1722.1 Compliance Testing
+## Component Diagram (C4 Level 3)
 
-#### Primary: Google Test with IEEE Protocol Vectors
+### Application Service Components
 
-**Rationale**:
-- **Professional Standard**: Industry-standard C++ testing framework  
-- **IEEE Integration**: Custom matchers for IEEE 1722.1 protocol validation
-- **Performance Testing**: Benchmarking support for real-time requirements
-- **Mock Support**: Integration with Google Mock for hardware abstraction testing
-
-**Implementation Pattern**:
-```cpp
-// IEEE 1722.1-2021 compliance test framework
-class AVDECC1722_1_ComplianceTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        entity_model_ = std::make_unique<EntityModel>(test_entity_config_);
-        mock_network_ = std::make_shared<MockNetworkInterface>();
-        avdecc_engine_ = std::make_unique<AVDECCProtocolEngine>(
-            *entity_model_, *mock_network_);
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
     }
     
-    std::unique_ptr<EntityModel> entity_model_;
-    std::shared_ptr<MockNetworkInterface> mock_network_;
-    std::unique_ptr<AVDECCProtocolEngine> avdecc_engine_;
-};
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
 
-TEST_F(AVDECC1722_1_ComplianceTest, EntityAdvertisementTiming) {
-    // Test ADP advertisement timing per IEEE 1722.1-2021 Section 6.2.1.7
-    avdecc_engine_->startAdvertising();
-    
-    EXPECT_CALL(*mock_network_, sendAVDECCPacket(_, _))
-        .Times(AtLeast(1))
-        .WillRepeatedly(Return(Result::SUCCESS));
-    
-    // Verify advertisement timing compliance
-    auto start_time = std::chrono::steady_clock::now();
-    avdecc_engine_->processEvents();
-    auto end_time = std::chrono::steady_clock::now();
-    
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-    EXPECT_GE(elapsed.count(), 2000);  // Minimum 2 second interval
-    EXPECT_LE(elapsed.count(), 62000); // Maximum 62 second interval
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
 }
 ```
 
-### Milan Certification Framework
+### Physical/Deployment View
 
-**Automated Testing**:
-```cpp
-class MilanCertificationTestSuite {
-public:
-    struct CertificationResult {
-        bool discovery_compliance;
-        bool stream_format_compliance;
-        bool redundancy_compliance;
-        bool timing_compliance;
-        std::vector<std::string> failure_details;
-    };
-    
-    CertificationResult runFullCertification(const EntityModel& entity) const;
-    
-private:
-    bool testMilanDiscoveryExtensions(const EntityModel& entity) const;
-    bool testMilanStreamFormats(const EntityModel& entity) const;
-    bool testMilanRedundancyBehavior(const EntityModel& entity) const;
-    bool testMilanTimingRequirements(const EntityModel& entity) const;
-};
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
 
-## Performance Optimization Technologies
+**Infrastructure**:
 
-### Memory Management: Pre-allocated Pools
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
 
-**Real-time Memory Strategy**:
-```cpp
-// Pre-allocated memory pools for real-time AVDECC processing
-template<typename T, size_t PoolSize>
-class RealtimeMemoryPool {
-public:
-    T* allocate() {
-        if (free_list_.empty()) return nullptr;
-        T* ptr = free_list_.back();
-        free_list_.pop_back();
-        return ptr;
-    }
-    
-    void deallocate(T* ptr) {
-        if (ptr) free_list_.push_back(ptr);
-    }
-    
-private:
-    std::array<T, PoolSize> storage_;
-    std::vector<T*> free_list_;
-};
+### Data View
 
-// AVDECC message pools
-RealtimeMemoryPool<AEMCommand, 100> aem_command_pool_;
-RealtimeMemoryPool<ACMPMessage, 50> acmp_message_pool_;
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
 ```
 
-### Network Performance: Zero-Copy Packet Processing
+**Data Flow**:
 
-**High-Performance Packet Handling**:
-```cpp
-class ZeroCopyPacketProcessor {
-public:
-    // Direct hardware buffer access
-    void processIncomingPacket(const EthernetFrame& frame) {
-        // Parse AVDECC header without copying
-        const auto* avdecc_header = reinterpret_cast<const AVDECCHeader*>(
-            frame.payload_ptr());
-        
-        switch (avdecc_header->message_type) {
-            case AVDECC_ADP_MESSAGE:
-                processADPMessage(frame.payload_ptr(), frame.payload_size());
-                break;
-            case AVDECC_AECP_MESSAGE:
-                processAECPMessage(frame.payload_ptr(), frame.payload_size());
-                break;
-            // ... other message types
-        }
-    }
-};
-```
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-## Deployment and Operations Technology Stack
+**Caching Strategy**:
 
-### Configuration Management: JSON with Schema Validation
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
-**Primary Choice**: nlohmann::json with JSON Schema Validation
+---
 
-**AVDECC Configuration Format**:
-```json
-{
-  "entity": {
-    "entity_id": "0x0001020304050607",
-    "entity_model_id": "0x0011223344556677",
-    "entity_name": "Professional Audio Mixer",
-    "configurations": [
-      {
-        "configuration_index": 0,
-        "configuration_name": "Standard Configuration",
-        "stream_inputs": [
-          {
-            "stream_index": 0,
-            "stream_name": "Audio Input 1-8",
-            "formats": ["0x00A0020840001000"]
-          }
-        ]
-      }
-    ]
-  },
-  "milan": {
-    "enabled": true,
-    "version": "1.2",
-    "certification_level": 2,
-    "redundancy_support": true
-  }
-}
-```
+## Cross-Cutting Concerns
 
-### Monitoring and Diagnostics: Structured Logging
+### Security Architecture
 
-**Implementation**:
-```cpp
-// Structured logging for AVDECC protocol monitoring
-class AVDECCLogger {
-public:
-    enum class Level { DEBUG, INFO, WARNING, ERROR, CRITICAL };
-    
-    void logProtocolEvent(Level level, const std::string& protocol,
-                         const std::string& event, const json& details) {
-        json log_entry = {
-            {"timestamp", getCurrentTimestamp()},
-            {"level", levelToString(level)},
-            {"protocol", protocol},
-            {"event", event},
-            {"details", details}
-        };
-        
-        writeLogEntry(log_entry);
-    }
-    
-    // IEEE 1722.1-specific logging
-    void logADPEvent(const std::string& event, const EntityInfo& entity) {
-        logProtocolEvent(Level::INFO, "ADP", event, {
-            {"entity_id", entity.entity_id},
-            {"entity_name", entity.entity_name}
-        });
-    }
-};
-```
+**Authentication**:
 
-## Success Criteria
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-### Performance Requirements
-- **Command Response Time**: AEM commands processed within 100ms (simple) / 500ms (complex)
-- **Discovery Performance**: Entity discovery completed within 2 seconds of network connection
-- **Connection Establishment**: Stream connections established within 500ms including validation
-- **Memory Efficiency**: Memory usage scales linearly with entity count (O(n) complexity)
+**Authorization**:
 
-### Standards Compliance
-- **IEEE 1722.1-2021**: 100% compliance with all mandatory protocol requirements
-- **Milan Certification**: Pass AVnu Alliance Milan v1.2/v2.0a certification tests
-- **Interoperability**: Validated operation with major professional audio equipment vendors
-- **Multi-platform**: Consistent behavior across Windows and Linux operating systems
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-### Quality Metrics
-- **Test Coverage**: >90% code coverage with IEEE protocol compliance tests
-- **Real-time Performance**: <1ms jitter for 99.9% of protocol operations
-- **Memory Safety**: Zero memory leaks or buffer overflows in 24-hour stress testing
-- **Concurrent Operation**: Support 200+ simultaneous entities without performance degradation
+**Data Protection**:
 
-## References
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
 
-- **IEEE Std 1722.1-2021**: IEEE Standard for Device Discovery, Connection Management, and Control Protocol
-- **AVnu Milan Specification v1.2/v2.0a**: Professional Audio Profile for Time-Sensitive Networking
-- **IEEE Std 1722-2016**: Audio Video Transport Protocol (AVTP) dependency
-- **IEEE Std 802.1AS-2021**: Generalized Precision Time Protocol (gPTP) timing foundation
-- **Professional Audio Standards**: AES67, AES70, Milan professional audio specifications
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

@@ -1,529 +1,604 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1722_1_2021
+  title: IEEE 1722.1-2021 - Device Discovery, Connection Management and Control Protocol
+    for IEEE 1722
+  url: mcp://markitdown/standards/IEEE 1722.1-2021-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1722_1_2021_AVDECC_ARCHITECTURE_SPEC
+phase: 03-architecture
 specType: architecture
-standard: "42010"
-phase: "03-architecture"
-version: "1.0.0"
-author: "Architecture Team"
-date: "2025-10-12"
-status: "draft"
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
-    - "REQ-F-001"
-    - "REQ-F-002"
-    - "REQ-F-003"
-    - "REQ-NF-001"
-    - "REQ-NF-002"
-    - "REQ-NF-003"
----
-
-# IEEE 1722.1-2021 AVDECC Architecture Specification
-
-**Standards Compliance**: ISO/IEC/IEEE 42010:2011 Architecture Description  
-**Standard Reference**: IEEE Std 1722.1-2021 "IEEE Standard for Device Discovery, Connection Management, and Control Protocol for IEEE 802 Based Networks"  
-**Document Version**: 1.0  
-**Date**: October 12, 2025  
-**Prepared by**: Standards-Compliant Architecture Team
-
-## Architectural Decisions
-
-This architecture implements:
-- **ADR-001**: Hardware Abstraction Interfaces - Generic AVDECC hardware APIs
-- **ADR-002**: IEEE Standards Layering - AVDECC as device control layer above AVTP
-- **ADR-007**: IEEE 1722.1 AVDECC Entity Model Architecture - Comprehensive entity representation
-- **ADR-008**: IEEE 1722.1 Protocol State Machine Architecture - ADP/AECP/ACMP implementation
-- **ADR-009**: Milan Professional Audio Integration - Milan extension support pattern
-
-## Stakeholder Concerns
-
-- **Audio Engineers**: Require zero-configuration device discovery and reliable control for professional audio systems
-- **Equipment Manufacturers**: Need full IEEE 1722.1-2021 compliance with Milan compatibility for market acceptance
-- **Network Administrators**: Require secure, manageable, and monitorable device control infrastructure  
-- **Software Developers**: Need complete, well-documented API for building professional audio control applications
-- **Compliance Bodies**: Require verifiable standards compliance and certification capability
-
-## Architectural Viewpoints
-
-- **Device Control Viewpoint**: AVDECC entity model and control protocol behavior
-- **Network Integration Viewpoint**: Integration with AVTP transport and gPTP timing layers
-- **State Management Viewpoint**: Protocol state machines and entity lifecycle management
-- **Interoperability Viewpoint**: IEEE 1722.1-2021 and Milan professional audio compatibility
-- **Security Viewpoint**: Entity authentication, authorization, and secure control mechanisms
-
-## Architecture Quality Scenarios
-
-### QS-AVDECC-001: Device Discovery Performance
-- **Source**: Audio engineer connecting new device to network
-- **Stimulus**: New AVDECC entity joins network
-- **Environment**: Professional audio network with 50 existing devices
-- **Response**: Device discovered and available in control software
-- **Measure**: Discovery completed within 2 seconds of network connection
-
-### QS-AVDECC-002: Command Response Reliability  
-- **Source**: Control application sending AEM command to entity
-- **Stimulus**: READ_DESCRIPTOR command sent to remote entity
-- **Environment**: Network with 10ms latency and 0.1% packet loss
-- **Response**: Command processed and response delivered
-- **Measure**: 99.9% command success rate, <100ms response time
-
-### QS-AVDECC-003: Stream Connection Establishment
-- **Source**: User initiating audio stream connection
-- **Stimulus**: CONNECT_TX_COMMAND for professional audio stream
-- **Environment**: Milan-compliant network with QoS enabled
-- **Response**: Stream connection established with proper resource allocation
-- **Measure**: Connection established within 500ms with guaranteed bandwidth
-
-## C4 Architecture Model
-
-### Level 1: System Context Diagram
-
-The AVDECC system enables device discovery, control, and connection management in professional audio networks:
-
-```mermaid
-graph TB
-    AudioEng[Audio Engineer<br/>Configures and monitors<br/>professional audio devices]
-    NetAdmin[Network Administrator<br/>Manages network infrastructure<br/>and device security]
-    
-    AVDECC[IEEE 1722.1 AVDECC<br/>Device Discovery, Control<br/>and Connection Management]
-    
-    AudioDevice[Professional Audio Device<br/>Milan-compliant streaming<br/>audio equipment]
-    NetworkInfra[TSN Network Infrastructure<br/>IEEE 802.1Q bridges with<br/>QoS and timing sync]
-    gPTP[IEEE 802.1AS gPTP<br/>Precision timing<br/>synchronization service]
-    AVTP[IEEE 1722 AVTP<br/>Audio/video stream<br/>transport protocol]
-    
-    AudioEng --> AVDECC
-    NetAdmin --> AVDECC
-    AVDECC --> AudioDevice
-    AVDECC --> NetworkInfra
-    AVDECC --> gPTP
-    AVDECC --> AVTP
-    
-    classDef person fill:#08427b,stroke:#052e56,stroke-width:2px,color:#fff
-    classDef system fill:#1168bd,stroke:#0b4884,stroke-width:2px,color:#fff
-    classDef external fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class AudioEng,NetAdmin person
-    class AVDECC system
-    class AudioDevice,NetworkInfra,gPTP,AVTP external
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-### Level 2: Container Diagram
+## Architecture Decision Record
 
-The AVDECC system consists of three main protocol containers:
+### ADR-001: [Decision Title]
 
-```mermaid
-graph TB
-    subgraph "IEEE 1722.1 AVDECC System"
-        ADP[ADP Container<br/>AVDECC Discovery Protocol<br/>Entity advertisement and discovery]
-        AECP[AECP Container<br/>Enumeration and Control Protocol<br/>Device control and configuration]
-        ACMP[ACMP Container<br/>Connection Management Protocol<br/>Stream connection establishment]
-        
-        EntityDB[(Entity Database<br/>PostgreSQL/SQLite<br/>Device and capability storage)]
-        
-        MilanExt[Milan Extensions<br/>C++ Library<br/>Professional audio profiles]
-        NetInterface[Network Interface Abstraction<br/>C++ Hardware Abstraction<br/>Multi-platform networking]
-    end
-    
-    AudioApp[Audio Control Application] --> AECP
-    AudioApp --> ACMP
-    
-    ADP --> EntityDB
-    AECP --> EntityDB
-    ACMP --> EntityDB
-    
-    AECP --> MilanExt
-    
-    ADP --> NetInterface
-    AECP --> NetInterface
-    ACMP --> NetInterface
-    
-    NetInterface --> AVTPTransport[IEEE 1722 AVTP Transport]
-    NetInterface --> gPTPService[IEEE 802.1AS gPTP Service]
-    
-    classDef container fill:#438dd5,stroke:#2e6da4,stroke-width:2px,color:#fff
-    classDef database fill:#8fbc8b,stroke:#5d8b5d,stroke-width:2px,color:#fff
-    classDef external fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class ADP,AECP,ACMP,MilanExt,NetInterface container
-    class EntityDB database
-    class AudioApp,AVTPTransport,gPTPService external
-```
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-### Level 3: Component Diagram - AECP Container
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
 
-The AECP container handles entity enumeration and control:
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
 
-```mermaid
-graph TB
-    subgraph "AECP Container"
-        AEMProcessor[AEM Command Processor<br/>Processes AEM commands<br/>and generates responses]
-        
-        EntityModel[Entity Model Manager<br/>Manages entity descriptors<br/>and configurations]
-        
-        CommandDispatcher[Command Dispatcher<br/>Routes commands to<br/>appropriate handlers]
-        
-        ResponseManager[Response Manager<br/>Manages command timeouts<br/>and retransmissions]
-        
-        MilanHandler[Milan Command Handler<br/>Processes Milan-specific<br/>MVU commands]
-    end
-    
-    subgraph "External Dependencies"
-        EntityDB[(Entity Database)]
-        MilanLib[Milan Extensions Library]
-        NetworkLayer[Network Interface Abstraction]
-    end
-    
-    AudioApp[Audio Control Application] --> CommandDispatcher
-    
-    CommandDispatcher --> AEMProcessor
-    CommandDispatcher --> MilanHandler
-    
-    AEMProcessor --> EntityModel
-    AEMProcessor --> ResponseManager
-    
-    EntityModel --> EntityDB
-    MilanHandler --> MilanLib
-    
-    ResponseManager --> NetworkLayer
-    
-    classDef component fill:#85bbf0,stroke:#5d9cdb,stroke-width:2px,color:#fff
-    classDef external fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class AEMProcessor,EntityModel,CommandDispatcher,ResponseManager,MilanHandler component
-    class EntityDB,MilanLib,NetworkLayer,AudioApp external
-```
+**Consequences**:
 
-### Level 4: Code Diagram - Entity Model Manager
+**Positive**:
 
-The Entity Model Manager implements IEEE 1722.1-2021 entity representation:
+- [Benefit 1]
+- [Benefit 2]
 
-```mermaid
-classDiagram
-    class EntityModelManager {
-        +getEntityDescriptor() EntityDescriptor
-        +getConfigurationDescriptor(uint16) ConfigurationDescriptor  
-        +getStreamDescriptor(uint16, uint16) StreamDescriptor
-        +validateEntityModel() bool
-        +updateConfiguration(uint16) Result
-        -entityDescriptor: EntityDescriptor
-        -configurations: vector~ConfigurationDescriptor~
-        -validateDescriptorReferences() bool
-    }
-    
-    class EntityDescriptor {
-        +entity_id: uint64
-        +entity_model_id: uint64
-        +entity_capabilities: uint32
-        +talker_stream_sources: uint16
-        +talker_capabilities: uint16
-        +listener_stream_sinks: uint16
-        +listener_capabilities: uint16
-        +controller_capabilities: uint32
-        +available_index: uint32
-        +association_id: uint64
-        +entity_name: string
-    }
-    
-    class ConfigurationDescriptor {
-        +descriptor_type: uint16
-        +descriptor_index: uint16
-        +object_name: string
-        +localized_description: uint16
-        +descriptor_counts_count: uint16
-        +descriptor_counts: vector~DescriptorCount~
-        +validateConfiguration() bool
-    }
-    
-    class StreamDescriptor {
-        +descriptor_type: uint16
-        +descriptor_index: uint16
-        +object_name: string
-        +clock_domain_index: uint16
-        +stream_flags: uint16
-        +current_format: StreamFormat
-        +formats_count: uint16
-        +formats: vector~StreamFormat~
-    }
-    
-    class MilanExtensions {
-        +getMilanInfo() MilanInfo
-        +getSystemUniqueId() uint64
-        +isMilanDevice() bool
-        +getCertificationLevel() MilanCertLevel
-    }
-    
-    EntityModelManager --> EntityDescriptor
-    EntityModelManager --> ConfigurationDescriptor
-    EntityModelManager --> StreamDescriptor
-    EntityModelManager --> MilanExtensions
-    
-    ConfigurationDescriptor --> StreamDescriptor : contains
-```
+**Negative**:
 
-## Architecture Views (4+1 Model)
+- [Drawback 1]
+- [Trade-off]
 
-### Logical View: AVDECC Protocol Layers
+**Alternatives Considered**:
 
-```mermaid
-graph TB
-    subgraph "Application Layer"
-        AudioApp[Audio Control Applications]
-        NetworkMgmt[Network Management Systems]
-    end
-    
-    subgraph "AVDECC Protocol Layer"
-        ADP[ADP - Discovery Protocol]
-        AECP[AECP - Enumeration & Control]
-        ACMP[ACMP - Connection Management]
-    end
-    
-    subgraph "Entity Model Layer"
-        EntityModel[AEM - Entity Model]
-        Descriptors[Descriptor Management]
-        StateMgmt[State Management]
-    end
-    
-    subgraph "Transport Layer"
-        AVTP[IEEE 1722 AVTP Transport]
-        Ethernet[Raw Ethernet Frames]
-    end
-    
-    subgraph "Timing Layer"
-        gPTP[IEEE 802.1AS gPTP]
-        Clock[Hardware Timestamping]
-    end
-    
-    AudioApp --> AECP
-    AudioApp --> ACMP
-    NetworkMgmt --> ADP
-    
-    ADP --> EntityModel
-    AECP --> EntityModel
-    ACMP --> EntityModel
-    
-    EntityModel --> Descriptors
-    EntityModel --> StateMgmt
-    
-    AECP --> AVTP
-    ACMP --> AVTP
-    ADP --> Ethernet
-    
-    AVTP --> gPTP
-    Ethernet --> Clock
-```
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-### Process View: AVDECC Entity Discovery Sequence
-
-```mermaid
-sequenceDiagram
-    participant Controller as AVDECC Controller
-    participant Network as Network
-    participant Entity as AVDECC Entity
-    participant DB as Entity Database
-    
-    Note over Controller,Entity: Entity Discovery Process
-    
-    Controller->>Network: ENTITY_DISCOVER (Multicast)
-    Network->>Entity: Forward ENTITY_DISCOVER
-    
-    Entity->>Entity: Process ADP Discovery Request
-    Entity->>Network: ENTITY_AVAILABLE Response
-    Network->>Controller: Forward ENTITY_AVAILABLE
-    
-    Controller->>DB: Store Entity Information
-    DB-->>Controller: Entity Stored
-    
-    Note over Controller,Entity: Entity Enumeration Process
-    
-    Controller->>Entity: AECP READ_DESCRIPTOR (Entity)
-    Entity->>Entity: Get Entity Descriptor
-    Entity-->>Controller: AECP Response (Entity Descriptor)
-    
-    Controller->>Entity: AECP READ_DESCRIPTOR (Configuration)
-    Entity->>Entity: Get Configuration Descriptor
-    Entity-->>Controller: AECP Response (Configuration)
-    
-    Controller->>DB: Update Entity Model
-    DB-->>Controller: Model Updated
-    
-    Note over Controller,Entity: Periodic Advertisement
-    
-    loop Every 2-62 seconds
-        Entity->>Network: ENTITY_AVAILABLE (Advertisement)
-        Network->>Controller: Forward Advertisement
-        Controller->>DB: Update Entity Timestamp
-    end
-```
-
-### Development View: AVDECC Module Organization
-
-```
-IEEE/1722.1/2021/
-├── adp/                          # AVDECC Discovery Protocol
-│   ├── include/
-│   │   ├── adp_state_machine.hpp
-│   │   ├── entity_advertisement.hpp
-│   │   └── discovery_database.hpp
-│   └── src/
-│       ├── adp_state_machine.cpp
-│       ├── entity_advertisement.cpp
-│       └── discovery_database.cpp
-├── aecp/                         # Enumeration and Control Protocol
-│   ├── include/
-│   │   ├── aem_command_processor.hpp
-│   │   ├── command_dispatcher.hpp
-│   │   └── response_manager.hpp
-│   └── src/
-│       ├── aem_command_processor.cpp
-│       ├── command_dispatcher.cpp
-│       └── response_manager.cpp
-├── acmp/                         # Connection Management Protocol
-│   ├── include/
-│   │   ├── acmp_state_machine.hpp
-│   │   ├── stream_connection.hpp
-│   │   └── connection_database.hpp
-│   └── src/
-│       ├── acmp_state_machine.cpp
-│       ├── stream_connection.cpp
-│       └── connection_database.cpp
-├── aem/                          # AVDECC Entity Model
-│   ├── include/
-│   │   ├── entity_model.hpp
-│   │   ├── descriptors.hpp
-│   │   └── entity_state.hpp
-│   └── src/
-│       ├── entity_model.cpp
-│       ├── descriptors.cpp
-│       └── entity_state.cpp
-├── milan/                        # Milan Professional Audio Extensions
-│   ├── include/
-│   │   ├── milan_discovery.hpp
-│   │   ├── milan_commands.hpp
-│   │   └── milan_certification.hpp
-│   └── src/
-│       ├── milan_discovery.cpp
-│       ├── milan_commands.cpp
-│       └── milan_certification.cpp
-└── conformity/                   # IEEE 1722.1 Conformance Testing
-    ├── test_adp_compliance.cpp
-    ├── test_aecp_compliance.cpp
-    ├── test_acmp_compliance.cpp
-    └── test_milan_interop.cpp
-```
-
-### Physical View: Professional Audio Network Deployment
-
-```mermaid
-graph TB
-    subgraph "Audio Production Network"
-        subgraph "Control Room"
-            Controller[Audio Control Station<br/>AVDECC Controller<br/>Dell Precision 5570]
-        end
-        
-        subgraph "Core Network"
-            Switch1[Core Switch<br/>AVnu-certified TSN Switch<br/>Marvell 88E6393X]
-            Switch2[Distribution Switch<br/>Milan-certified Switch<br/>Broadcom BCM56870]
-        end
-        
-        subgraph "Device Rack 1"
-            AudioIF1[Audio Interface<br/>Milan Entity/Talker<br/>Intel I210 Ethernet]
-            AudioIF2[Audio Interface<br/>Milan Entity/Listener<br/>Broadcom BCM5720]
-        end
-        
-        subgraph "Device Rack 2"
-            Mixer[Digital Mixer<br/>Milan Controller/Entity<br/>Marvell 88Q5072]
-            Amplifier[Power Amplifier<br/>Milan Listener<br/>Intel I225-V]
-        end
-    end
-    
-    Controller --> Switch1
-    Switch1 --> Switch2
-    Switch1 --> AudioIF1
-    Switch2 --> AudioIF2
-    Switch2 --> Mixer
-    Switch2 --> Amplifier
-    
-    AudioIF1 -.-> AudioIF2 : AVTP Audio Stream
-    Mixer -.-> Amplifier : AVTP Audio Stream
-    Controller -.-> AudioIF1 : AVDECC Control
-    Controller -.-> Mixer : AVDECC Control
-```
-
-## Architecture Constraints
-
-### Technical Constraints
-
-- **IEEE 1722.1-2021 Compliance**: Full specification compliance required for certification
-- **Milan Compatibility**: Support for Milan v1.2 and v2.0a professional audio profiles
-- **Real-time Performance**: Sub-100ms command response, sub-500ms connection establishment
-- **Hardware Abstraction**: Support for Intel, Broadcom, Marvell network controllers
-- **Multi-platform Support**: Windows and Linux operating systems with consistent behavior
-
-### Business Constraints
-
-- **Certification Requirements**: AVnu Alliance Milan certification for professional audio markets
-- **Development Timeline**: Implementation must align with product release schedules
-- **Resource Constraints**: Development team expertise in IEEE standards and real-time networking
-- **Maintenance Overhead**: Long-term support for multiple IEEE 1722.1 versions and Milan profiles
-
-### Regulatory Constraints
-
-- **Standards Compliance**: Mandatory IEEE 1722.1-2021 compliance for professional audio equipment
-- **Interoperability Requirements**: Multi-vendor network compatibility in professional environments
-- **Security Standards**: Network security compliance for broadcast and enterprise installations
-- **Export Control**: Compliance with international regulations for professional audio equipment
-
-## Implementation Approach
-
-### Phase 1: Core Protocol Implementation (Months 1-3)
-- ADP entity discovery and advertisement state machines
-- Basic AECP command processing (READ_DESCRIPTOR, ACQUIRE_ENTITY)
-- Entity model framework with mandatory descriptors
-- Hardware abstraction interface definition
-
-### Phase 2: Advanced Control Features (Months 4-6)
-- Complete AEM command set implementation
-- ACMP stream connection management
-- Milan MVU command support
-- Configuration and state persistence
-
-### Phase 3: Professional Features (Months 7-9)
-- Milan professional audio profile compliance
-- Advanced entity model validation
-- Security and authentication mechanisms
-- Performance optimization and testing
-
-### Phase 4: Certification and Validation (Months 10-12)
-- IEEE 1722.1-2021 compliance testing
-- Milan certification test suite
-- Multi-vendor interoperability validation
-- Performance benchmarking and optimization
-
-## Success Criteria
-
-### Functional Success Criteria
-- **Complete IEEE 1722.1-2021 Implementation**: All mandatory protocol features implemented and tested
-- **Milan Compliance**: Full Milan v1.2/v2.0a compatibility with certification readiness
-- **Multi-vendor Interoperability**: Validated operation with Intel, Broadcom, Marvell hardware
-- **Professional Audio Integration**: Seamless integration with existing professional audio workflows
-
-### Performance Success Criteria  
-- **Discovery Performance**: Device discovery within 2 seconds of network connection
-- **Command Response**: 99.9% command success rate with <100ms average response time
-- **Connection Establishment**: Stream connections established within 500ms
-- **Network Scalability**: Support for 200+ entities in network discovery database
-
-### Quality Success Criteria
-- **Standards Compliance**: 100% pass rate on IEEE 1722.1-2021 compliance tests
-- **Code Quality**: 90%+ test coverage, zero critical security vulnerabilities
-- **Documentation**: Complete API documentation with usage examples
-- **Certification**: AVnu Alliance Milan certification achieved
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
 ---
 
-**Document History**
-- v1.0.0 - Initial architecture specification (October 12, 2025)
+## System Context
 
-**References**
-- IEEE Std 1722.1-2021 - IEEE Standard for Device Discovery, Connection Management, and Control Protocol
-- Milan Specification v1.2/v2.0a - AVnu Alliance Professional Audio Profile
-- ISO/IEC/IEEE 42010:2011 - Systems and software engineering — Architecture description
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

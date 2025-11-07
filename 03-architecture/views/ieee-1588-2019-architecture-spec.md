@@ -1,371 +1,603 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: IEEE_1588_2019
+  title: IEEE 1588-2019 - Precision Time Protocol (PTPv2)
+  url: mcp://markitdown/standards/IEEE 1588-2019-en.pdf
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: IEEE_1588_2019_ARCHITECTURE_SPEC
+phase: 03-architecture
 specType: architecture
-standard: ISO/IEC/IEEE 42010:2011
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
+specType: architecture
+standard: 42010
 phase: 03-architecture
 version: 1.0.0
-author: AI Standards Implementation Agent
-date: "2025-10-12"
+author: {{AUTHOR}}
+date: 2025-02-15
 status: draft
 traceability:
   requirements:
     - REQ-F-001
     - REQ-NF-001
-traces-to: 02-requirements/functional/ieee-1588-2019-requirements-analysis.md
+```
+
+## Architecture Decision Record
+
+### ADR-001: [Decision Title]
+
+**Status**: Proposed | Accepted | Deprecated | Superseded
+
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
+
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
+
+**Consequences**:
+
+**Positive**:
+
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative**:
+
+- [Drawback 1]
+- [Trade-off]
+
+**Alternatives Considered**:
+
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
+
+**Compliance**: Addresses REQ-NF-001 (Scalability)
+
 ---
 
-# IEEE 1588-2019 Architecture Design for Missing Components
+## System Context
 
-> **Purpose**: Design architecture for missing IEEE 1588-2019 components to achieve full specification compliance
-> **Scope**: Clock state machines, BMCA, message handlers, transport abstraction, management protocol
-> **Architecture Standard**: ISO/IEC/IEEE 42010:2011
-
-## 🎯 Architecture Significant Requirements (ASRs)
-
-Based on requirements analysis, the following drive architectural decisions:
-
-### **ASR-1: Hardware Abstraction**
-- **Quality Attribute**: Portability, Maintainability
-- **Requirement**: IEEE 1588 implementation must work across Intel, ARM, FPGA platforms
-- **Architectural Impact**: Dependency injection pattern for hardware interfaces
-
-### **ASR-2: Real-Time Performance**
-- **Quality Attribute**: Performance, Timing Accuracy
-- **Requirement**: Sub-microsecond synchronization accuracy, deterministic behavior
-- **Architectural Impact**: Lock-free algorithms, bounded execution time
-
-### **ASR-3: Protocol Compliance**
-- **Quality Attribute**: Standards Compliance, Interoperability  
-- **Requirement**: 100% IEEE 1588-2019 specification compliance
-- **Architectural Impact**: State machine architecture matching specification exactly
-
-### **ASR-4: Extensibility**
-- **Quality Attribute**: Maintainability, Extensibility
-- **Requirement**: Support future IEEE 1588 versions and profiles
-- **Architectural Impact**: Plugin architecture for profiles and extensions
-
-## 🏗️ C4 Model Architecture
-
-### Level 1: System Context
+### Context Diagram (C4 Level 1)
 
 ```mermaid
-graph TB
-    AVTP[IEEE 1722 AVTP<br/>Audio/Video Transport<br/>Requires precise timing]
-    AVDECC[IEEE 1722.1 AVDECC<br/>Device Control<br/>Needs synchronized time]
-    Milan[AVnu Milan<br/>Professional Audio<br/>±80ns accuracy required]
+C4Context
+    title System Context Diagram - [System Name]
     
-    PTP[IEEE 1588-2019<br/>Precision Time Protocol<br/>Provides network timing]
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
     
-    NetworkHW[Network Hardware<br/>Ethernet interfaces<br/>Hardware timestamping]
-    TimeHW[Time Hardware<br/>System clocks<br/>Oscillators]
-    Switch[Network Switches<br/>PTP-aware bridges<br/>Time-aware forwarding]
+    System(system, "[System Name]", "Primary system being built")
     
-    AVTP --> PTP
-    AVDECC --> PTP  
-    Milan --> PTP
-    PTP --> NetworkHW
-    PTP --> TimeHW
-    PTP --> Switch
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
     
-    classDef client fill:#08427b,stroke:#052e56,stroke-width:2px,color:#fff
-    classDef system fill:#1168bd,stroke:#0b4884,stroke-width:2px,color:#fff
-    classDef hardware fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class AVTP,AVDECC,Milan client
-    class PTP system
-    class NetworkHW,TimeHW,Switch hardware
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-### Level 2: Container Architecture
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
 
 ```mermaid
-graph TB
-    subgraph "IEEE 1588-2019 Implementation"
-        API[PTP API Layer<br/>C++ Interface<br/>IEEE::_1588::PTP::_2019]
-        
-        Core[PTP Core Engine<br/>State Machines<br/>Message Processing]
-        
-        BMCA[Best Master Clock<br/>Algorithm Implementation<br/>Grandmaster Selection]
-        
-        Transport[Transport Layer<br/>Network Abstraction<br/>Multi-protocol Support]
-        
-        Management[Management Protocol<br/>Configuration Interface<br/>TLV Processing]
-    end
+C4Container
+    title Container Diagram - [System Name]
     
-    subgraph "Hardware Abstraction"
-        NetIface[Network Interface<br/>Send/Receive Packets<br/>Hardware Timestamps]
-        
-        Timer[Timer Interface<br/>System Time Access<br/>Clock Adjustment]
-    end
+    Person(user, "User")
     
-    subgraph "External Systems"
-        Client[Client Applications<br/>IEEE 1722/1722.1<br/>Milan/AES67]
-        
-        Network[Network Infrastructure<br/>Ethernet Switches<br/>PTP-aware Bridges]
-    end
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
     
-    Client --> API
-    API --> Core
-    Core --> BMCA
-    Core --> Transport
-    Core --> Management
-    Transport --> NetIface
-    Core --> Timer
-    NetIface --> Network
-    
-    classDef container fill:#1168bd,stroke:#0b4884,stroke-width:2px,color:#fff
-    classDef abstraction fill:#666666,stroke:#333333,stroke-width:2px,color:#fff
-    classDef external fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class API,Core,BMCA,Transport,Management container
-    class NetIface,Timer abstraction
-    class Client,Network external
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
 ```
 
-### Level 3: Component Architecture (PTP Core Engine Detail)
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
 
 ```mermaid
-graph TB
-    subgraph "PTP Core Engine Components"
-        StateMachine[Port State Machine<br/>Master/Slave/Passive<br/>Listening/Initializing]
-        
-        SyncHandler[Sync Message Handler<br/>Timestamp Processing<br/>Offset Calculation]
-        
-        DelayHandler[Delay Message Handler<br/>Path Delay Measurement<br/>Peer Delay Mechanism]
-        
-        AnnounceHandler[Announce Handler<br/>Dataset Processing<br/>BMCA Input]
-        
-        Dataset[Port/Clock Datasets<br/>Configuration Storage<br/>State Persistence]
-        
-        MessageRouter[Message Router<br/>Type-based Dispatch<br/>Protocol Validation]
-    end
+C4Component
+    title Component Diagram - Application Service
     
-    StateMachine --> SyncHandler
-    StateMachine --> DelayHandler
-    StateMachine --> AnnounceHandler
-    MessageRouter --> StateMachine
-    SyncHandler --> Dataset
-    DelayHandler --> Dataset
-    AnnounceHandler --> Dataset
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
     
-    classDef component fill:#85bbf0,stroke:#5d82a8,stroke-width:2px,color:#000
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
     
-    class StateMachine,SyncHandler,DelayHandler,AnnounceHandler,Dataset,MessageRouter component
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
 ```
 
-## 🏛️ Architectural Views (ISO 42010)
+---
 
-### Logical View: Component Organization
+## Architecture Views
 
-```mermaid
-graph TB
-    subgraph "Application Layer"
-        ClientAPI[Client API<br/>IEEE::_1588::PTP::_2019]
-    end
-    
-    subgraph "Protocol Layer"
-        CoreProtocol[PTP Core Protocol<br/>State Machines & Logic]
-        BMCA_Comp[BMCA Component<br/>Master Selection]
-        Management_Comp[Management Component<br/>Configuration & TLV]
-    end
-    
-    subgraph "Transport Layer"  
-        L2Transport[Layer 2 Transport<br/>Ethernet Multicast]
-        UDPTransport[UDP Transport<br/>IPv4/IPv6 Support]
-        TransportMgr[Transport Manager<br/>Multi-transport Coordination]
-    end
-    
-    subgraph "Hardware Abstraction Layer"
-        NetworkHAL[Network HAL<br/>Packet Send/Receive<br/>Hardware Timestamping]
-        TimeHAL[Time HAL<br/>System Clock Access<br/>Frequency Adjustment]
-    end
-    
-    ClientAPI --> CoreProtocol
-    CoreProtocol --> BMCA_Comp
-    CoreProtocol --> Management_Comp
-    CoreProtocol --> TransportMgr
-    TransportMgr --> L2Transport
-    TransportMgr --> UDPTransport
-    L2Transport --> NetworkHAL
-    UDPTransport --> NetworkHAL
-    CoreProtocol --> TimeHAL
-    
-    classDef application fill:#2d5aa0,stroke:#1e3f73,stroke-width:2px,color:#fff
-    classDef protocol fill:#1168bd,stroke:#0b4884,stroke-width:2px,color:#fff
-    classDef transport fill:#666666,stroke:#333333,stroke-width:2px,color:#fff
-    classDef hal fill:#999999,stroke:#6b6b6b,stroke-width:2px,color:#fff
-    
-    class ClientAPI application
-    class CoreProtocol,BMCA_Comp,Management_Comp protocol
-    class L2Transport,UDPTransport,TransportMgr transport
-    class NetworkHAL,TimeHAL hal
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
 ```
 
-### Process View: Real-Time Behavior
+**Module Dependencies**:
 
-```mermaid
-sequenceDiagram
-    participant Client as Client Application
-    participant Core as PTP Core
-    participant BMCA as BMCA Engine
-    participant Transport as Transport Layer
-    participant Network as Network Hardware
-    
-    Note over Client,Network: Initialization Phase
-    Client->>Core: Initialize PTP Clock
-    Core->>BMCA: Initialize BMCA
-    Core->>Transport: Setup Network Interface
-    
-    Note over Client,Network: Synchronization Loop (Every Sync Interval)
-    loop Every Sync Interval
-        Core->>Transport: Send Sync Message
-        Transport->>Network: Transmit with HW Timestamp
-        Network-->>Transport: Receive Sync from Master
-        Transport-->>Core: Process Sync + Timestamp
-        Core->>Core: Calculate Time Offset
-        Core->>Core: Adjust Local Clock
-    end
-    
-    Note over Client,Network: BMCA Process (Every Announce Interval)
-    loop Every Announce Interval
-        Network-->>Transport: Receive Announce Message
-        Transport-->>Core: Forward Announce
-        Core->>BMCA: Process Announce Dataset
-        BMCA->>BMCA: Run BMCA Algorithm
-        BMCA-->>Core: State Decision (Master/Slave)
-        Core->>Core: Transition Port State
-    end
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
 ```
 
-### Development View: Module Structure
+### Physical/Deployment View
 
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
 ```
-IEEE/1588/PTP/2019/
-├── include/IEEE/1588/PTP/2019/
-│   ├── ieee1588_2019.hpp           # Main API header
-│   ├── types.hpp                   # ✅ EXISTS - Core data types
-│   ├── messages.hpp                # ✅ EXISTS - Message structures  
-│   ├── clock.hpp                   # 🔴 MISSING - Clock management
-│   ├── state_machine.hpp           # 🔴 MISSING - Port state machines
-│   ├── bmca.hpp                    # 🔴 MISSING - BMCA algorithms
-│   ├── transport.hpp               # 🔴 MISSING - Transport abstraction
-│   └── management.hpp              # 🔴 MISSING - Management protocol
-├── src/
-│   ├── clocks.cpp                  # ✅ EXISTS - Basic clock types
-│   ├── state_machine.cpp           # 🔴 MISSING - State machine logic
-│   ├── bmca.cpp                    # 🔴 MISSING - BMCA implementation
-│   ├── message_handlers.cpp        # 🔴 MISSING - Message processing
-│   ├── transport/
-│   │   ├── ethernet_transport.cpp  # 🔴 MISSING - Layer 2 transport
-│   │   ├── udp_transport.cpp       # 🔴 MISSING - UDP transport
-│   │   └── transport_manager.cpp   # 🔴 MISSING - Transport coordination
-│   └── management/
-│       ├── management_tlv.cpp      # 🔴 MISSING - TLV processing
-│       └── configuration.cpp       # 🔴 MISSING - Configuration mgmt
-└── tests/
-    ├── test_state_machines.cpp     # 🔴 MISSING - State machine tests
-    ├── test_bmca.cpp               # 🔴 MISSING - BMCA tests
-    └── test_transport.cpp          # 🔴 MISSING - Transport tests
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
 ```
 
-## 📋 Architecture Decision Records (ADRs)
+**Data Flow**:
 
-### ADR-001: Hardware Abstraction Strategy
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
 
-**Status**: Proposed  
-**Context**: Need to support multiple hardware platforms while maintaining IEEE 1588 compliance  
-**Decision**: Use dependency injection pattern with abstract interfaces  
-**Consequences**:
-- ✅ **Pros**: Platform independence, testability, maintainability
-- ❌ **Cons**: Slight performance overhead, increased complexity
-- **Rationale**: Standards compliance requires hardware abstraction per existing patterns
+**Caching Strategy**:
 
-### ADR-002: State Machine Architecture
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
 
-**Status**: Proposed  
-**Context**: IEEE 1588 defines complex port state machines that must match specification exactly  
-**Decision**: Implement hierarchical state machines with explicit state transition tables  
-**Consequences**:
-- ✅ **Pros**: Specification compliance, traceability, debuggability  
-- ❌ **Cons**: More verbose than ad-hoc state handling
-- **Rationale**: Protocol correctness is more important than implementation simplicity
+---
 
-### ADR-003: Transport Layer Design
+## Cross-Cutting Concerns
 
-**Status**: Proposed  
-**Context**: IEEE 1588 supports multiple transport mechanisms (Ethernet, UDP/IPv4, UDP/IPv6)  
-**Decision**: Plugin architecture with transport manager coordinating multiple transports  
-**Consequences**:
-- ✅ **Pros**: Extensibility, standard compliance, flexibility
-- ❌ **Cons**: Added complexity for single-transport deployments
-- **Rationale**: IEEE 1588-2019 requires multi-transport support for full compliance
+### Security Architecture
 
-### ADR-004: Real-Time Performance Strategy  
+**Authentication**:
 
-**Status**: Proposed  
-**Context**: Media networking requires sub-microsecond timing accuracy  
-**Decision**: Lock-free algorithms, bounded execution time, minimal dynamic allocation  
-**Consequences**:
-- ✅ **Pros**: Deterministic timing, low jitter, real-time suitability
-- ❌ **Cons**: More complex implementation, memory pre-allocation required
-- **Rationale**: Timing accuracy is fundamental requirement for media networking standards
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
 
-## 🚦 Architecture Validation
+**Authorization**:
 
-### Quality Attribute Scenarios
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
 
-#### Performance Scenario
-**Scenario**: PTP sync message processing under load  
-**Quality Attribute**: Performance  
-**Stimulus**: 1000 sync messages per second received  
-**Response**: Each message processed within 10µs with <1µs jitter  
-**Measure**: Timing accuracy maintained ±1µs
+**Data Protection**:
 
-#### Reliability Scenario  
-**Scenario**: Network interface failure during operation  
-**Quality Attribute**: Reliability  
-**Stimulus**: Primary network interface becomes unavailable  
-**Response**: Automatic failover to backup interface within 1 sync interval  
-**Measure**: Time synchronization maintained without loss
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
 
-#### Portability Scenario
-**Scenario**: Deployment on new hardware platform  
-**Quality Attribute**: Portability  
-**Stimulus**: Port to ARM-based embedded system  
-**Response**: Only hardware abstraction layer needs modification  
-**Measure**: >90% of code reuses without changes
+### Performance Architecture
 
-## ✅ **Phase 03 Exit Criteria**
+**Optimization Strategies**:
 
-### Architecture Completeness
-- [ ] All missing components identified with clear interfaces
-- [ ] C4 model diagrams complete for all levels
-- [ ] Architecture views address all stakeholder concerns
-- [ ] ADRs document all significant architectural decisions
-- [ ] Quality attribute scenarios validate architecture fitness
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
 
-### Design Constraints Satisfied
-- [ ] Hardware abstraction maintained per existing patterns
-- [ ] Real-time performance requirements addressed
-- [ ] IEEE 1588-2019 specification compliance ensured
-- [ ] Extensibility for future IEEE versions provided
-- [ ] Integration with existing IEEE standards framework
+**Performance Targets**:
 
-### Traceability Established
-- [ ] Architecture traces to requirements analysis
-- [ ] Each missing component maps to functional requirement
-- [ ] Quality attributes address non-functional requirements
-- [ ] Design decisions justify requirement satisfaction
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
 
-## 🔗 **Next Steps**
+### Monitoring & Observability
 
-1. **Use phase-transition_3to4.prompt.md** for detailed design transition
-2. **Create detailed interface specifications** for each missing component  
-3. **Update ieee-standards-status-tracker.md** with Phase 03 completion
-4. **Begin Phase 04 detailed design** for implementation planning
+**Metrics** (Prometheus):
 
-## 📚 **References**
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
 
-- **Requirements Source**: `02-requirements/functional/ieee-1588-2019-requirements-analysis.md`
-- **IEEE 1588-2019 Specification**: Precision Time Protocol standard
-- **ISO/IEC/IEEE 42010:2011**: Architecture description standard
-- **Existing Implementation**: `IEEE/1588/PTP/2019/` foundation (70% complete)
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

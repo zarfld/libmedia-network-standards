@@ -1,432 +1,600 @@
 ---
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: PHASE00_CROSS_STANDARD_ARCHITECTURE_FOUNDATION
+phase: 03-architecture
+specType: architecture
+standard: '42010'
+status: draft
+traceability:
+  requirements: []
+version: 1.0.0
+---
+
+# Architecture Specification Template
+
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
+
+## Metadata
+
+```yaml
 specType: architecture
 standard: 42010
 phase: 03-architecture
 version: 1.0.0
-author: AI Standards Implementation Agent
-date: "2025-10-12"
-status: approved
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
 traceability:
   requirements:
     - REQ-F-001
     - REQ-NF-001
-review-status: draft
-applies-to: 
-  - "lib/Standards/**"
-  - "IEEE/**" 
-  - "AVnu/**"
-  - "AES/**"
----
-
-# Phase 00: IEEE Media Networking Standards Cross-Standard Architecture Foundation
-
-> **CRITICAL**: This is the foundational architecture that MUST be completed before ANY individual IEEE standard implementation work begins per the mandatory Phase 00 → Phase 01 gate.
-
-## Architectural Context
-
-### Architectural Decisions Referenced
-- ADR-001: Hardware Abstraction Interfaces - Defines Common/interfaces/ abstraction layer
-- ADR-002: IEEE Standards Layering - Establishes cross-standard dependency management
-
-### Architectural Viewpoints & Stakeholder Concerns  
-Per ISO/IEC/IEEE 42010:2011:
-
-**Stakeholders**: Development Team, System Integrators, Hardware Vendors, Standards Bodies
-**Concerns**: Cross-standard integration, hardware portability, dependency management, namespace organization
-**Viewpoints**: 
-- Structural Viewpoint - Component organization and namespace architecture
-- Behavioral Viewpoint - Cross-standard coordination and lifecycle management
-- Physical Viewpoint - Hardware abstraction and deployment architecture
-
-## 🎯 Purpose
-
-Design unified cross-standard architecture foundation enabling:
-1. **Consistent folder hierarchy** across all IEEE standards organizations
-2. **Hardware abstraction framework** preventing vendor lock-in
-3. **Cross-standard coordination** for timing, transport, and management
-4. **Dependency validation matrix** enforcing IEEE layering principles
-5. **Unified testing framework** for multi-standard validation
-
-## 🏗️ Architectural Foundation Components
-
-### Component 1: Unified Folder Hierarchy Standard
-
-**Requirement**: All IEEE standards MUST follow consistent hierarchical organization.
-
-#### Current State Analysis
-```
-EXISTING (Inconsistent):
-IEEE/1588/PTP/2019/                    # Non-standard path
-IEEE/802.1AS/2021/                     # Missing intermediate layers
-IEEE/1722/2016/                       # Missing sub-specification
-IEEE/1722.1/2021/                     # Missing sub-specification
-
-ROOT LEVEL (Architectural Violation):
-ieee_1722_1_2021_*.cpp                # Should be in hierarchy
-ieee_1722_2016*.cpp                   # Should be in hierarchy  
-ieee_1588_*.cpp                       # Should be in hierarchy
 ```
 
-#### Target Architecture
-```
-lib/Standards/<Organization>/<Standard>/<Subpart>/<Version>/
-├── lib/Standards/IEEE/1588/2019/                    # PTPv2 (timing foundation)
-├── lib/Standards/IEEE/802.1/Q/2022/                 # VLANs/QoS (network foundation) 
-├── lib/Standards/IEEE/802.1/AS/2021/                # gPTP (network timing)
-├── lib/Standards/IEEE/1722/2016/                    # AVTP (media transport)
-├── lib/Standards/IEEE/1722.1/2021/                  # AVDECC (device control)
-├── lib/Standards/AVnu/Milan/v1.2/                   # Milan professional audio
-├── lib/Standards/AES/AES67/2018/                    # Audio-over-IP
-├── lib/Standards/AES/AES70/2021/                    # Device control (OCA)
-└── lib/Standards/Common/interfaces/                 # Hardware abstraction ONLY
-```
+## Architecture Decision Record
 
-#### Migration Plan
-1. **Create lib/Standards/ root hierarchy**
-2. **Migrate existing IEEE implementations** to standard hierarchy
-3. **Refactor existing code** to use new paths
-4. **Update CMakeLists.txt** to reflect new structure
-5. **Archive root-level ieee_*.cpp files** after migration
+### ADR-001: [Decision Title]
 
-### Component 2: Hardware Abstraction Framework
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-**Requirement**: ALL IEEE standards MUST use unified hardware abstraction.
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
 
-#### Common/interfaces/ Framework Design
-```cpp
-namespace Common {
-    namespace interfaces {
-        // Foundation hardware abstractions - ALL standards use these
-        class NetworkInterface {
-        public:
-            virtual ~NetworkInterface() = default;
-            
-            // Ethernet packet I/O (all IEEE standards need this)
-            virtual int send_packet(const void* data, size_t length) = 0;
-            virtual int receive_packet(void* buffer, size_t* length, uint32_t timeout_ms) = 0;
-            virtual int set_promiscuous_mode(bool enabled) = 0;
-            virtual int get_mac_address(uint8_t mac[6]) = 0;
-            
-            // VLAN support (IEEE 802.1Q required for all)
-            virtual int send_vlan_packet(const void* data, size_t length, uint16_t vlan_id, uint8_t priority) = 0;
-        };
-        
-        class TimerInterface {
-        public:
-            virtual ~TimerInterface() = default;
-            
-            // Precision timing (IEEE 1588/802.1AS requirement)
-            virtual uint64_t get_time_ns() = 0;
-            virtual int set_timer(uint32_t interval_us, std::function<void()> callback) = 0;
-            virtual int cancel_timer(int timer_id) = 0;
-            
-            // Hardware timestamping (critical for gPTP)
-            virtual int get_hardware_timestamp(uint64_t* timestamp_ns) = 0;
-            virtual int enable_hardware_timestamping(bool enabled) = 0;
-        };
-        
-        class ClockInterface {
-        public:
-            virtual ~ClockInterface() = default;
-            
-            // System clock management (IEEE 1588 requirement)
-            virtual uint64_t get_system_time_ns() = 0;
-            virtual int set_system_time_ns(uint64_t time_ns) = 0;
-            virtual int adjust_clock_frequency(int32_t ppb_adjustment) = 0;
-        };
-        
-        // Cross-standard protocol coordination interfaces
-        class TimingSyncInterface {
-        public:
-            virtual ~TimingSyncInterface() = default;
-            
-            // IEEE 802.1AS → IEEE 1722 timing coordination
-            virtual uint64_t get_synchronized_time() = 0;
-            virtual bool is_synchronized() = 0;
-            virtual int32_t get_sync_accuracy_ns() = 0;
-        };
-        
-        class TransportInterface {
-        public:
-            virtual ~TransportInterface() = default;
-            
-            // IEEE 1722 → IEEE 1722.1 transport coordination  
-            virtual int send_avtp_packet(const void* avtp_data, size_t length) = 0;
-            virtual int receive_avtp_packet(void* buffer, size_t* length, uint32_t timeout_ms) = 0;
-        };
-        
-        class ManagementInterface {
-        public:
-            virtual ~ManagementInterface() = default;
-            
-            // Cross-standard configuration management
-            virtual int get_configuration(const std::string& key, std::string& value) = 0;
-            virtual int set_configuration(const std::string& key, const std::string& value) = 0;
-        };
-    }
-}
-```
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
 
-#### Hardware Abstraction Enforcement Rules
-```cpp
-// ✅ ALLOWED: IEEE standards using Common/interfaces/ abstractions
-namespace IEEE {
-    namespace _1722_1 { 
-        namespace _2021 {
-            class AVDECCEntity {
-                Common::interfaces::NetworkInterface* network_;
-                Common::interfaces::TimingSyncInterface* timing_;
-                Common::interfaces::TransportInterface* transport_;
-            };
-        }
-    }
-}
+**Consequences**:
 
-// ❌ FORBIDDEN: Direct hardware calls in IEEE namespaces
-namespace IEEE {
-    namespace _1722_1 {
-        namespace _2021 {
-            // NO Intel HAL: intel_hal_send_packet()
-            // NO Linux sockets: socket(AF_PACKET, ...)  
-            // NO Windows APIs: CreateSocket()
-            // ALL hardware access via Common::interfaces ONLY
-        }
-    }
-}
-```
+**Positive**:
 
-### Component 3: Cross-Standard Coordination Services
+- [Benefit 1]
+- [Benefit 2]
 
-**Requirement**: Standards must coordinate timing, transport, and configuration.
+**Negative**:
 
-#### Integration Services Framework
-```cpp
-namespace Common {
-    namespace integration {
-        // Central coordinator for all IEEE standards communication
-        class StandardsCoordinator {
-        public:
-            // Register IEEE standard implementations
-            void register_standard(const std::string& standard_name, void* implementation);
-            
-            // Cross-standard message passing
-            int send_cross_standard_message(const std::string& from_standard, 
-                                           const std::string& to_standard,
-                                           const void* message, size_t length);
-            
-            // Unified shutdown coordination
-            void shutdown_all_standards();
-        };
-        
-        // Timing coordination across IEEE 802.1AS → IEEE 1722 → IEEE 1722.1
-        class TimingCoordinator {
-        public:
-            // IEEE 802.1AS provides timing to higher layers
-            void register_timing_provider(Common::interfaces::TimingSyncInterface* provider);
-            
-            // IEEE 1722/1722.1 consume timing from 802.1AS
-            void register_timing_consumer(const std::string& consumer_name,
-                                        std::function<void(uint64_t synchronized_time)> callback);
-            
-            // Coordinate timing updates across all consumers
-            void propagate_time_update(uint64_t new_synchronized_time);
-        };
-        
-        // Unified configuration management for all IEEE standards
-        class ConfigurationManager {
-        public:
-            // IEEE standard-specific configuration namespaces
-            int get_ieee_1588_config(const std::string& key, std::string& value);
-            int get_ieee_802_1as_config(const std::string& key, std::string& value);
-            int get_ieee_1722_config(const std::string& key, std::string& value);
-            int get_ieee_1722_1_config(const std::string& key, std::string& value);
-            
-            // Cross-standard configuration validation
-            bool validate_cross_standard_config();
-        };
-    }
-}
-```
+- [Drawback 1]
+- [Trade-off]
 
-### Component 4: IEEE Layering Dependency Validation
+**Alternatives Considered**:
 
-**Requirement**: Enforce foundation-first dependency order at compile time.
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-#### Dependency Validation Matrix
-```cpp
-namespace Common {
-    namespace validation {
-        // Compile-time dependency validation using C++ templates
-        template<typename Standard>
-        struct StandardDependencies;
-        
-        // IEEE 802.1Q has no dependencies (foundation)
-        template<>
-        struct StandardDependencies<IEEE::_802_1::Q::_2022> {
-            using Dependencies = std::tuple<>; // No dependencies
-        };
-        
-        // IEEE 1588 depends on IEEE 802.1Q
-        template<>
-        struct StandardDependencies<IEEE::_1588::_2019> {
-            using Dependencies = std::tuple<IEEE::_802_1::Q::_2022>;
-        };
-        
-        // IEEE 802.1AS depends on IEEE 1588 and IEEE 802.1Q
-        template<>
-        struct StandardDependencies<IEEE::_802_1::AS::_2021> {
-            using Dependencies = std::tuple<IEEE::_1588::_2019, IEEE::_802_1::Q::_2022>;
-        };
-        
-        // IEEE 1722 depends on IEEE 802.1AS and lower layers
-        template<>
-        struct StandardDependencies<IEEE::_1722::_2016> {
-            using Dependencies = std::tuple<IEEE::_802_1::AS::_2021, IEEE::_1588::_2019, IEEE::_802_1::Q::_2022>;
-        };
-        
-        // IEEE 1722.1 depends on IEEE 1722 and all lower layers  
-        template<>
-        struct StandardDependencies<IEEE::_1722_1::_2021> {
-            using Dependencies = std::tuple<IEEE::_1722::_2016, IEEE::_802_1::AS::_2021, IEEE::_1588::_2019, IEEE::_802_1::Q::_2022>;
-        };
-        
-        // Compile-time validation function
-        template<typename Standard>
-        constexpr bool validate_dependencies() {
-            return DependencyChecker<Standard, typename StandardDependencies<Standard>::Dependencies>::all_available();
-        }
-    }
-}
-```
-
-### Component 5: Unified Testing Framework
-
-**Requirement**: Multi-standard integration testing and IEEE compliance validation.
-
-#### Cross-Standard Testing Architecture
-```cpp
-namespace Common {
-    namespace testing {
-        // Base class for all IEEE standard test suites
-        class IEEE_StandardTestSuite {
-        public:
-            virtual ~IEEE_StandardTestSuite() = default;
-            
-            // IEEE compliance validation requirements
-            virtual bool test_authoritative_document_compliance() = 0;
-            virtual bool test_timing_requirements() = 0;
-            virtual bool test_packet_format_compliance() = 0;
-            virtual bool test_state_machine_behavior() = 0;
-            
-            // Cross-standard integration requirements
-            virtual bool test_hardware_abstraction() = 0;
-            virtual bool test_dependency_compliance() = 0;
-            
-            // Report generation
-            virtual std::string generate_compliance_report() = 0;
-        };
-        
-        // Multi-standard integration test coordinator
-        class CrossStandardTestCoordinator {
-        public:
-            // Register IEEE standard test suites
-            void register_test_suite(const std::string& standard, 
-                                   std::unique_ptr<IEEE_StandardTestSuite> suite);
-            
-            // Execute cross-standard integration tests
-            bool test_timing_chain_integration();    // 1588 → 802.1AS → 1722 → 1722.1
-            bool test_transport_chain_integration(); // 802.1AS → 1722 → 1722.1
-            bool test_configuration_integration();   // Unified config across all standards
-            
-            // Generate unified compliance report
-            std::string generate_cross_standard_compliance_report();
-        };
-    }
-}
-```
-
-## 🚦 Phase 00 → Phase 01 Mandatory Gate Criteria
-
-**CRITICAL**: NO individual IEEE standard implementation work may begin until ALL criteria are validated:
-
-### Unified Architecture Foundation
-- [ ] lib/Standards/<Org>/<Std>/<Sub>/<Ver>/ hierarchy **designed and documented**
-- [ ] Cross-standard namespace architecture **defined with IEEE layering rules**  
-- [ ] Common/interfaces/ hardware abstraction framework **designed and implemented**
-- [ ] Cross-standard integration patterns **documented and validated**
-- [ ] Unified testing framework architecture **designed for multi-standard validation**
-- [ ] Traceability architecture **designed for cross-standard lifecycle management**
-
-### IEEE Dependency Matrix Validation  
-- [ ] IEEE 802.1Q → IEEE 1588 → IEEE 802.1AS → IEEE 1722 → IEEE 1722.1 dependencies **documented and enforced**
-- [ ] Circular dependency prevention mechanisms **designed and implemented**
-- [ ] Cross-standard interface definitions **complete and validated**
-- [ ] Hardware abstraction enforcement mechanisms **designed and tested**
-
-### Integration Architecture Readiness
-- [ ] Cross-standard coordination services **designed** (StandardsCoordinator, TimingCoordinator)
-- [ ] Unified configuration management architecture **designed and implemented**  
-- [ ] Cross-standard state management patterns **defined and documented**
-- [ ] Multi-standard testing and validation framework **ready for use**
-
-### Migration Plan for Existing Code
-- [ ] **Existing IEEE implementations identified** and migration path planned
-- [ ] **Root-level ieee_*.cpp files** migration strategy defined
-- [ ] **CMakeLists.txt updates** planned for new hierarchy
-- [ ] **Namespace refactoring plan** created for existing code
-- [ ] **Testing strategy** for migrated implementations
-
-## 🎯 Implementation Plan
-
-### Step 1: Create Unified Folder Hierarchy (Week 1)
-1. Create lib/Standards/ root structure
-2. Design IEEE/<standard>/<subpart>/<version>/ hierarchy
-3. Plan migration of existing implementations
-
-### Step 2: Implement Hardware Abstraction Framework (Week 2) 
-1. Design Common/interfaces/ base classes
-2. Create NetworkInterface, TimerInterface, ClockInterface
-3. Design cross-standard coordination interfaces
-
-### Step 3: Create Integration Services (Week 3)
-1. Implement StandardsCoordinator
-2. Implement TimingCoordinator  
-3. Implement ConfigurationManager
-
-### Step 4: Build Dependency Validation System (Week 4)
-1. Create compile-time dependency validation templates
-2. Implement IEEE layering enforcement
-3. Create dependency validation tests
-
-### Step 5: Design Unified Testing Framework (Week 5)
-1. Create IEEE_StandardTestSuite base class
-2. Implement CrossStandardTestCoordinator
-3. Design compliance reporting system
-
-### Step 6: Migrate Existing Implementations (Week 6)
-1. Migrate existing IEEE implementations to new hierarchy
-2. Refactor to use Common/interfaces/ abstractions
-3. Update CMakeLists.txt and build system
-4. Validate all existing functionality works with new architecture
-
-## 📋 Success Criteria
-
-**Phase 00 COMPLETE** when:
-- ✅ All architecture components designed and documented
-- ✅ Common/interfaces/ framework implemented and tested
-- ✅ Cross-standard coordination services operational  
-- ✅ IEEE dependency validation system working
-- ✅ Unified testing framework ready
-- ✅ Existing implementations successfully migrated
-- ✅ All Phase 00 → Phase 01 gate criteria validated
-
-## 🔗 References
-
-- IEEE Media Networking Standards Implementation Prompt
-- ieee-standards-status-tracker.md - Current implementation status
-- ieee-foundation-dependencies.md - Dependency validation rules  
-- ieee-standards-implementation-order.md - Foundation-first sequence
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
 ---
 
-**BLOCKER**: If ANY Phase 00 criterion fails, ALL individual standard implementation work MUST STOP until resolved. This architecture foundation is mandatory for successful IEEE standards integration.
+## System Context
+
+### Context Diagram (C4 Level 1)
+
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
+    
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
+    
+    System(system, "[System Name]", "Primary system being built")
+    
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
+```
+
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
+    }
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
+```
+
+---
+
+## Architecture Views
+
+### Logical View
+
+**Purpose**: Show key abstractions and their relationships
+
+**Elements**:
+
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
+
+**Patterns**:
+
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
+
+### Process View
+
+**Purpose**: Show runtime behavior and concurrency
+
+**Key Processes**:
+
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
+
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
+
+**Concurrency Strategy**:
+
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
+
+### Development View
+
+**Layer Architecture**:
+
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
+
+**Module Dependencies**:
+
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
+
+// application/ - Depends on domain/
+import { User } from '../domain/User';
+
+export class CreateUserUseCase {
+  // Application orchestration
+}
+
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
+
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
+
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
+
+export class UserController {
+  // HTTP handling
+}
+```
+
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

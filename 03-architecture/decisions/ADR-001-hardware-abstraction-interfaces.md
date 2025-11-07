@@ -1,241 +1,600 @@
 ---
-specType: architecture
-standard: ISO/IEC/IEEE 42010:2011
+author: Architecture Engineering Team
+authoritativeReferences:
+- id: ISO_IEC_IEEE_29148_2018
+  section: Requirements specification processes
+  title: ISO/IEC/IEEE 29148:2018 - Requirements engineering
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-29148-2018-en.pdf
+- id: IEEE_42010_2011
+  section: Architecture description practices
+  title: ISO/IEC/IEEE 42010:2011 - Architecture description
+  url: mcp://markitdown/standards/ISO-IEC-IEEE-42010-2011-en.pdf
+date: '2025-10-12'
+id: ADR-001
 phase: 03-architecture
-version: 1.0.0
-author: Architecture Team
-date: "2025-10-12"
-status: approved
+specType: architecture
+standard: '42010'
+status: draft
 traceability:
-  requirements:
-    - REQ-NF-001
-    - REQ-F-001
+  requirements: []
+version: 1.0.0
 ---
 
-# ADR-001: Hardware Abstraction Interface Layer
+# Architecture Specification Template
 
-> Decision on creating hardware-agnostic interfaces for IEEE media networking standards implementation
+> **Spec-Driven Development**: This markdown serves as executable architecture documentation following ISO/IEC/IEEE 42010:2011.
+> **Traceability Guardrail**: Ensure every architectural element has IDs:
+> - Components: ARC-C-\d{3}
+> - Processes (runtime): ARC-P-\d{3}
+> - Interfaces: INT-\d{3}
+> - Data entities: DATA-\d{3}
+> - Deployment nodes: DEP-\d{3}
+> - Decisions: ADR-\d{3}
+> - Quality attribute scenarios: QA-SC-\d{3}
+> Each ADR must reference ≥1 REQ-* or QA-SC-*, and each QA-SC-* must map to ≥1 REQ-NF-*.
+
+---
 
 ## Metadata
+
 ```yaml
-adrId: ADR-001
-status: accepted
-relatedRequirements:
-  - REQ-NF-001  # System shall support multiple hardware vendors
-  - REQ-F-001  # Standards shall coordinate without hardware dependencies
-relatedComponents:
-  - Common::interfaces::NetworkInterface
-  - Common::interfaces::TimerInterface
-  - Common::interfaces::ClockInterface
-supersedes: []
-supersededBy: null
-author: Architecture Team
-date: 2025-10-12
-reviewers: []
+specType: architecture
+standard: 42010
+phase: 03-architecture
+version: 1.0.0
+author: {{AUTHOR}}
+date: 2025-02-15
+status: draft
+traceability:
+  requirements:
+    - REQ-F-001
+    - REQ-NF-001
 ```
 
-## Context
+## Architecture Decision Record
 
-### Architectural Concern
-IEEE media networking standards (802.1AS gPTP, 1722 AVTP, 1722.1 AVDECC) must operate across different hardware platforms (Intel, Broadcom, Marvell, etc.) and operating systems (Linux, Windows, VxWorks) without modification.
+### ADR-001: [Decision Title]
 
-### Stakeholder Concerns
-- **Standards Developers**: Need to implement pure protocol logic without hardware dependencies
-- **Hardware Integrators**: Want to reuse standards across different vendor platforms  
-- **System Architects**: Require testable, maintainable code that doesn't break with hardware changes
-- **Certification Bodies**: Need verifiable standards compliance independent of implementation platform
+**Status**: Proposed | Accepted | Deprecated | Superseded
 
-### Forces in Conflict
-1. **Portability vs Performance**: Hardware abstraction adds indirection but enables cross-platform deployment
-2. **Standards Purity vs Integration**: Pure standards cannot call hardware directly but must integrate with real systems
-3. **Testability vs Real-world Operation**: Mock interfaces enable testing but must map to actual hardware capabilities
-4. **Maintenance vs Optimization**: Generic interfaces are maintainable but may not exploit vendor-specific optimizations
+**Context**:
+[What is the architectural issue or challenge we're addressing?]
 
-### Quality Attributes (ISO/IEC 25010)
-- **Portability**: Standards code must run on any compliant hardware platform
-- **Maintainability**: Changes to hardware should not require standards code modification
-- **Testability**: Standards logic must be verifiable without physical hardware
-- **Interoperability**: Different vendor implementations must work together seamlessly
+**Decision**:
+[What architecture approach/pattern/technology have we chosen?]
 
-## Decision
+**Consequences**:
 
-**We will implement a hardware abstraction interface layer** in `lib/Standards/Common/interfaces/` that provides:
+**Positive**:
 
-1. **NetworkInterface** - Abstract Ethernet packet I/O operations
-2. **TimerInterface** - Abstract nanosecond-precision timing operations  
-3. **ClockInterface** - Abstract system clock synchronization operations
-4. **TimingSyncInterface** - Abstract cross-standard timing coordination
-5. **TransportInterface** - Abstract cross-standard message passing
+- [Benefit 1]
+- [Benefit 2]
 
-All IEEE standards implementations will receive these interfaces via **dependency injection** and remain completely hardware-agnostic.
+**Negative**:
 
-## Status
-**ACCEPTED** - This decision addresses the fundamental architectural requirement for hardware portability while maintaining standards compliance and testability.
+- [Drawback 1]
+- [Trade-off]
 
-## Rationale
+**Alternatives Considered**:
 
-### Why This Option Best Addresses the Forces
+1. **[Alternative 1]**: [Why not chosen]
+2. **[Alternative 2]**: [Why not chosen]
 
-1. **Standards Purity Preserved**: IEEE protocol implementations contain no hardware-specific code
-2. **Hardware Flexibility Maintained**: Service layer can bind any vendor implementation to standards
-3. **Testing Enabled**: Mock implementations allow comprehensive protocol testing without hardware
-4. **Performance Maintained**: Virtual function call overhead is negligible compared to network I/O
-5. **Standards Compliance**: Pure protocol logic ensures IEEE specification adherence
+**Compliance**: Addresses REQ-NF-001 (Scalability)
 
-### Trade-off Analysis
-- **Performance Impact**: ~1-2ns virtual function call overhead vs. microsecond network operations (negligible)
-- **Complexity**: Additional abstraction layer vs. unmaintainable hardware-specific code (justified)
-- **Memory**: Interface vtables vs. inline hardware calls (~64 bytes vs. brittle coupling) (acceptable)
+---
 
-## Considered Alternatives
+## System Context
 
-| Alternative | Summary | Pros | Cons | Reason Not Chosen |
-|------------|---------|------|------|-------------------|
-| Direct Hardware Integration | Standards call hardware APIs directly | Maximum performance, simple integration | Platform lock-in, untestable, violates standards purity | Violates IEEE standards-only principle |
-| Static Linking | Compile-time hardware binding | No runtime overhead | Cannot change hardware without recompilation | Inflexible for multi-vendor deployments |
-| Plugin Architecture | Runtime loaded hardware modules | Ultimate flexibility | Complex loading, security concerns | Over-engineering for this problem domain |
-| Template-Based | C++ templates for hardware types | Zero runtime overhead | Compile-time explosion, complex build | Maintenance nightmare with multiple vendors |
-| Preprocessor Macros | Conditional compilation per hardware | Simple implementation | Unmaintainable, error-prone | Cannot support multiple vendors simultaneously |
+### Context Diagram (C4 Level 1)
 
-## Implementation Guidelines (IEEE 1016-2009 Format)
-
-### Interface Design Principles
-```cpp
-// Example: NetworkInterface following Dependency Inversion Principle
-class NetworkInterface {
-public:
-    // Pure virtual methods - no default implementations
-    virtual int send_packet(const void* packet, size_t length) = 0;
-    virtual int receive_packet(void* buffer, size_t* length) = 0;
+```mermaid
+C4Context
+    title System Context Diagram - [System Name]
     
-    // Capability discovery for optional features
-    virtual uint32_t get_capabilities() const = 0;
+    Person(user, "End User", "System user")
+    Person(admin, "Administrator", "System administrator")
     
-    // Hardware-agnostic error codes
-    virtual int get_last_error() const = 0;
+    System(system, "[System Name]", "Primary system being built")
     
-protected:
-    virtual ~NetworkInterface() = default;  // Proper cleanup
-};
+    System_Ext(authProvider, "Auth Provider", "OAuth 2.0 authentication")
+    System_Ext(emailService, "Email Service", "Transactional emails")
+    System_Ext(paymentGateway, "Payment Gateway", "Payment processing")
+    
+    Rel(user, system, "Uses", "HTTPS")
+    Rel(admin, system, "Manages", "HTTPS")
+    Rel(system, authProvider, "Authenticates via", "OAuth 2.0")
+    Rel(system, emailService, "Sends emails via", "REST API")
+    Rel(system, paymentGateway, "Processes payments via", "REST API")
 ```
 
-### Service Layer Bridge Pattern
-```cpp
-// Intel-specific implementation (in Service layer, NOT Standards)
-class IntelNetworkService : public NetworkInterface {
-public:
-    int send_packet(const void* packet, size_t length) override {
-        return intel_hal_send_ethernet_frame(packet, length);
+### Stakeholders and Concerns
+
+| Stakeholder | Concerns | Addressed By |
+|-------------|----------|--------------|
+| End Users | Usability, Performance, Availability | View: User Experience, View: Deployment |
+| Developers | Maintainability, Testability | View: Development, View: Logical |
+| Operations | Reliability, Monitoring, Scalability | View: Deployment, View: Operational |
+| Security Team | Security, Compliance | View: Security |
+
+---
+
+## Container Diagram (C4 Level 2)
+
+```mermaid
+C4Container
+    title Container Diagram - [System Name]
+    
+    Person(user, "User")
+    
+    Container(webApp, "Web Application", "React", "SPA providing user interface")
+    Container(apiGateway, "API Gateway", "Node.js/Express", "REST API, authentication, rate limiting")
+    Container(appService, "Application Service", "Node.js", "Business logic")
+    ContainerDb(database, "Database", "PostgreSQL", "User data, transactions")
+    ContainerDb(cache, "Cache", "Redis", "Session storage, caching")
+    Container(worker, "Background Worker", "Node.js", "Async job processing")
+    ContainerQueue(queue, "Message Queue", "RabbitMQ", "Job queue")
+    
+    Rel(user, webApp, "Uses", "HTTPS")
+    Rel(webApp, apiGateway, "API calls", "JSON/HTTPS")
+    Rel(apiGateway, appService, "Calls", "JSON/HTTP")
+    Rel(appService, database, "Reads/Writes", "SQL")
+    Rel(appService, cache, "Reads/Writes", "Redis Protocol")
+    Rel(appService, queue, "Publishes jobs", "AMQP")
+    Rel(worker, queue, "Consumes jobs", "AMQP")
+    Rel(worker, database, "Updates", "SQL")
+```
+
+### Container Specifications
+
+#### Container: API Gateway
+
+**Technology**: Node.js 18 + Express 4.x
+
+**Responsibilities**:
+
+- Request routing
+- Authentication & Authorization
+- Rate limiting
+- Request/Response logging
+- API versioning
+
+**Interfaces Provided**:
+
+- REST API (JSON over HTTPS)
+- WebSocket connections
+
+**Interfaces Required**:
+
+- Application Service (HTTP)
+- Auth Provider (OAuth 2.0)
+- Cache (Redis protocol)
+
+**Quality Attributes**:
+
+- Performance: < 50ms latency (gateway overhead)
+- Availability: 99.95%
+- Scalability: Horizontal scaling up to 50 instances
+
+**Configuration**:
+
+```yaml
+# Environment variables
+PORT: 3000
+AUTH_PROVIDER_URL: https://auth.example.com
+RATE_LIMIT_REQUESTS: 1000
+RATE_LIMIT_WINDOW: 3600  # seconds
+```
+
+---
+
+## Component Diagram (C4 Level 3)
+
+### Application Service Components
+
+```mermaid
+C4Component
+    title Component Diagram - Application Service
+    
+    Container_Boundary(appService, "Application Service") {
+        Component(userService, "User Service", "Service", "User management")
+        Component(orderService, "Order Service", "Service", "Order processing")
+        Component(paymentService, "Payment Service", "Service", "Payment processing")
+        Component(notificationService, "Notification Service", "Service", "Notifications")
+        
+        ComponentDb(userRepo, "User Repository", "Repository", "User data access")
+        ComponentDb(orderRepo, "Order Repository", "Repository", "Order data access")
     }
-    // ... hardware-specific implementations
-};
-
-// Standards receive interface via dependency injection
-ieee_1722_1::avdecc::EntityModel entity(network_interface, timer_interface);
+    
+    ContainerDb(database, "Database", "PostgreSQL")
+    Container(queue, "Message Queue", "RabbitMQ")
+    System_Ext(paymentGateway, "Payment Gateway")
+    
+    Rel(orderService, userService, "Gets user info")
+    Rel(orderService, paymentService, "Processes payment")
+    Rel(orderService, notificationService, "Sends notification")
+    
+    Rel(userService, userRepo, "Uses")
+    Rel(orderService, orderRepo, "Uses")
+    
+    Rel(userRepo, database, "SQL")
+    Rel(orderRepo, database, "SQL")
+    
+    Rel(paymentService, paymentGateway, "API calls")
+    Rel(notificationService, queue, "Publishes")
 ```
 
-## Verification Criteria (IEEE 1012-2016)
+---
 
-### Architecture Compliance Tests
-1. **Standards Compilation Test**: All IEEE standards must compile without hardware headers
-2. **Interface Completeness Test**: All hardware operations must be accessible via interfaces
-3. **Mock Testing**: Complete standards functionality verifiable with mock implementations
-4. **Multi-Vendor Integration**: Same standards code must work with different vendor service layers
+## Architecture Views
 
-### Success Metrics
-- ✅ Standards layer compiles independently of hardware
-- ✅ 100% protocol logic testable via mocks
-- ✅ Service layer successfully bridges to Intel, Broadcom, Marvell hardware
-- ✅ IEEE certification testing passes across all supported platforms
+### Logical View
 
-## Dependencies
+**Purpose**: Show key abstractions and their relationships
 
-### Upstream Dependencies
-- **Requirements Engineering** (ISO/IEC/IEEE 29148:2018)
-  - REQ-NF-PORTABILITY-001: Multi-vendor hardware support
-  - REQ-F-CROSS-STANDARD-001: Standards coordination capability
+**Elements**:
 
-### Downstream Dependencies
-- **IEEE 802.1AS Implementation**: Requires NetworkInterface, TimerInterface, ClockInterface
-- **IEEE 1722 Implementation**: Requires NetworkInterface, TimingSyncInterface  
-- **IEEE 1722.1 Implementation**: Requires NetworkInterface, TransportInterface
+- **User Aggregate**: User, Profile, Preferences
+- **Order Aggregate**: Order, OrderLine, Payment
+- **Notification Aggregate**: Notification, Template
 
-### Standards References
-- **IEEE 1016-2009**: Software design descriptions format (this document structure)
-- **ISO/IEC/IEEE 42010:2011**: Architecture description practices (ADR format)
-- **IEEE 1012-2016**: Verification and validation procedures (testing approach)
+**Patterns**:
 
-## Consequences
+- **Domain-Driven Design**: Aggregates with clear boundaries
+- **Repository Pattern**: Data access abstraction
+- **Service Layer**: Business logic coordination
 
-### Positive Consequences
+### Process View
 
-1. **Hardware Vendor Independence**
-   - Standards implementations work identically across Intel, Broadcom, Marvell, and other hardware platforms
-   - System integrators can choose hardware based on cost/performance without software migration costs
-   - Equipment manufacturers can switch hardware vendors without rewriting protocol stacks
+**Purpose**: Show runtime behavior and concurrency
 
-2. **Enhanced Testability and Quality**
-   - Complete IEEE protocol validation possible without physical hardware via mock implementations
-   - Continuous Integration testing achieves 100% code coverage of standards logic
-   - Protocol compliance testing independent of hardware availability or configuration
+**Key Processes**:
 
-3. **Standards Compliance Assurance**
-   - Pure protocol implementations cannot accidentally include hardware-specific behaviors
-   - IEEE certification testing validates standards conformance, not hardware integration
-   - Standards layer remains maintainable and focused solely on protocol correctness
+1. **Request Processing**:
+   ```
+   User Request → API Gateway → Load Balancer → App Service → Database
+   ```
 
-4. **Development Velocity and Maintainability**
-   - Standards developers work without hardware dependencies or vendor SDK limitations
-   - Parallel development: standards team focuses on protocols, service teams focus on hardware integration
-   - Clear separation of concerns prevents hardware changes from breaking protocol implementations
+2. **Async Job Processing**:
+   ```
+   App Service → Message Queue → Worker → Database
+   ```
 
-5. **Cross-Platform Deployment Flexibility**
-   - Same standards code runs on Linux, Windows, VxWorks, and embedded RTOS platforms
-   - Service layer provides OS-specific and hardware-specific optimizations independently
-   - Reduces total cost of ownership for multi-platform product development
+**Concurrency Strategy**:
 
-### Negative Consequences
+- Stateless application services (horizontal scaling)
+- Connection pooling for database (pool size: 10-50 per instance)
+- Worker process pool (4 workers per container)
 
-1. **Performance Overhead**
-   - Virtual function calls add ~1-2 nanoseconds per hardware operation
-   - **Mitigation**: Negligible compared to microsecond-scale network I/O operations
-   - **Acceptance Criteria**: <0.1% impact on end-to-end protocol timing
+### Development View
 
-2. **Development Complexity**
-   - Additional interface design and documentation overhead
-   - Service layer developers must implement hardware abstraction
-   - **Mitigation**: Clear interface specifications and reference implementations provided
-   - **Acceptance Criteria**: Interface implementation time <2 weeks per hardware platform
+**Layer Architecture**:
 
-3. **Runtime Memory Overhead**
-   - Virtual function tables require ~64 bytes per interface instance
-   - **Mitigation**: Insignificant compared to packet buffers and protocol state machines
-   - **Acceptance Criteria**: <1KB total memory overhead per standards instance
+```text
+┌─────────────────────────────────────┐
+│     Presentation Layer              │  (API Controllers, DTOs)
+├─────────────────────────────────────┤
+│     Application Layer               │  (Use Cases, Commands, Queries)
+├─────────────────────────────────────┤
+│     Domain Layer                    │  (Entities, Value Objects, Domain Services)
+├─────────────────────────────────────┤
+│     Infrastructure Layer            │  (Repositories, External Services)
+└─────────────────────────────────────┘
+```
 
-4. **Initial Implementation Cost**
-   - Requires refactoring existing direct hardware integration code
-   - Interface design requires coordination between standards and service teams
-   - **Mitigation**: Incremental adoption possible via adapter pattern for legacy code
-   - **Acceptance Criteria**: Migration completed within one development cycle
+**Module Dependencies**:
 
-### Risk Mitigation Strategies
+```typescript
+// domain/ - No dependencies on other layers
+export class User {
+  // Pure domain logic
+}
 
-1. **Interface Stability Risk**: Frequent interface changes could disrupt hardware integrations
-   - **Mitigation**: Formal interface versioning with backward compatibility guarantees
-   - **Process**: Interface changes require architecture review board approval
+// application/ - Depends on domain/
+import { User } from '../domain/User';
 
-2. **Performance Regression Risk**: Abstraction could introduce unacceptable latency
-   - **Mitigation**: Performance benchmarking mandatory for all interface implementations
-   - **Requirement**: Service layer must meet same timing requirements as direct integration
+export class CreateUserUseCase {
+  // Application orchestration
+}
 
-3. **Complexity Explosion Risk**: Over-abstraction could make interfaces unusable
-   - **Mitigation**: Interface design follows minimal viable abstraction principle
-   - **Guideline**: Each interface method must map directly to specific IEEE standard requirements
+// infrastructure/ - Depends on domain/, implements interfaces
+import { IUserRepository } from '../domain/IUserRepository';
 
-## Notes
+export class UserRepository implements IUserRepository {
+  // Database implementation
+}
 
-This ADR establishes the foundation for **hardware-agnostic IEEE media networking standards implementation**. All subsequent IEEE standards development must follow this dependency injection pattern to maintain architectural integrity and enable cross-platform deployment.
+// presentation/ - Depends on application/
+import { CreateUserUseCase } from '../application/CreateUserUseCase';
 
-The abstraction layer enables both **standards compliance** (pure protocol implementations) and **practical deployment** (hardware integration via service layer) without compromising either requirement.
+export class UserController {
+  // HTTP handling
+}
+```
 
-**CRITICAL SUCCESS FACTOR**: The consequences analysis demonstrates that hardware abstraction is essential for standards-compliant, maintainable, and portable IEEE media networking implementations. The minimal performance overhead is justified by substantial gains in testability, portability, and standards compliance assurance.
+### Physical/Deployment View
+
+**Production Environment**:
+
+```yaml
+# Kubernetes deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: app-service
+  template:
+    spec:
+      containers:
+      - name: app
+        image: myapp:1.0.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: app-service
+```
+
+**Infrastructure**:
+
+- **Cloud Provider**: AWS
+- **Region**: us-east-1 (primary), us-west-2 (DR)
+- **Compute**: EKS (Kubernetes) with auto-scaling
+- **Database**: RDS PostgreSQL 14 (Multi-AZ)
+- **Cache**: ElastiCache Redis (cluster mode)
+- **Storage**: S3 for file storage
+- **CDN**: CloudFront
+
+### Data View
+
+**Data Architecture**:
+
+```sql
+-- Core tables
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id),
+    status VARCHAR(20) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_lines (
+    id UUID PRIMARY KEY,
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+```
+
+**Data Flow**:
+
+1. Write: App → Database (transactional)
+2. Read: App → Cache (if hit) → Database (if miss) → Cache (store)
+3. Analytics: Database → ETL → Data Warehouse
+
+**Caching Strategy**:
+
+- **What to cache**: User sessions, frequently accessed data
+- **Cache TTL**: 5 minutes for dynamic data, 1 hour for static data
+- **Invalidation**: Event-based (on updates)
+
+---
+
+## Cross-Cutting Concerns
+
+### Security Architecture
+
+**Authentication**:
+
+- OAuth 2.0 + OpenID Connect
+- JWT tokens (access: 15 min, refresh: 7 days)
+- Multi-factor authentication for sensitive operations
+
+**Authorization**:
+
+- Role-Based Access Control (RBAC)
+- Roles: Admin, User, Guest
+- Permission checks at API Gateway and Application Service
+
+**Data Protection**:
+
+- TLS 1.3 for all communications
+- AES-256 encryption for data at rest
+- Field-level encryption for PII
+- Secure key management (AWS KMS)
+
+### Performance Architecture
+
+**Optimization Strategies**:
+
+- **Caching**: Redis for hot data
+- **Database**: Read replicas for scaling reads
+- **CDN**: CloudFront for static assets
+- **Async Processing**: Background jobs for heavy operations
+- **Connection Pooling**: Reuse database connections
+
+**Performance Targets**:
+
+| Operation | Target | Max |
+|-----------|--------|-----|
+| API Response (p95) | < 200ms | < 500ms |
+| API Response (p99) | < 500ms | < 1s |
+| Page Load | < 2s | < 3s |
+| Database Query (p95) | < 50ms | < 200ms |
+
+### Monitoring & Observability
+
+**Metrics** (Prometheus):
+
+- Request rate, latency, error rate (RED)
+- CPU, memory, disk, network (USE)
+- Business metrics (orders/sec, revenue)
+
+**Logs** (ELK Stack):
+
+- Structured JSON logs
+- Correlation IDs for request tracing
+- Log levels: ERROR, WARN, INFO, DEBUG
+
+**Traces** (Jaeger):
+
+- Distributed tracing across services
+- Performance bottleneck identification
+
+**Alerts**:
+
+- PagerDuty for critical alerts
+- Slack for warning alerts
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Frontend | React 18 + TypeScript | Industry standard, strong typing |
+| API Gateway | Node.js + Express | Fast, async, mature ecosystem |
+| Application | Node.js + TypeScript | Consistency with gateway, strong typing |
+| Database | PostgreSQL 14 | ACID compliance, JSON support |
+| Cache | Redis 7 | High performance, data structures |
+| Message Queue | RabbitMQ 3 | Reliable, feature-rich |
+| Container | Docker | Standard containerization |
+| Orchestration | Kubernetes | Industry standard, mature |
+| Cloud | AWS | Reliability, feature set |
+
+---
+
+## Quality Attributes Scenarios
+
+### Scalability Scenario
+
+**Scenario**: Black Friday traffic spike (10x normal)
+
+**Response**:
+
+- Auto-scaling triggers at 70% CPU
+- Scale from 5 to 50 instances in 5 minutes
+- Database read replicas handle increased read load
+- CDN absorbs static content requests
+
+**Measure**: System handles 100k concurrent users with < 500ms p95 latency
+
+### Availability Scenario
+
+**Scenario**: Database primary fails
+
+**Response**:
+
+- Automatic failover to standby (< 60 seconds)
+- Application connections reconnect automatically
+- No data loss (synchronous replication)
+
+**Measure**: RTO < 5 minutes, RPO = 0 (no data loss)
+
+### Security Scenario
+
+**Scenario**: SQL injection attack attempt
+
+**Response**:
+
+- Parameterized queries prevent injection
+- Web Application Firewall (WAF) detects and blocks
+- Security monitoring alerts team
+- Attempted attack logged for analysis
+
+**Measure**: Zero successful injections
+
+---
+
+## Risks and Mitigations
+
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Database becomes bottleneck | Medium | High | Implement caching, read replicas, query optimization |
+| Third-party API failure | High | Medium | Circuit breaker pattern, graceful degradation |
+| Cloud provider outage | Low | Critical | Multi-region deployment, disaster recovery plan |
+| Security breach | Low | Critical | Defense in depth, regular security audits, penetration testing |
+
+---
+
+## Traceability
+
+| Architecture Component | Requirements | ADRs |
+|----------------------|-------------|------|
+| API Gateway | REQ-NF-001 (Performance), REQ-NF-002 (Security) | ADR-001 |
+| Microservices | REQ-NF-003 (Scalability) | ADR-002 |
+| PostgreSQL | REQ-F-010 (Data Integrity) | ADR-003 |
+
+---
+
+## Validation
+
+### Architecture Review Checklist
+
+- [ ] All requirements addressed in architecture
+- [ ] Quality attributes achievable
+- [ ] Technology choices justified
+- [ ] Risks identified and mitigated
+- [ ] Scalability plan defined
+- [ ] Security architecture complete
+- [ ] Monitoring strategy defined
+- [ ] Deployment approach defined
+
+### Architecture Evaluation
+
+**Method**: ATAM (Architecture Tradeoff Analysis Method)
+
+**Quality Attributes Evaluated**:
+
+- Performance
+- Scalability
+- Availability
+- Security
+- Maintainability
+
+**Results**: [Document ATAM results]
+
+---
+
+## Next Steps
+
+1. Review with architecture team
+2. Validate with requirements
+3. Create detailed component designs (Phase 04)
+4. Prototype critical components
+5. Update based on feedback

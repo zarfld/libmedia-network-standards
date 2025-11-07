@@ -1,75 +1,59 @@
-# OpenAvnu Standards Layer .gitignore
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Ignore build artifacts
+# Build outputs
+dist/
 build/
-build/**
-**/build/
-**/build/**
-/CMakeFiles/
-/CMakeCache.txt
-/cmake_install.cmake
-/Makefile
-**/build/** */
+*.js.map
 
-# Ignore object files and binaries
-*.o
-*.obj
-*.so
-*.dll
-*.exe
-*.lib
-*.a
-*.tlog
+# Environment variables
+.env
+.env.local
+.env.*.local
 
-# Ignore generated documentation - no documentation is required
-#/docs/completed/
-#/docs/archive/
-#/docs/insights/
+# IDE
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
 
-# Ignore test output
-/test/*.log
-/test/*.out
-/test/*.tmp
-
-# Ignore VS Code workspace settings
-#.vscode/
-#*.code-workspace
-
-# Ignore OS-specific files
+# OS
 .DS_Store
 Thumbs.db
 
-# Ignore dependency directories
-#/thirdparty/
-#/external/
-
-# Ignore temporary files
-*.swp
-*.swo
-*.bak
-*.tmp
-
-# Ignore Python cache (if any scripts)
-/__pycache__/
-*.pyc
-
-# Ignore package manager files
-node_modules/
-package-lock.json
-
-# Ignore coverage reports
+# Testing
 coverage/
-*.gcda
-*.gcno
-*.gcov
+.nyc_output/
+test-results/
+playwright-report/
 
-# Ignore user-specific files
-*.user
-*.suo
-
-# Ignore logs
+# Logs
+logs/
 *.log
 
-# Ignore standards reference PDFs (never commit spec docs)
-/workdir/
-*.pdf
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+ENV/
+
+# Misc
+.cache/
+*.pid

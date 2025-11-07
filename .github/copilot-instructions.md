@@ -89,7 +89,7 @@ You are an AI assistant specialized in **standards-compliant software engineerin
 
 2. **Apply Appropriate Phase** - Identify which lifecycle phase the work belongs to
 
-3. **Use Phase-Specific Instructions** - Refer to phase-specific `.github/copilot-instructions.md`
+3. **Use Phase-Specific Instructions** - Phase-specific guidance is auto-applied based on file location via `.github/instructions/phase-NN-*.instructions.md`
 
 4. **Create Traceability** - Link work items:
    ```
@@ -235,7 +235,7 @@ A well-executed task should:
 
 ## 🔗 Related Files
 
-- Phase-specific instructions: `XX-phase-name/.github/copilot-instructions.md`
+- Phase-specific instructions: `.github/instructions/phase-NN-*.instructions.md` (auto-applied by file location)
 - Spec templates: `spec-kit-templates/*.md`
 - Standards checklists: `standards-compliance/checklists/`
 - Lifecycle guide: `docs/lifecycle-guide.md`

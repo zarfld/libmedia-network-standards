@@ -4,13 +4,13 @@ Parses markdown files for ID patterns and produces:
  - reports/traceability-matrix.md (basic table placeholders)
  - reports/orphans.md (lists missing link elements)
 
-Patterns recognized:
-  StR-\d{3}
-  REQ-(F|NF)-\d{3}
-  ADR-\d{3}
-  ARC-C-\d{3}
-  QA-SC-\d{3}
-  TEST-[A-Z0-9-]+ (any test id with prefix TEST-)
+Patterns recognized (with optional 4-char category prefix for complex projects):
+  StR-[ABCD-]?\d{3}              (e.g., StR-001 or StR-CORE-001)
+  REQ-(ABCD-)?(F|NF)-[A-Z+-]?\d{3}  (e.g., REQ-F-001 or REQ-AUTH-F-001)
+  ADR-[ABCD-]?\d{3}              (e.g., ADR-001 or ADR-INFRA-001)
+  ARC-C-[ABCD-]?\d{3}            (e.g., ARC-C-001 or ARC-C-CORE-001)
+  QA-SC-[ABCD-]?\d{3}            (e.g., QA-SC-001 or QA-SC-PERF-001)
+  TEST-[ABCD-]?[A-Z0-9-]+        (e.g., TEST-LOGIN-001 or TEST-AUTH-LOGIN-001)
 
 Heuristics (improve later):
  - If a REQ appears in architecture spec or ADR file, we assume linkage
@@ -28,43 +28,18 @@ REPORTS = ROOT / 'reports'
 REPORTS.mkdir(exist_ok=True)
 
 PATTERNS = {
-    # Legacy patterns (deprecated - to be migrated)
-    'stakeholder_legacy': re.compile(r'StR-\d{3}'),
-    'requirement_legacy': re.compile(r'REQ-(?:F|NF)-\d{3}'),
-    
-    # NEW NAMING CONVENTION PATTERNS (Standards-Specific)
-    # Stakeholder Requirements: REQ-STK-{STANDARD}-{NNN}
-    'stakeholder': re.compile(r'REQ-STK-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # System Requirements: REQ-SYS-{STANDARD}-{NNN}  
-    'system': re.compile(r'REQ-SYS-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Functional Requirements: REQ-FUN-{STANDARD}-{NNN}
-    'functional': re.compile(r'REQ-FUN-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Non-Functional Requirements: REQ-NFR-{STANDARD}-{NNN}
-    'nonfunctional': re.compile(r'REQ-NFR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Interface Requirements: IR-{STANDARD}-{NNN}
-    'interface': re.compile(r'IR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Verification Requirements: VR-{STANDARD}-{NNN}  
-    'verification': re.compile(r'VR-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Acceptance Criteria: AC-{STANDARD}-{NNN}
-    'acceptance': re.compile(r'AC-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # Use Cases: UC-{STANDARD}-{NNN}
-    'usecase': re.compile(r'UC-[A-Z0-9]+(?:[A-Z0-9]+)*-\d{3}'),
-    
-    # User Stories: {STANDARD}-US-{NNN}
-    'userstory': re.compile(r'[A-Z0-9]+(?:[A-Z0-9]+)*-US-\d{3}'),
-    
-    # Architecture and other patterns (unchanged)
-    'adr': re.compile(r'ADR-\d{3}'),
-    'component': re.compile(r'ARC-C-\d{3}'),
-    'scenario': re.compile(r'QA-SC-\d{3}'),
-    'test': re.compile(r'TEST-[A-Z0-9-]+'),
+    # Support optional 4-char category: StR-ABCD-001 or StR-001
+    'stakeholder': re.compile(r'StR-(?:[A-Z]{4}-)?(?:[A-Z]+-)??\d{3}'),
+    # REQ-AUTH-F-001 or REQ-F-001, REQ-AUTH-NF-001 or REQ-NF-001
+    'requirement': re.compile(r'REQ-(?:[A-Z]{4}-)?(?:F|NF)-(?:[A-Z]+-)??\d{3}'),
+    # ADR-AUTH-001 or ADR-001
+    'adr': re.compile(r'ADR-(?:[A-Z]{4}-)??\d{3}'),
+    # ARC-C-CORE-001 or ARC-C-001
+    'component': re.compile(r'ARC-C-(?:[A-Z]{4}-)??\d{3}'),
+    # QA-SC-PERF-001 or QA-SC-001
+    'scenario': re.compile(r'QA-SC-(?:[A-Z]{4}-)??\d{3}'),
+    # TEST-AUTH-LOGIN-001 or TEST-LOGIN-001 (flexible: alphanumeric + dash)
+    'test': re.compile(r'TEST-(?:[A-Z]{4}-)?[A-Z0-9-]+'),
 }
 
 def is_guidance(path: pathlib.Path, text: str) -> bool:
