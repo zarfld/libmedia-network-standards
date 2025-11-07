@@ -225,6 +225,16 @@ RESULT: ALL TESTS PASSED - IEEE 1722.1-2021 AECP Protocol FULLY FUNCTIONAL
 RESULT: ALL TESTS PASSED - IEEE 1722.1-2021 ACMP Protocol FULLY FUNCTIONAL
 ```
 
+## Sponsorship Needed for Certification
+
+We are a volunteer‑run, open‑source project without industry sponsorship. Official certification suites (Milan, AES67, etc.) and lab validation require funding we do not currently have. Sponsors can accelerate:
+
+- Access to certified test harnesses & vectors
+- Formal interoperability verification
+- Publication of conformance matrices
+
+If you or your organization can help, please open an issue or start a discussion. Your support directly improves cross‑vendor reliability.
+
 ## Development Roadmap
 
 ### ✅ AECP & ACMP Protocol Libraries: COMPLETE (July 22, 2025)
