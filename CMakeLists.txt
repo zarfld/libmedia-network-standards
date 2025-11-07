@@ -32,7 +32,7 @@ option(BUILD_TESTS "Build test applications" ON)
 option(BUILD_STANDARDS_INTEGRATION "Build Standards Integration examples/tests" ON)
 # Include directories for hierarchical structure
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1588/PTP/2019/include)
+## IEEE 1588 include paths are provided by the selected submodule when present
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722/2016/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722.1/2013/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1722.1/2021/core)
@@ -44,8 +44,18 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/AVnu/Milan/1.2-2023)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Common)
 
 # Add subdirectories based on build options
+# Version selection for IEEE 1588 (submodules are built independently)
+# Values: latest | 2019 | 2008 | 2002
+set(STANDARDS_IEEE1588_VERSION "latest" CACHE STRING "Select IEEE 1588 version: latest|2019|2008|2002")
+
 if(BUILD_IEEE_1588_2019)
-    add_subdirectory(IEEE/1588/PTP/2019)
+    if(STANDARDS_IEEE1588_VERSION STREQUAL "latest" OR STANDARDS_IEEE1588_VERSION STREQUAL "2019")
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/IEEE/1588/2019/CMakeLists.txt")
+            add_subdirectory(IEEE/1588/2019)
+        else()
+            message(STATUS "IEEE 1588-2019 submodule not found at IEEE/1588/2019; skipping local build. You can build/test it in its own repository.")
+        endif()
+    endif()
 endif()
 
 if(BUILD_IEEE_1722_2016)
@@ -84,6 +94,7 @@ endif()
 # Summary
 message(STATUS "IEEE 1722 Standards Library Configuration:")
 message(STATUS "  IEEE 1588-2019 (PTP v2.1): ${BUILD_IEEE_1588_2019}")
+message(STATUS "  IEEE 1588 selected version: ${STANDARDS_IEEE1588_VERSION}")
 message(STATUS "  IEEE 1722-2016 (AVTP): ${BUILD_IEEE_1722_2016}")
 message(STATUS "  IEEE 1722.1-2013 (Legacy AVDECC): ${BUILD_IEEE_1722_1_2013}")
 message(STATUS "  IEEE 1722.1-2021 (Modern AVDECC): ${BUILD_IEEE_1722_1_2021}")
