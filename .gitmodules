@@ -34,3 +34,7 @@
 	path = AVnu/Milan/2.0a-2023
 	url = https://github.com/zarfld/Milan-Baseline-Interoperability-Specification-2.0a.git
 	branch = main
+[submodule "IEEE/1588/2019"]
+	path = IEEE/1588/2019
+	url = https://github.com/zarfld/IEEE_1588_2019.git
+	branch = main
