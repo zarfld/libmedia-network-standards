@@ -8,6 +8,21 @@ applyTo: '**'
 
 The Standards layer (`lib/Standards/`) is the **pure protocol implementation layer** that MUST remain completely hardware and vendor agnostic.
 
+## Repository Role Update: Multi-Standard Aggregator with Version Abstraction
+
+This repository now consumes individual standards as Git submodules (IEEE, AVnu, AES, etc.) and provides:
+
+- A cohesive aggregation library that composes those standards without modifying submodule sources
+- A version abstraction layer (VAL) to present stable APIs while allowing multiple standard versions (e.g., IEEE 1722.1-2013 and 1722.1-2021) to coexist
+- Inter-standard interaction contracts (e.g., AVDECC over AVTP with gPTP timing; AES67 interacting with IEEE timing/transport)
+
+Key principles for the aggregation layer:
+
+- Do not change submodule code in-place; contribute upstream and update submodule SHAs here
+- Keep aggregation/abstraction code hardware-agnostic and standards-only
+- Respect layering and dependency direction across standards
+- Provide compile-time and optional runtime mechanisms to select standard versions
+
 ## Working Principles for Standards Layer
 
 - **Understand protocols before implementing** - study IEEE specifications and state machines thoroughly
@@ -18,56 +33,22 @@ The Standards layer (`lib/Standards/`) is the **pure protocol implementation lay
 - **Prevent dead code or orphan files** - fix code rather than creating new versions, ensure ALL code compiles
 - **Always reference ### Documentation Requirements with Copyright Compliance
 
-### Function Documentation with IEEE Context
-```cpp
-/**
- * @brief Parse IEEE 1722.1 AVDECC Entity descriptor from network packet
- * 
- * Validates and extracts entity descriptor according to IEEE 1722.1-2021
- * specification section 7.2.1. Performs integrity checks including AEM
- * checksum validation per specification requirements.
- *
- * @param packet_data Raw ethernet packet data
- * @param packet_length Length of packet data in bytes
- * @param entity_desc Output buffer for parsed descriptor
- * @return 0 on success, negative error code on failure
- * 
- * @note Implements IEEE 1722.1-2021 Table 7.1 entity descriptor format
- * @see IEEE 1722.1-2021, Section 7.2.1 "ENTITY descriptor"
- * @see IEEE 1722.1-2021, Section 7.3.5 "AEM checksum calculation"
- * 
- * IMPORTANT: This implementation is based on understanding of IEEE 1722.1-2021
- * specification. No copyrighted content from IEEE documents is reproduced.
- * Refer to original IEEE specification for authoritative requirements.
- */
-int avdecc_parse_entity_descriptor(const uint8_t* packet_data, 
-                                   size_t packet_length,
-                                   avdecc_entity_descriptor_t* entity_desc);
+### Function Documentation with IEEE Context (Example – do not compile)
+The following example demonstrates the required style without being compilable code:
+
+Example (pseudocode style, not for build):
+```
+// Function: avdecc_parse_entity_descriptor
+// Purpose: Parse IEEE 1722.1 AVDECC Entity descriptor from network packet
+// References: IEEE 1722.1-2021 Sections 7.2.1 (descriptor format), 7.3.5 (checksum)
+// Returns: 0 on success; negative error code on failure
 ```
 
 ### Copyright-Compliant Implementation Comments
-```cpp
-// ✅ CORRECT - Reference without reproduction
-// Implements entity descriptor parsing per IEEE 1722.1-2021 Section 7.2.1
-#define ENTITY_DESCRIPTOR_TYPE 0x0000  // As specified in IEEE 1722.1-2021
-
-// ❌ WRONG - Reproducing copyrighted content
-/*
-// DON'T DO THIS - This reproduces copyrighted IEEE content:
-// "The entity_descriptor field shall contain the following sub-fields:
-//  descriptor_type (16 bits): shall be set to ENTITY (0x0000)
-//  descriptor_index (16 bits): shall be set to 0x0000..."
-// This is direct reproduction of IEEE copyrighted text!
-*/
-
-// ✅ CORRECT - Original implementation based on specification understanding
-struct entity_descriptor {
-    uint16_t descriptor_type;    // IEEE 1722.1-2021 Table 7.1 
-    uint16_t descriptor_index;   // IEEE 1722.1-2021 Table 7.1
-    uint64_t entity_id;         // IEEE 1722.1-2021 Table 7.1
-    uint64_t entity_model_id;   // IEEE 1722.1-2021 Table 7.1
-    // ... implementation based on specification understanding
-};
+```
+Compliance Pattern Notes:
+- Reference section numbers only (e.g., IEEE 1722.1-2021 §7.2.1) without copying text.
+- Use factual constants (e.g., descriptor type IDs) without reproducing table prose.
 ```
 
 ### Standards Compliance Notes with Copyright Respect
@@ -91,22 +72,20 @@ struct entity_descriptor {
 - **Dependency injection pattern** - receives hardware abstraction via interfaces/function pointers
 
 ### FORBIDDEN in Standards Layer
-```cpp
-// ❌ NEVER include vendor-specific headers
-#include "intel_ethernet_hal.h"           // NO - Intel specific
-#include "../../intel_avb/include/*.h"    // NO - Intel specific  
-#include "../../common/hal/network_hal.h" // NO - HAL abstraction
-#include <linux/if_packet.h>              // NO - OS specific
-#include <winsock2.h>                     // NO - OS specific
+```
+Forbidden Include Patterns (Descriptive Only):
+- intel_ethernet_hal.h (vendor specific)
+- linux/if_packet.h (OS specific)
+- winsock2.h (OS specific)
 ```
 
 ### REQUIRED in Standards Layer
-```cpp
-// ✅ Only standards and protocol headers
-#include "jdksavdecc.h"                   // IEEE 1722.1 protocol
-#include "ieee1722_avtp.h"                // IEEE 1722 AVTP
-#include "ieee8021as_gptp.h"              // IEEE 802.1AS gPTP
-#include "avnu_milan.h"                   // AVnu Milan extensions
+```
+Required Logical Dependencies (Illustrative List):
+- jdksavdecc.h (1722.1 protocol structures)
+- ieee1722_avtp.h (AVTP core)
+- ieee8021as_gptp.h (gPTP timing)
+- avnu_milan.h (Milan extensions)
 ```
 
 ## Architecture Compliance
@@ -118,18 +97,24 @@ struct entity_descriptor {
 - **Standard-defined structures** and constants
 - **Protocol compliance validation**
 
-### Interface Pattern for Hardware Access
-```cpp
-// ✅ CORRECT: Dependency injection interface
-typedef struct {
-    int (*send_packet)(const void* packet, size_t length);
-    int (*receive_packet)(void* buffer, size_t* length);
-    uint64_t (*get_time_ns)(void);
-    int (*set_timer)(uint32_t interval_us, timer_callback_t callback);
-} network_interface_t;
+### Aggregation Layer Responsibility (New)
+- Define stable façade interfaces that map to specific standard versions
+- Orchestrate inter-standard flows (e.g., AVDECC over AVTP with gPTP timing) strictly following dependency rules
+- Offer version selectors (compile-time options and optional runtime registry) to bind façade to a concrete version backend
+- Encapsulate cross-standard utilities and avoid code duplication across submodules
+- Never introduce hardware or OS specifics; keep testable without devices
 
-// Protocol implementation receives interface
-int avdecc_entity_init(const network_interface_t* net_interface);
+### Submodule Governance
+- Submodules are the single source of truth for each standard’s implementation
+- Do not copy code from submodules into the aggregator; instead, add adapters/wrappers
+- Updates to standards are done by advancing submodule SHAs via normal review
+- If a fix is required, send PRs to the submodule repo and update the pointer here
+
+### Interface Pattern for Hardware Access
+```
+Dependency Injection Pattern (Conceptual):
+Interface: NetworkInterface { send_packet; receive_packet; get_time_ns; set_timer }
+Initialization: avdecc_entity_init(NetworkInterface*)
 ```
 
 ### Hardware Bridge (Service Layer Responsibility)
@@ -148,14 +133,10 @@ static network_interface_t intel_interface = {
 // Service layer bridges Standards to Intel Hardware
 avdecc_entity_init(&intel_interface);
 ```
-
-## IEEE Standards Reference
-
-### CRITICAL: Use Authoritative Standards Documents
-When implementing protocols, reference these authoritative documents via MCP-Server "markitdown_standards":
-
-#### IEEE Protocol Standards:
-- `IEEE 1588-2019-en.pdf` - Precision Time Protocol (PTPv2) - Foundation timing protocol
+Standards Constant Usage:
+- GOOD: command_type = JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR (symbol from protocol header)
+- AVOID: command_type = 0x0004 (magic number without semantic linkage)
+```
 - `ISO-IEC-IEEE 8802-1AS-2021-en.pdf` - Generalized Precision Time Protocol (gPTP) - CURRENT
 - `ISO-IEC-IEEE 8802-1Q-2020-en.pdf` - VLAN and QoS Standards - Network layer foundation
 - `ISO-IEC-IEEE 8802-1BA-2016-en.pdf` - Audio Video Bridging (AVB) Profiles
@@ -215,13 +196,9 @@ When implementing protocols, reference these authoritative documents via MCP-Ser
 - AVnu interoperability requirements
 
 ### Protocol Compliance Requirements
-```cpp
-// ✅ Use authoritative constants from jdksavdecc
-#include "jdksavdecc_aem_command.h"
-uint16_t command_type = JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR;
-
-// ❌ NEVER use hardcoded values
-uint16_t command_type = 0x0004;  // NO - not standards compliant
+```
+✅ Use authoritative constants from jdksavdecc (e.g., JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR)
+❌ NEVER use hardcoded values (e.g., 0x0004) without semantic linkage
 ```
 
 ## Testing Approach
@@ -258,13 +235,8 @@ intel_hal_result_t result = intel_hal_send_packet(packet, length);
 ```
 
 ### ❌ OS-Specific Code
-```cpp
-// WRONG - OS-specific networking in Standards
-#ifdef _WIN32
-    SOCKET sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-#else
-    int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-#endif
+```
+OS Conditional Example (Forbidden in Standards Layer): platform socket creation blocks.
 ```
 
 ### ❌ Hardware Assumptions
@@ -276,11 +248,8 @@ if (intel_hal_supports_ptp()) {  // Hardware-specific assumption
 ```
 
 ### ✅ Correct Abstraction
-```cpp
-// CORRECT - Protocol logic with abstracted capabilities
-if (net_interface->capabilities & NETWORK_CAP_HARDWARE_TIMESTAMP) {
-    enable_precision_timing();  // Protocol behavior, not hardware call
-}
+```
+Capability Check Pattern: if (iface.capabilities includes HARDWARE_TIMESTAMP) then adjust protocol timing path (no direct hardware calls).
 ```
 
 ## Protocol Implementation Guidelines
@@ -306,6 +275,11 @@ if (net_interface->capabilities & NETWORK_CAP_HARDWARE_TIMESTAMP) {
 - Calculate path delay and offset corrections according to specification algorithms
 - Support grandmaster clock selection algorithm with proper priority comparisons
 - Maintain ±80ns synchronization accuracy for Milan compliance
+
+### AES Family (Aggregation Guidance)
+- AES67: Provide adapters to IEEE timing/transport where referenced by the spec; do not replicate IEEE logic
+- AES70 (OCA): Keep device control separate from transport; rely on existing transport abstractions where relevant
+- AES3/AES5/AES11: Treat as standards data/format references; where protocol interaction is needed, build adapters that reuse IEEE/AES67 utilities
 
 ## Clean Submit Rules for Standards
 
@@ -509,10 +483,18 @@ lib/Standards/
 │   ├── utils/                 # Shared protocol utilities
 │   ├── testing/               # Common testing frameworks
 │   └── interfaces/            # Hardware abstraction interfaces
+│   └── abstraction/           # Version Abstraction Layer façades + adapters (new)
 └── Documentation/             # Standards documentation
     ├── conformance/           # Conformance test specifications
     ├── interop/              # Interoperability guidelines
     └── examples/             # Protocol usage examples
+```
+
+Additional Aggregation Directories (new):
+```
+lib/Aggregation/
+├── cmake/                     # Build options and helpers for linking submodules
+└── registry/                  # Optional runtime registries for version binding
 ```
 
 ### Required C++ Namespace Structure Following Generic Pattern
@@ -686,6 +668,30 @@ namespace Common {               // Cross-organization utilities
         class TestFrameworkBase;
     }
 } // namespace Common
+
+### NEW: VAL and Backends Namespaces (Façade + Adapters)
+```
+// Stable façade APIs offering version-agnostic contracts
+namespace Common { namespace abstraction {
+    class AVDECCEntityControl;    // façade for IEEE 1722.1 (2013/2021)
+    class AVTPTransport;          // façade for IEEE 1722 (2011/2016)
+    class GPTPClock;              // façade for IEEE 802.1AS (2011/2021)
+    class AES67Audio;             // façade for AES67 (2018)
+} }
+
+// Versioned backends translating façades to concrete submodule calls
+namespace Backends { namespace IEEE {
+    namespace _1722_1 { namespace _2021 { /* adapter to submodule */ } namespace _2013 { /* … */ } }
+    namespace _1722   { namespace _2016 { /* adapter to submodule */ } }
+    namespace _802_1  { namespace AS { namespace _2021 { /* … */ } } }
+} namespace AES {
+    namespace AES67 { namespace _2018 { /* adapter */ } }
+    namespace AES70 { namespace _2021 { /* adapter */ } }
+    namespace AES3  { namespace _2009 { /* adapter */ } }
+    namespace AES5  { namespace _2018 { /* adapter */ } }
+    namespace AES11 { namespace _2009 { /* adapter */ } }
+} }
+```
 ```
 
 ### File Naming Conventions Following Generic Pattern
@@ -736,47 +742,32 @@ lib/Standards/Common/utils/packet_parser.hpp                           // Common
 lib/Standards/Common/testing/test_framework_base.hpp                    // Common::testing
 ```
 
-### Header Guard and Include Conventions Following Actual Pattern
-```cpp
-// ✅ CORRECT header guards following IEEE namespace structure
-#ifndef IEEE_1722_1_2021_AEM_ENTITY_MODEL_H
-#define IEEE_1722_1_2021_AEM_ENTITY_MODEL_H
-
-// ✅ CORRECT include structure - relative paths from IEEE namespace
-#include "../descriptors/entity_descriptor.h"
-#include "../../../../Common/interfaces/network_interface.h"
-
-namespace IEEE {
-namespace _1722_1 {
-namespace _2021 {
-namespace aem {
-
-class EntityModel {
-    // IEEE 1722.1-2021 compliant implementation
-};
-
-} // namespace aem
-} // namespace _2021
-} // namespace _1722_1
-} // namespace IEEE
-
-#endif // IEEE_1722_1_2021_AEM_ENTITY_MODEL_H
+### Header Guard and Include Conventions (Pattern)
+```
+Header Guard: IEEE_1722_1_2021_AEM_ENTITY_MODEL_H (derive from path; replace dots with underscores)
+Includes (relative): ../descriptors/entity_descriptor.h ; ../../../../Common/interfaces/network_interface.h
+Intent: Demonstrate structure only—do not duplicate logic or add hardware-specific headers.
 ```
 
-### Correct Include Patterns for Cross-Standard Dependencies
-```cpp
-// ✅ CORRECT - IEEE standards can reference each other
-#include "../../1722/2016/avtp/avtp_packet.h"        // AVDECC using AVTP
-#include "../../802.1/AS/2021/core/time_sync.h"      // AVDECC using gPTP
-
-// ✅ CORRECT - Common utilities accessible to all standards
-#include "../../../Common/interfaces/network_interface.h"
-#include "../../../Common/utils/packet_parser.h"
-
-// ❌ WRONG - No hardware-specific includes in IEEE namespace
-// #include "../../../../../intel_avb/include/intel_hal.h"  // NO!
-// #include "../../../../../common/hal/network_hal.h"       // NO!
+### Cross-Standard Include Patterns (Descriptive)
 ```
+Allowed (path examples only): ../../1722/2016/avtp/avtp_packet.* ; ../../802.1/AS/2021/core/time_sync.*
+Common Utilities: ../../../Common/interfaces/network_interface.* ; ../../../Common/utils/packet_parser.*
+Forbidden: intel_hal.* ; vendor_hal.* ; OS socket headers.
+```
+
+### Inter-Standard Interaction Contracts (Aggregator)
+
+Define explicit, minimal contracts for how standards interact, implemented via the façade and delegated to versioned backends:
+
+- AVDECC (IEEE 1722.1) transports AEM/AECP/ACMP over AVTP (IEEE 1722) and uses time from 802.1AS
+- AVTP (IEEE 1722) requests synchronized time from 802.1AS for presentation timestamps
+- AES67 audio-over-IP may utilize IEEE layers for timing/transport; adapters live in Common::abstraction
+
+Contracts must:
+- Reference specification sections by number (no reproduction of text)
+- Enforce dependency direction (higher → lower layers only)
+- Provide clear error surfaces and fallback behavior when optional features are unavailable
 
 ### Cross-Standard Reuse and Dependencies
 
@@ -784,96 +775,24 @@ class EntityModel {
 
 #### Examples of Required Cross-Standard Reuse:
 
-**IEEE 1722.1 (AVDECC) Dependencies:**
-```cpp
-namespace IEEE {
-namespace _1722_1 {
-namespace _2021 {
-namespace aecp {
-
-// ✅ CORRECT - Reuse IEEE 1722 AVTP implementation
-#include "../../../1722/2016/avtp/avtp_packet.h"
-using IEEE::_1722::_2016::avtp::AVTPPacket;
-
-// ✅ CORRECT - Reuse IEEE 802.1AS time synchronization
-#include "../../../802.1/AS/2021/core/time_sync.h"
-using IEEE::_802_1::AS::_2021::core::TimeSynchronization;
-
-class AEMCommand {
-    // AVDECC commands are transported over AVTP
-    IEEE::_1722::_2016::avtp::AVTPPacket create_avtp_packet() {
-        // Reuse AVTP implementation, don't reimplement
-        return IEEE::_1722::_2016::avtp::AVTPPacket::create_aecp_packet();
-    }
-    
-    // AVDECC requires synchronized time from gPTP
-    uint64_t get_synchronized_time() {
-        // Reuse gPTP time, don't reimplement time sync
-        return IEEE::_802_1::AS::_2021::core::TimeSynchronization::get_current_time();
-    }
-};
-
-} // namespace aecp
-} // namespace _2021
-} // namespace _1722_1
-} // namespace IEEE
+**IEEE 1722.1 (AVDECC) Dependencies (Pattern):**
+```
+Transport dependency: AVTPPacket (IEEE::_1722::_2016::avtp)
+Timing dependency: TimeSynchronization (IEEE::_802_1::AS::_2021::core)
+Command flow: create_avtp_packet() -> encapsulate AECP; get_synchronized_time() -> delegate to gPTP.
+No reimplementation of transport or timing logic.
 ```
 
-**IEEE 1722 (AVTP) Dependencies:**
-```cpp
-namespace IEEE {
-namespace _1722 {
-namespace _2016 {
-namespace avtp {
-
-// ✅ CORRECT - Reuse IEEE 802.1AS timing for presentation time
-#include "../../../802.1/AS/2021/core/time_sync.h"
-
-class StreamDataHeader {
-    uint64_t calculate_presentation_time(uint32_t delay_ns) {
-        // Reuse gPTP synchronized time, don't reimplement
-        auto current_time = IEEE::_802_1::AS::_2021::core::TimeSynchronization::get_current_time();
-        return current_time + delay_ns;
-    }
-};
-
-} // namespace avtp
-} // namespace _2016
-} // namespace _1722
-} // namespace IEEE
+**IEEE 1722 (AVTP) Dependencies (Pattern):**
+```
+Presentation time = gPTP_current_time + delay_ns (no local clock derivation).
+Always obtain current_time from IEEE::_802_1::AS backend.
 ```
 
-**Milan Extensions Dependencies:**
-```cpp
-namespace AVnu {
-namespace Milan {
-namespace v1_2 {
-namespace discovery {
-
-// ✅ CORRECT - Milan builds on IEEE 1722.1, reuse implementation
-#include "../../../../IEEE/1722.1/2021/adp/discovery_protocol.h"
-#include "../../../../IEEE/1722.1/2021/aem/entity_model.h"
-
-class MilanDiscoveryExtensions : public IEEE::_1722_1::_2021::adp::DiscoveryProtocol {
-    // Milan extends IEEE 1722.1 AVDECC, inherit don't reimplement
-public:
-    // Milan-specific discovery features
-    void discover_milan_devices() {
-        // Use base IEEE 1722.1 discovery, add Milan extensions
-        DiscoveryProtocol::discover_devices();
-        apply_milan_filtering();
-    }
-    
-private:
-    void apply_milan_filtering() {
-        // Milan-specific logic only
-    }
-};
-
-} // namespace discovery
-} // namespace v1_2
-} // namespace Milan
-} // namespace AVnu
+**Milan Extensions Dependencies (Pattern):**
+```
+Inheritance: MilanDiscoveryExtensions : public IEEE::_1722_1::_2021::adp::DiscoveryProtocol
+Flow: discover_devices() -> base behavior; apply_milan_filtering() -> Milan-specific refinement.
 ```
 
 #### Forbidden Redundant Implementations:
@@ -986,43 +905,18 @@ namespace aem {
 ```
 
 ### CMake Integration with Correct Structure
-```cmake
-# ✅ CORRECT CMake structure following actual IEEE hierarchy
-add_library(ieee_802_1_as_2021 STATIC
-    IEEE/802.1/AS/2021/core/gptp_state_machine.cpp
-    IEEE/802.1/AS/2021/messages/sync_message.cpp
-    IEEE/802.1/AS/2021/clock/best_master_clock.cpp
-    IEEE/802.1/AS/2021/core/conformity_test_framework.cpp
-)
+```
+Illustrative CMake (Pseudo):
+add_library(ieee_802_1_as_2021 ...)
+add_library(ieee_1722_1_2021 ...)
+add_library(ieee_1722_2016 ...)
+add_library(avnu_milan_v12 ...)
+add_library(standards_common ...)
+target_link_libraries(ieee_1722_1_2021 PRIVATE ieee_1722_2016 ieee_802_1_as_2021 standards_common)
 
-add_library(ieee_1722_1_2021 STATIC
-    IEEE/1722.1/2021/aem/entity_model.cpp
-    IEEE/1722.1/2021/aecp/aem_command.cpp
-    IEEE/1722.1/2021/descriptors/entity_descriptor.cpp
-)
-
-add_library(ieee_1722_2016 STATIC
-    IEEE/1722/2016/avtp/avtp_packet.cpp
-    IEEE/1722/2016/formats/aaf/audio_format.cpp
-)
-
-add_library(avnu_milan_v12 STATIC
-    AVnu/Milan/v1.2/discovery/milan_discovery.cpp
-    AVnu/Milan/v1.2/connection/redundant_streams.cpp
-)
-
-add_library(standards_common STATIC
-    Common/interfaces/network_interface.cpp
-    Common/utils/packet_parser.cpp
-    Common/testing/test_framework_base.cpp
-)
-
-# IEEE standards libraries can depend on each other following IEEE layering
-target_link_libraries(ieee_1722_1_2021
-    ieee_1722_2016               # AVDECC depends on AVTP
-    ieee_802_1_as_2021          # AVDECC depends on gPTP
-    standards_common            # All can use Common utilities
-)
+Version Abstraction Layer (VAL):
+OPTIONS: STD_IEEE_1722_1_VERSION (2013|2021); STD_IEEE_1722_VERSION (2011|2016)
+Library: standards_val (facades) links selected version libs.
 ```
 
 ### Documentation Structure Requirements - Corrected
@@ -1061,22 +955,9 @@ target_link_libraries(ieee_1722_1_2021
     - **Document original implementation** that achieves compliance through understanding
 
 ### Repository Copyright Policy
-```cpp
-// ✅ REQUIRED copyright notice for standards-based implementations
-/*
- * This file implements protocol functionality based on understanding of:
- * - IEEE 1722.1-2021 (AVDECC) - Copyright IEEE
- * - IEEE 1722-2016 (AVTP) - Copyright IEEE  
- * - IEEE 802.1AS-2021 (gPTP) - Copyright IEEE
- * - Milan v1.2 - Copyright AVnu Alliance
- * 
- * No copyrighted content from these specifications is reproduced.
- * Implementation is original work achieving compliance through
- * understanding of specification requirements.
- * 
- * For authoritative requirements, refer to original specifications
- * available from respective standards organizations.
- */
+```
+Copyright Notice Pattern:
+"Implements protocol functionality based on understanding of referenced standards (list). No copyrighted specification text reproduced. Refer to official documents for authoritative requirements."
 ```
 
 This structure ensures clear separation of IEEE standards versions, prevents architectural violations, and maintains the hardware-agnostic principle while following the actual implementation pattern used in the codebase.
