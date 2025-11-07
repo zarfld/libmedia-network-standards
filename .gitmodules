@@ -1,27 +1,36 @@
 [submodule "IEEE_802.1AS-2021"]
 	path = IEEE/802.1AS/2021
 	url = https://github.com/zarfld/IEEE_802.1AS_2021.git
+	branch = main
 [submodule "IEEE_802.1Q-2020"]
 	path = IEEE/802.1/Q/2020
 	url = https://github.com/zarfld/IEEE_802.1Q_2020.git
+	branch = main
 [submodule "IEEE_802.1BA-2016"]
 	path = IEEE/802.1/BA/2016
 	url = https://github.com/zarfld/IEEE_802.1BA_2016.git
+	branch = main
 [submodule "IEEE_1588-2019"]
 	path = IEEE/1588/2019
 	url = https://github.com/zarfld/IEEE_1588_2019.git
+	branch = main
 [submodule "IEEE_1722-2016"]
 	path = IEEE/1722/2016
 	url = https://github.com/zarfld/IEEE_1722_2016.git
+	branch = main
 [submodule "IEEE_1722.1-2021"]
 	path = IEEE/1722.1/2021
 	url = https://github.com/zarfld/IEEE_1722.1_2021.git
+	branch = main
 [submodule "IEEE_1722.1-2013"]
 	path = IEEE/1722.1/2013
 	url = https://github.com/zarfld/IEEE_1722.1_2013.git
+	branch = main
 [submodule "AVnu_Milan_1.2-2023"]
 	path = AVnu/Milan/1.2-2023
 	url = https://github.com/zarfld/AVnu_Milan_1.2_2023.git
+	branch = main
 [submodule "Milan-Baseline-Interoperability-Specification-2.0a"]
 	path = AVnu/Milan/2.0a-2023
 	url = https://github.com/zarfld/Milan-Baseline-Interoperability-Specification-2.0a.git
+	branch = main
