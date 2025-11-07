@@ -34,3 +34,19 @@ if(WIN32)
 endif()
 
 message(STATUS "IEEE Standards integration utilities configured")
+
+# Minimal test for IEEE 1588 runtime selection (header-only, mocks)
+if(BUILD_TESTS)
+    add_executable(test_ieee1588_selector
+        test_ieee1588_selector.cpp
+    )
+    target_include_directories(test_ieee1588_selector PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+    )
+    if(TARGET standards_interfaces)
+        target_link_libraries(test_ieee1588_selector PRIVATE standards_interfaces)
+    endif()
+    if(TARGET ieee_standards_common)
+        target_link_libraries(test_ieee1588_selector PRIVATE ieee_standards_common)
+    endif()
+endif()
