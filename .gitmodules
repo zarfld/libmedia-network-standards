@@ -50,3 +50,15 @@
 	path = AES/AES5/2018
 	url = https://github.com/zarfld/AES5-2018.git
 	branch = main
+[submodule "AES/AES11/2019"]
+	path = AES/AES11/2019
+	url = https://github.com/zarfld/AES11-2009.git
+	branch = master
+[submodule "AES/AES3/2009"]
+	path = AES/AES3/2009
+	url = https://github.com/zarfld/AES3-2009.git
+	branch = master
+[submodule "AES/AES5/2018"]
+	path = AES/AES5/2018
+	url = https://github.com/zarfld/AES5-2018.git
+	branch = main
